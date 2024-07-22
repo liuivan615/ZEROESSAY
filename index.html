@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作文批改服务</title>
+</head>
+<body>
+    <h1>上传作文进行批改</h1>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <label for="fileInput">选择文件：</label>
+        <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.txt,.pdf" required>
+        <button type="submit">上传</button>
+    </form>
+    <div id="result"></div>
+</body>
+</html>
