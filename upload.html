@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero Essay</title>
+    <title>Upload Essay - Zero Essay</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -21,17 +21,15 @@
         </div>
     </header>
     <main>
-        <section class="hero">
+        <section class="upload">
             <div class="container">
-                <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
-                <a href="/services" class="button">View services</a>
-            </div>
-        </section>
-        <section class="about">
-            <div class="container">
-                <h2>Expert essay correction</h2>
-                <p>Detailed essay evaluation and correction service.</p>
-                <a href="/upload" class="button">Upload your essay</a>
+                <h2>Upload your IELTS essay</h2>
+                <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                    <label for="fileInput">选择文件：</label>
+                    <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.txt,.pdf" required>
+                    <button type="submit">上传</button>
+                </form>
+                <div id="result"></div>
             </div>
         </section>
     </main>
