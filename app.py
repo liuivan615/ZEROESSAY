@@ -27,11 +27,11 @@ def upload():
         # Handle text essay
         if 'text_essay' in request.form:
             text_essay = request.form['text_essay']
-            if text_essay != '':
-                text_path = os.path.join(app.config['UPLOAD_FOLDER'], 'text_essay.txt')
-                with open(text_path, 'w') as text_file:
-                    text_file.write(text_essay)
-        
+            if text_essay.strip() != '':
+                text_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'text_essay.txt')
+                with open(text_file_path, 'w') as f:
+                    f.write(text_essay)
+
         return redirect(url_for('index'))
     return render_template('upload.html')
 
