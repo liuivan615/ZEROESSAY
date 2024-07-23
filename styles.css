@@ -1,74 +1,53 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 header {
-    background-color: #fff;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
+    color: #000;
 }
 
 nav ul {
-    display: flex;
     list-style: none;
+    display: flex;
     margin: 0;
     padding: 0;
 }
 
 nav ul li {
-    margin-left: 20px;
+    margin: 0 15px;
 }
 
 nav ul li a {
     text-decoration: none;
     color: #000;
+    font-weight: bold;
 }
 
 .hero {
-    background-image: url('../images/hero-bg.jpg');
+    height: 100vh;
     background-size: cover;
     background-position: center;
-    color: #fff;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #fff;
     text-align: center;
-    position: relative;
-}
-
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
 }
 
 .hero h1 {
@@ -80,59 +59,111 @@ nav ul li a {
     font-size: 24px;
 }
 
-.btn {
-    background-color: #007bff;
+.hero .btn {
+    background: #007BFF;
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
+    font-size: 18px;
     border-radius: 5px;
     margin-top: 20px;
-    display: inline-block;
 }
 
 .content-section {
-    padding: 50px 20px;
+    padding: 60px 20px;
     text-align: center;
-}
-
-.content-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.content-section p {
-    font-size: 18px;
-    margin-bottom: 20px;
 }
 
 .service-cards {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
 }
 
 .card {
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
     margin: 20px;
-    padding: 20px;
-    width: calc(33.333% - 40px);
-    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
 }
 
 .card img {
-    max-width: 100%;
-    border-radius: 5px;
+    width: 100%;
+    height: auto;
 }
 
 .card h3 {
     font-size: 24px;
-    margin-top: 10px;
+    margin: 20px 0 10px;
+}
+
+.card p {
+    font-size: 16px;
+    margin: 0 20px 20px;
+}
+
+.card .btn {
+    display: block;
+    background: #007BFF;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    margin: 0 20px 20px;
+    border-radius: 5px;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    background: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-info {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info ul li {
+    margin: 5px 0;
 }
 
 footer {
-    background: #333;
+    background: #007BFF;
     color: #fff;
-    padding: 20px 0;
     text-align: center;
+    padding: 20px;
 }
+
