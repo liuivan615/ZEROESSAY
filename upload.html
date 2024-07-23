@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Essay</title>
+    <title>Upload Your Essay</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="header-container">
+        <div class="container">
             <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="about.html">ABOUT</a></li>
-                    <li><a href="services.html">SERVICES</a></li>
-                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/#about">ABOUT</a></li>
+                    <li><a href="/#services">SERVICES</a></li>
+                    <li><a href="/#contact">CONTACT</a></li>
                 </ul>
             </nav>
-            <div class="contact-email">
-                <a href="mailto:thedeathofromantic@outlook.com">thedeathofromantic@outlook.com</a>
-            </div>
         </div>
     </header>
-    <section class="upload">
-        <h2>Upload Your IELTS Essay</h2>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <label for="title">Essay Title:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="essay">Upload Your Essay:</label>
-            <input type="file" id="essay" name="essay" required>
-            <button type="submit" class="btn">Upload</button>
-        </form>
+    
+    <section id="upload">
+        <div class="container">
+            <h2>Upload Your Essay</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="title">Essay Title:</label>
+                <input type="text" id="title" name="title" required>
+                <label for="file">Upload Essay:</label>
+                <input type="file" id="file" name="file" required>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
     </section>
+    
     <footer>
-        <div class="footer-container">
+        <div class="container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
