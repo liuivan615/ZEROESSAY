@@ -3,41 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Your Essay</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Upload Essay</title>
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>ZERO ESSAY</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="index.html#about">ABOUT</a></li>
-                    <li><a href="index.html#services">SERVICES</a></li>
-                    <li><a href="index.html#contact">CONTACT</a></li>
-                </ul>
-            </nav>
-        </div>
+        <nav>
+            <div class="logo">ZERO ESSAY</div>
+            <ul>
+                <li><a href="index.html#home">HOME</a></li>
+                <li><a href="index.html#about">ABOUT</a></li>
+                <li><a href="index.html#services">SERVICES</a></li>
+                <li><a href="index.html#contact">CONTACT</a></li>
+            </ul>
+        </nav>
     </header>
-    
-    <section id="upload">
-        <div class="container">
-            <h2>Upload Your Essay</h2>
-            <form action="submit_essay" method="post" enctype="multipart/form-data">
-                <label for="title">Essay Title:</label>
-                <input type="text" id="title" name="title" required>
-                <label for="file">Upload Essay:</label>
-                <input type="file" id="file" name="file" required>
-                <button type="submit" class="btn">Submit</button>
-            </form>
-        </div>
+
+    <section id="upload" class="content-section">
+        <h2>Upload Your Essay</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="essay">Upload your IELTS essay:</label>
+            <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
+            
+            <label for="text-essay">Or paste your essay here:</label>
+            <textarea id="text-essay" name="text_essay" rows="10"></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
     </section>
-    
+
     <footer>
-        <div class="container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
-        </div>
+        <p>&copy; 2024 Zero Essay. All rights reserved.</p>
     </footer>
 </body>
 </html>
