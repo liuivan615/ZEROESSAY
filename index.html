@@ -4,119 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1 class="logo">ZERO ESSAY</h1>
+        <div class="header-container">
+            <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="#home">HOME</a></li>
-                    <li><a href="#about">ABOUT</a></li>
-                    <li><a href="#services">SERVICES</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="/" class="active">HOME</a></li>
+                    <li><a href="/about.html">ABOUT</a></li>
+                    <li><a href="/services.html">SERVICES</a></li>
+                    <li><a href="/contact.html">CONTACT</a></li>
                 </ul>
             </nav>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
         </div>
     </header>
-
-    <section id="home" class="hero-section">
-        <div class="container">
-            <h2>ZERO ESSAY</h2>
-            <p>雅思作文批改服务，全面提高写作质量。</p>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
             <a href="#services" class="btn">View services</a>
         </div>
     </section>
-
-    <section id="about" class="content-section">
+    <section class="about" id="about">
         <div class="container">
             <h2>Expert essay correction</h2>
-            <p>Detailed essay evaluation and correction service</p>
-            <p>Expert essay correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
-            <a href="#contact" class="btn">Get in touch</a>
+            <p>Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
         </div>
     </section>
-
-    <section id="services" class="content-section">
-        <div class="container">
-            <h2>Essay correction</h2>
-            <p>Professional essay evaluation and correction</p>
+    <section class="services" id="services">
+        <div class="service-container">
             <div class="service-item">
-                <img src="static/images/service1.png" alt="Service 1">
                 <h3>Detailed essay evaluation</h3>
+                <img src="images/detailed_evaluation.jpg" alt="Detailed essay evaluation">
                 <p>Get in-depth feedback on your essay.</p>
-                <a href="#" class="btn">Read more</a>
+                <a href="/upload.html" class="btn">Upload your essay</a>
             </div>
             <div class="service-item">
-                <img src="static/images/service2.png" alt="Service 2">
                 <h3>Grammar correction</h3>
+                <img src="images/grammar_correction.jpg" alt="Grammar correction">
                 <p>Improve your grammar skills.</p>
-                <a href="#" class="btn">Read more</a>
+                <a href="/upload.html" class="btn">Upload your essay</a>
             </div>
             <div class="service-item">
-                <img src="static/images/service3.png" alt="Service 3">
                 <h3>Vocabulary enhancement</h3>
+                <img src="images/vocabulary_enhancement.jpg" alt="Vocabulary enhancement">
                 <p>Expand your vocabulary repertoire.</p>
-                <a href="#" class="btn">Read more</a>
+                <a href="/upload.html" class="btn">Upload your essay</a>
             </div>
             <div class="service-item">
-                <img src="static/images/service4.png" alt="Service 4">
                 <h3>Coherence assessment</h3>
+                <img src="images/coherence_assessment.jpg" alt="Coherence assessment">
                 <p>Ensure your essay flows smoothly.</p>
-                <a href="#" class="btn">Read more</a>
+                <a href="/upload.html" class="btn">Upload your essay</a>
             </div>
             <div class="service-item">
-                <img src="static/images/service5.png" alt="Service 5">
                 <h3>Task response analysis</h3>
+                <img src="images/task_response_analysis.jpg" alt="Task response analysis">
                 <p>Address task requirements effectively.</p>
-                <a href="#" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <img src="static/images/service6.png" alt="Service 6">
-                <h3>Error identification and correction</h3>
-                <p>Spot and rectify errors in your essay.</p>
-                <a href="#" class="btn">Read more</a>
+                <a href="/upload.html" class="btn">Upload your essay</a>
             </div>
         </div>
     </section>
-
-    <section id="contact" class="content-section">
-        <div class="container">
-            <h2>Get in touch</h2>
-            <p>Contact us for essay correction services</p>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <label for="name">Name *</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email address *</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="phone">Phone number *</label>
-                <input type="text" id="phone" name="phone" required>
-
-                <label for="message">Message</label>
-                <textarea id="message" name="message"></textarea>
-
-                <label for="essay">Upload your IELTS essay:</label>
-                <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
-                
-                <label for="text-essay">Or paste your essay here:</label>
-                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
-                
-                <button type="submit">Submit</button>
-            </form>
-            <div class="contact-info">
-                <p>Email: thedeathofromantic@outlook.com</p>
-                <p>Hours: Monday - Friday: 9:00am - 10:00pm, Saturday: 9:00am - 6:00pm, Sunday: 9:00am - 12:00pm</p>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <div class="container">
+        <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- JavaScript for smooth scrolling -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
