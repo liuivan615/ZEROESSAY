@@ -21,6 +21,10 @@ header {
     color: #000;
     padding: 20px 0;
     text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
 }
 
 .header-container {
@@ -73,15 +77,16 @@ header nav ul li a.active::after {
     left: 0;
 }
 
-.contact-email {
+.contact-email a {
     font-size: 0.9em;
     color: #007BFF;
+    text-decoration: none;
 }
 
 /* Hero Section Styles */
 .hero {
     background: url('images/hero-image.jpg') no-repeat center center/cover;
-    height: 500px;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -110,6 +115,10 @@ header nav ul li a.active::after {
     margin: 0;
 }
 
+.hero p {
+    font-size: 1.5em;
+}
+
 .btn {
     background-color: #007BFF;
     color: #fff;
@@ -136,8 +145,9 @@ header nav ul li a.active::after {
 /* About Section Styles */
 .about {
     background-color: #fff;
-    padding: 50px 20px;
+    padding: 100px 20px 50px 20px;
     text-align: center;
+    margin-top: 100vh;
 }
 
 .about h2 {
@@ -208,7 +218,6 @@ footer {
     padding: 20px 0;
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
+footer p {
+    margin: 0;
 }
