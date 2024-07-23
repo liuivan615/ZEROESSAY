@@ -5,6 +5,7 @@ body, html {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    scroll-behavior: smooth;
 }
 
 .container {
@@ -52,6 +53,24 @@ header nav ul li a {
     text-decoration: none;
     font-weight: bold;
     font-size: 1em;
+    position: relative;
+}
+
+header nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background-color: #007BFF;
+    transition: all 0.3s ease;
+}
+
+header nav ul li a:hover::after,
+header nav ul li a.active::after {
+    width: 100%;
+    left: 0;
 }
 
 .contact-email {
@@ -68,12 +87,22 @@ header nav ul li a {
     align-items: center;
     text-align: center;
     color: #fff;
+    position: relative;
+    animation: gradientAnimation 15s infinite;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .hero-content {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
+    z-index: 1;
 }
 
 .hero h2 {
@@ -90,10 +119,18 @@ header nav ul li a {
     display: inline-block;
     font-size: 1em;
     border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* About Section Styles */
@@ -138,6 +175,12 @@ header nav ul li a {
     width: 300px;
     padding: 20px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .service-item img {
@@ -197,10 +240,12 @@ header nav ul li a {
     cursor: pointer;
     font-size: 1em;
     border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .upload button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 /* Footer Styles */
@@ -215,4 +260,395 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* Additional Styles for Dynamic Effects and Layouts */
+
+/* Hero Section Gradient Animation */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/hero-image.jpg') no-repeat center center/cover;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Navigation Styles */
+header nav ul li a.active {
+    color: #007BFF;
+    border-bottom: 2px solid #007BFF;
+}
+
+/* Service Item Animation */
+@keyframes serviceItemHover {
+    from {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    to {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+}
+
+.service-item:hover {
+    animation: serviceItemHover 0.3s forwards;
+}
+
+/* Button Hover Animation */
+@keyframes buttonHover {
+    from {
+        background-color: #007BFF;
+    }
+    to {
+        background-color: #0056b3;
+    }
+}
+
+.btn:hover {
+    animation: buttonHover 0.3s forwards;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+    }
+
+    header nav ul {
+        flex-direction: column;
+    }
+
+    header nav ul li {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .hero {
+        height: 300px;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .service-container {
+        flex-direction: column;
+    }
+
+    .service-item {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .upload form {
+        width: 100%;
+    }
+}
+
+/* Specific Styles for Different Pages */
+
+/* About Page Styles */
+.about-page {
+    background-color: #f9f9f9;
+    padding: 50px 20px;
+    text-align: left;
+}
+
+.about-page h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.about-page p {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.about-page .team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.about-page .team-member {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+.about-page .team-member img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.about-page .team-member h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.about-page .team-member p {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Contact Page Styles */
+.contact-page {
+    background-color: #fff;
+    padding: 50px 20px;
+    text-align: left;
+}
+
+.contact-page h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.contact-page form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-page form label {
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.contact-page form input,
+.contact-page form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.contact-page form button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-page form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Additional Animations and Transitions */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 1s ease-in-out;
+}
+
+@keyframes popUp {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.pop-up {
+    animation: popUp 0.5s ease-in-out;
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotate(-360deg);
+    }
+    to {
+        transform: rotate(0);
+    }
+}
+
+.rotate-in {
+    animation: rotateIn 1s ease-in-out;
+}
+
+@keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 3000px, 0);
+    }
+    20% {
+        transform: translate3d(0, -20px, 0);
+    }
+    40% {
+        opacity: 1;
+        transform: translate3d(0, 10px, 0);
+    }
+    60% {
+        transform: translate3d(0, -5px, 0);
+    }
+    80% {
+        transform: translate3d(0, 2px, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+.bounce-in {
+    animation: bounceIn 2s;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.p-30 {
+    padding: 30px;
+}
+
+/* Enhancements for Readability and Accessibility */
+body {
+    line-height: 1.6;
+    font-size: 16px;
+    color: #333;
+}
+
+a {
+    color: #007BFF;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+input, textarea, button {
+    font-family: inherit;
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 70%;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    .container {
+        width: 60%;
+    }
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #f4f4f4;
+}
+
+body.dark-mode header {
+    background-color: #444;
+    border-bottom: 3px solid #333;
+}
+
+body.dark-mode .btn {
+    background-color: #444;
+}
+
+body.dark-mode .btn:hover {
+    background-color: #222;
+}
+
+body.dark-mode footer {
+    background-color: #444;
 }
