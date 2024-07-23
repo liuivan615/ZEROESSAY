@@ -1,39 +1,32 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__)
-
-# Ensure the upload folder exists
-UPLOAD_FOLDER = 'uploads'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/services.html')
+def services():
+    return render_template('services.html')
+
+@app.route('/upload.html')
 def upload():
-    if request.method == 'POST':
-        # Handle file upload
-        if 'essay' in request.files:
-            file = request.files['essay']
-            if file.filename != '':
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-                file.save(file_path)
-
-        # Handle text essay
-        if 'text_essay' in request.form:
-            text_essay = request.form['text_essay']
-            if text_essay.strip() != '':
-                text_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'text_essay.txt')
-                with open(text_file_path, 'w') as f:
-                    f.write(text_essay)
-
-        return redirect(url_for('index'))
     return render_template('upload.html')
 
+@app.route('/upload', methods=['POST'])
+def handle_upload():
+    if 'essay' in request.files:
+        essay = request.files['essay']
+        essay.save(os.path.join('uploads', essay.filename))
+    if 'text_essay' in request.form:
+        text_essay = request.form['text_essay']
+        with open(os.path.join('uploads', 'text_essay.txt'), 'w') as f:
+            f.write(text_essay)
+    return 'Upload successful!'
+
 if __name__ == '__main__':
+    if not os.path.exists('uploads'):
+        os.makedirs('uploads')
     app.run(debug=True)
