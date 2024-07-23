@@ -4,37 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Essay - Zero Essay</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>Zero Essay</h1>
+        <div class="header-container">
+            <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/about.html">ABOUT</a></li>
+                    <li><a href="/services.html">SERVICES</a></li>
+                    <li><a href="/contact.html">CONTACT</a></li>
                 </ul>
             </nav>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
         </div>
     </header>
-    <main>
-        <section class="upload">
-            <div class="container">
-                <h2>Upload your IELTS essay</h2>
-                <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-                    <label for="fileInput">选择文件：</label>
-                    <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.txt,.pdf" required>
-                    <button type="submit">上传</button>
-                </form>
-                <div id="result"></div>
-            </div>
-        </section>
-    </main>
-    <footer>
+    <section class="upload">
         <div class="container">
+            <h2>Upload your IELTS essay</h2>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <label for="fileInput">选择文件：</label>
+                <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.txt,.pdf" required>
+                <button type="submit">上传</button>
+            </form>
+            <div id="result"></div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
