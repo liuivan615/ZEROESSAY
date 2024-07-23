@@ -19,19 +19,19 @@
         </nav>
     </header>
 
-    <section id="home" class="hero">
+    <section id="home" class="hero" style="background-image: url('static/images/223013b3208885796c9ebbd7f3d77df.png');">
         <div class="hero-content">
             <h1>ZERO ESSAY</h1>
             <p>雅思作文批改服务，全⾯提⾼写作质量。</p>
-            <a href="services.html" class="btn">View services</a>
+            <a href="upload.html" class="btn">View services</a>
         </div>
     </section>
 
-    <section id="about" class="content-section">
+    <section id="about" class="content-section" style="background-image: url('static/images/def2e9c358ab80b1e45527b5f35d317.png');">
         <h2>Expert essay correction</h2>
         <p>Detailed essay evaluation and correction service</p>
         <p>Expert essay correction service focusing on four key areas...</p>
-        <a href="services.html" class="btn">Get in touch</a>
+        <a href="upload.html" class="btn">Get in touch</a>
     </section>
 
     <section id="services" class="content-section">
@@ -39,17 +39,57 @@
         <p>Professional essay evaluation and correction</p>
         <div class="service-cards">
             <div class="card">
-                <img src="static/images/service1.jpg" alt="Service 1">
+                <img src="static/images/116715c3a2ca89c0d4148bf050ec7b6.png" alt="Service 1">
                 <h3>Detailed essay evaluation</h3>
                 <p>Get in-depth feedback on your essay.</p>
-                <a href="services.html" class="btn">Read more</a>
+                <a href="upload.html" class="btn">Read more</a>
             </div>
             <div class="card">
-                <img src="static/images/service2.jpg" alt="Service 2">
+                <img src="static/images/6a55b9975c78bea2426dcee8941ad6f.png" alt="Service 2">
                 <h3>Grammar correction</h3>
                 <p>Improve your grammar skills.</p>
-                <a href="services.html" class="btn">Read more</a>
+                <a href="upload.html" class="btn">Read more</a>
             </div>
+            <div class="card">
+                <img src="static/images/e3a85c8261a72c6d47414c53a5450ae.png" alt="Service 3">
+                <h3>Vocabulary enhancement</h3>
+                <p>Expand your vocabulary repertoire.</p>
+                <a href="upload.html" class="btn">Read more</a>
+            </div>
+            <div class="card">
+                <img src="static/images/2ef998306cf08ad50f5e21ff129a023.png" alt="Service 4">
+                <h3>Coherence assessment</h3>
+                <p>Ensure your essay flows smoothly.</p>
+                <a href="upload.html" class="btn">Read more</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="content-section">
+        <h2>Get in touch</h2>
+        <form action="/submit_contact" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+            
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <div class="contact-info">
+            <p>Email: thedeathofromantic@outlook.com</p>
+            <p>Hours:</p>
+            <ul>
+                <li>Monday - Friday: 9:00am - 10:00pm</li>
+                <li>Saturday: 9:00am - 6:00pm</li>
+                <li>Sunday: 9:00am - 12:00pm</li>
+            </ul>
         </div>
     </section>
 
