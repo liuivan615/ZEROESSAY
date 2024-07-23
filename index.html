@@ -4,99 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">ZERO ESSAY</div>
-            <ul>
-                <li><a href="#home">HOME</a></li>
-                <li><a href="#about">ABOUT</a></li>
-                <li><a href="#services">SERVICES</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <h1 class="logo">ZERO ESSAY</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <section id="home" class="hero" style="background-image: url('static/images/223013b3208885796c9ebbd7f3d77df.png');">
-        <div class="hero-content">
-            <h1>ZERO ESSAY</h1>
-            <p>雅思作文批改服务，全⾯提⾼写作质量。</p>
-            <a href="upload.html" class="btn">View services</a>
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h2>ZERO ESSAY</h2>
+            <p>雅思作文批改服务，全面提高写作质量。</p>
+            <a href="#services" class="btn">View services</a>
         </div>
     </section>
 
-    <section id="about" class="content-section" style="background-image: url('static/images/def2e9c358ab80b1e45527b5f35d317.png');">
-        <h2>Expert essay correction</h2>
-        <p>Detailed essay evaluation and correction service</p>
-        <p>Expert essay correction service focusing on four key areas...</p>
-        <a href="upload.html" class="btn">Get in touch</a>
+    <section id="about" class="content-section">
+        <div class="container">
+            <h2>Expert essay correction</h2>
+            <p>Detailed essay evaluation and correction service</p>
+            <p>Expert essay correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
+            <a href="#contact" class="btn">Get in touch</a>
+        </div>
     </section>
 
     <section id="services" class="content-section">
-        <h2>Essay correction</h2>
-        <p>Professional essay evaluation and correction</p>
-        <div class="service-cards">
-            <div class="card">
-                <img src="static/images/116715c3a2ca89c0d4148bf050ec7b6.png" alt="Service 1">
+        <div class="container">
+            <h2>Essay correction</h2>
+            <p>Professional essay evaluation and correction</p>
+            <div class="service-item">
+                <img src="static/images/service1.png" alt="Service 1">
                 <h3>Detailed essay evaluation</h3>
                 <p>Get in-depth feedback on your essay.</p>
-                <a href="upload.html" class="btn">Read more</a>
+                <a href="#" class="btn">Read more</a>
             </div>
-            <div class="card">
-                <img src="static/images/6a55b9975c78bea2426dcee8941ad6f.png" alt="Service 2">
+            <div class="service-item">
+                <img src="static/images/service2.png" alt="Service 2">
                 <h3>Grammar correction</h3>
                 <p>Improve your grammar skills.</p>
-                <a href="upload.html" class="btn">Read more</a>
+                <a href="#" class="btn">Read more</a>
             </div>
-            <div class="card">
-                <img src="static/images/e3a85c8261a72c6d47414c53a5450ae.png" alt="Service 3">
+            <div class="service-item">
+                <img src="static/images/service3.png" alt="Service 3">
                 <h3>Vocabulary enhancement</h3>
                 <p>Expand your vocabulary repertoire.</p>
-                <a href="upload.html" class="btn">Read more</a>
+                <a href="#" class="btn">Read more</a>
             </div>
-            <div class="card">
-                <img src="static/images/2ef998306cf08ad50f5e21ff129a023.png" alt="Service 4">
+            <div class="service-item">
+                <img src="static/images/service4.png" alt="Service 4">
                 <h3>Coherence assessment</h3>
                 <p>Ensure your essay flows smoothly.</p>
-                <a href="upload.html" class="btn">Read more</a>
+                <a href="#" class="btn">Read more</a>
+            </div>
+            <div class="service-item">
+                <img src="static/images/service5.png" alt="Service 5">
+                <h3>Task response analysis</h3>
+                <p>Address task requirements effectively.</p>
+                <a href="#" class="btn">Read more</a>
+            </div>
+            <div class="service-item">
+                <img src="static/images/service6.png" alt="Service 6">
+                <h3>Error identification and correction</h3>
+                <p>Spot and rectify errors in your essay.</p>
+                <a href="#" class="btn">Read more</a>
             </div>
         </div>
     </section>
 
     <section id="contact" class="content-section">
-        <h2>Get in touch</h2>
-        <form action="/submit_contact" method="POST">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" required>
-            
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <button type="submit">Submit</button>
-        </form>
-        <div class="contact-info">
-            <p>Email: thedeathofromantic@outlook.com</p>
-            <p>Hours:</p>
-            <ul>
-                <li>Monday - Friday: 9:00am - 10:00pm</li>
-                <li>Saturday: 9:00am - 6:00pm</li>
-                <li>Sunday: 9:00am - 12:00pm</li>
-            </ul>
+        <div class="container">
+            <h2>Get in touch</h2>
+            <p>Contact us for essay correction services</p>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email address *</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone number *</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+
+                <label for="essay">Upload your IELTS essay:</label>
+                <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
+                
+                <label for="text-essay">Or paste your essay here:</label>
+                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
+                
+                <button type="submit">Submit</button>
+            </form>
+            <div class="contact-info">
+                <p>Email: thedeathofromantic@outlook.com</p>
+                <p>Hours: Monday - Friday: 9:00am - 10:00pm, Saturday: 9:00am - 6:00pm, Sunday: 9:00am - 12:00pm</p>
+            </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
     </footer>
-
-    <script src="static/js/scripts.js"></script>
 </body>
 </html>
