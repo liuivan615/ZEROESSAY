@@ -4,99 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #fff;
+            border-bottom: 3px solid #007BFF;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://via.placeholder.com/1920x1080') center/cover no-repeat;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin: 20px 0 0;
+        }
+
+        .hero a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .hero a:hover {
+            background-color: #0056b3;
+        }
+
+        section {
+            padding: 50px;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .services {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .services .service-item {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .services .service-item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .services .service-item h3 {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        .services .service-item p {
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        footer {
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <h1>ZERO ESSAY</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home" class="active">HOME</a></li>
-                    <li><a href="#about">ABOUT</a></li>
-                    <li><a href="#services">SERVICES</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
-                </ul>
-            </nav>
-            <div class="contact-email">
-                <a href="mailto:thedeathofromantic@outlook.com">thedeathofromantic@outlook.com</a>
-            </div>
-        </div>
+        <h1>Zero Essay</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
     </header>
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h2>ZERO ESSAY</h2>
-            <p>雅思作文批改服务，全面提高写作质量。</p>
-            <a href="#services" class="btn">View services</a>
-        </div>
-    </section>
-    <section id="about" class="about">
+    <div class="hero">
+        <h1>Zero Essay</h1>
+        <p>雅思作文批改服务，全面提高写作质量。</p>
+        <a href="#">View services</a>
+    </div>
+    <section>
         <h2>Expert essay correction</h2>
         <p>Detailed essay evaluation and correction service</p>
-        <p>Expert essay correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
-        <a href="#contact" class="btn">Get in touch</a>
-    </section>
-    <section id="services" class="services">
-        <h2>Essay correction</h2>
-        <p>Professional essay evaluation and correction</p>
-        <div class="service-container">
+        <div class="services">
             <div class="service-item">
-                <img src="images/service1.jpg" alt="Detailed essay evaluation">
+                <img src="https://via.placeholder.com/300" alt="Service 1">
                 <h3>Detailed essay evaluation</h3>
                 <p>Get in-depth feedback on your essay.</p>
-                <a href="#contact" class="btn">Read more</a>
             </div>
             <div class="service-item">
-                <img src="images/service2.jpg" alt="Grammar correction">
+                <img src="https://via.placeholder.com/300" alt="Service 2">
                 <h3>Grammar correction</h3>
                 <p>Improve your grammar skills.</p>
-                <a href="#contact" class="btn">Read more</a>
             </div>
             <div class="service-item">
-                <img src="images/service3.jpg" alt="Vocabulary enhancement">
+                <img src="https://via.placeholder.com/300" alt="Service 3">
                 <h3>Vocabulary enhancement</h3>
                 <p>Expand your vocabulary repertoire.</p>
-                <a href="#contact" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <img src="images/service4.jpg" alt="Coherence assessment">
-                <h3>Coherence assessment</h3>
-                <p>Ensure your essay flows smoothly.</p>
-                <a href="#contact" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <img src="images/service5.jpg" alt="Task response analysis">
-                <h3>Task response analysis</h3>
-                <p>Address task requirements effectively.</p>
-                <a href="#contact" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <img src="images/service6.jpg" alt="Error identification and correction">
-                <h3>Error identification and correction</h3>
-                <p>Spot and rectify errors in your essay.</p>
-                <a href="#contact" class="btn">Read more</a>
             </div>
         </div>
-    </section>
-    <section id="contact" class="contact">
-        <h2>Contact Us</h2>
-        <form action="submit_form.php" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <button type="submit" class="btn">Send Message</button>
-        </form>
     </section>
     <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
-        </div>
+        <p>&copy; 2024 Zero Essay. All rights reserved.</p>
     </footer>
 </body>
 </html>
