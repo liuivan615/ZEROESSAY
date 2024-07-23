@@ -1,27 +1,39 @@
-body {
-    font-family: Arial, sans-serif;
+/* General Styles */
+body, html {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
 header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 1em 0;
+    background-color: #fff;
+    border-bottom: 3px solid #007BFF;
+    color: #000;
+    padding: 20px 0;
+    text-align: center;
 }
 
-header .container {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 header h1 {
     margin: 0;
+    font-size: 2em;
+    text-transform: uppercase;
 }
 
 header nav ul {
@@ -36,75 +48,171 @@ header nav ul li {
 }
 
 header nav ul li a {
-    color: white;
+    color: #000;
     text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
 }
 
+.contact-email {
+    font-size: 0.9em;
+    color: #007BFF;
+}
+
+/* Hero Section Styles */
 .hero {
-    background: url('your-image-url') no-repeat center center/cover;
-    color: white;
+    background: url('images/hero-image.jpg') no-repeat center center/cover;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 100px 20px;
+    color: #fff;
+}
+
+.hero-content {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .hero h2 {
-    font-size: 2.5em;
+    font-size: 3em;
     margin: 0;
 }
 
-.hero .button {
-    background-color: #4CAF50;
-    color: white;
+.btn {
+    background-color: #007BFF;
+    color: #fff;
     padding: 10px 20px;
     text-decoration: none;
     margin-top: 20px;
     display: inline-block;
+    font-size: 1em;
+    border-radius: 5px;
 }
 
-.about, .upload {
-    background-color: white;
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* About Section Styles */
+.about {
+    background-color: #fff;
     padding: 50px 20px;
     text-align: center;
 }
 
-.container {
+.about h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Services Section Styles */
+.services {
+    background-color: #f9f9f9;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.service-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-footer {
-    background-color: #4CAF50;
-    color: white;
+.service-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px;
+    width: 300px;
+    padding: 20px;
     text-align: center;
-    padding: 10px 0;
 }
 
-footer .container {
-    padding: 0 20px;
+.service-item img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
 }
 
-.button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
+.service-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.service-item p {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Upload Section Styles */
+.upload {
+    background-color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.upload h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.upload form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: inline-block;
-    margin-top: 20px;
+    text-align: left;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
+.upload label {
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.upload input[type="file"] {
+    display: block;
+    margin: 20px 0;
+}
+
+.upload button {
+    background-color: #007BFF;
+    color: #fff;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
 }
 
-button:hover {
-    background-color: #45a049;
+.upload button:hover {
+    background-color: #0056b3;
 }
 
-input[type="file"] {
-    display: block;
-    margin: 20px 0;
+/* Footer Styles */
+footer {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
