@@ -1,78 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero Essay</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <div class="header-container">
-            <h1>ZERO ESSAY</h1>
-            <nav>
-                <ul>
-                    <li><a href="/">HOME</a></li>
-                    <li><a href="/about.html">ABOUT</a></li>
-                    <li><a href="/services.html">SERVICES</a></li>
-                    <li><a href="/contact.html">CONTACT</a></li>
-                </ul>
-            </nav>
-            <p class="contact-email">thedethofromantic@outlook.com</p>
-        </div>
-    </header>
-    <section class="hero">
-        <div class="hero-content">
-            <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
-            <a href="/services.html" class="btn">View Services</a>
-        </div>
-    </section>
-    <section class="about">
-        <div class="container">
-            <h2>Expert essay correction</h2>
-            <p>Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
-            <a href="/upload.html" class="btn">Upload your essay</a>
-        </div>
-    </section>
-    <section class="services">
-        <div class="service-container">
-            <div class="service-item">
-                <h3>Detailed essay evaluation</h3>
-                <img src="images/detailed_evaluation.jpg" alt="Detailed essay evaluation">
-                <p>Get in-depth feedback on your essay.</p>
-                <a href="/services.html" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <h3>Grammar correction</h3>
-                <img src="images/grammar_correction.jpg" alt="Grammar correction">
-                <p>Improve your grammar skills.</p>
-                <a href="/services.html" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <h3>Vocabulary enhancement</h3>
-                <img src="images/vocabulary_enhancement.jpg" alt="Vocabulary enhancement">
-                <p>Expand your vocabulary repertoire.</p>
-                <a href="/services.html" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <h3>Coherence assessment</h3>
-                <img src="images/coherence_assessment.jpg" alt="Coherence assessment">
-                <p>Ensure your essay flows smoothly.</p>
-                <a href="/services.html" class="btn">Read more</a>
-            </div>
-            <div class="service-item">
-                <h3>Task response analysis</h3>
-                <img src="images/task_response_analysis.jpg" alt="Task response analysis">
-                <p>Address task requirements effectively.</p>
-                <a href="/services.html" class="btn">Read more</a>
-            </div>
-        </div>
-    </section>
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
-            
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+header {
+    background-color: #fff;
+    border-bottom: 3px solid #007BFF;
+    color: #000;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.contact-email {
+    font-size: 0.9em;
+    color: #007BFF;
+}
+
+/* Hero Section Styles */
+.hero {
+    background: url('images/hero-image.jpg') no-repeat center center/cover;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    z-index: 1;
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin: 0;
+}
+
+.btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* About Section Styles */
+.about {
+    background-color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Services Section Styles */
+.services {
+    background-color: #f9f9f9;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.service-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+.service-item img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.service-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.service-item p {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Upload Section Styles */
+.upload {
+    background-color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.upload h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.upload form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: inline-block;
+    text-align: left;
+}
+
+.upload label {
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.upload input[type="file"] {
+    display: block;
+    margin: 20px 0;
+}
+
+.upload button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.upload button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.footer-container {
+    max-width: 120
