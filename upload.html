@@ -8,32 +8,62 @@
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">ZERO ESSAY</div>
-            <ul>
-                <li><a href="index.html#home">HOME</a></li>
-                <li><a href="index.html#about">ABOUT</a></li>
-                <li><a href="index.html#services">SERVICES</a></li>
-                <li><a href="index.html#contact">CONTACT</a></li>
-            </ul>
-        </nav>
+        <div class="header-container">
+            <h1>Upload Essay</h1>
+            <nav>
+                <ul>
+                    <li><a href="/" class="active">HOME</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
+        </div>
     </header>
+    <section class="upload">
+        <div class="container">
+            <h2>Upload your IELTS essay</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
 
-    <section id="upload" class="content-section">
-        <h2>Upload Your Essay</h2>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="essay">Upload your IELTS essay:</label>
-            <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
-            
-            <label for="text-essay">Or paste your essay here:</label>
-            <textarea id="text-essay" name="text_essay" rows="10"></textarea>
-            
-            <button type="submit">Submit</button>
-        </form>
+                <label for="email">Email address *</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone number *</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+
+                <label for="essay">Upload your IELTS essay:</label>
+                <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
+                
+                <label for="text-essay">Or paste your essay here:</label>
+                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
+                
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </section>
-
     <footer>
-        <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
     </footer>
+
+    <!-- JavaScript for smooth scrolling -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
