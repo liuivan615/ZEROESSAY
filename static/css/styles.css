@@ -80,7 +80,7 @@ header nav ul li a.active::after {
 
 /* Hero Section Styles */
 .hero {
-    background: url('static/images/statics.png') no-repeat center center/cover;
+    background: url('/static/images/statics.png') no-repeat center center/cover;
     height: 500px;
     display: flex;
     justify-content: center;
@@ -200,11 +200,8 @@ header nav ul li a.active::after {
     margin-bottom: 20px;
 }
 
-/* Footer Styles */
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 20px;
+/* Upload Section Styles */
+.upload {
+    background-color: #fff;
+    padding: 50px 20px;
 }
