@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Essay - Zero Essay</title>
+    <title>Upload Essay</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,62 +12,31 @@
             <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="/">HOME</a></li>
-                    <li><a href="/about.html">ABOUT</a></li>
-                    <li><a href="/services.html">SERVICES</a></li>
-                    <li><a href="/contact.html">CONTACT</a></li>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                    <li><a href="services.html">SERVICES</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
                 </ul>
             </nav>
-            <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="contact-email">
+                <a href="mailto:thedeathofromantic@outlook.com">thedeathofromantic@outlook.com</a>
+            </div>
         </div>
     </header>
     <section class="upload">
-        <div class="container">
-            <h2>Upload your IELTS essay</h2>
-            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-                <label for="fileInput">选择文件：</label>
-                <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.txt,.pdf" required>
-                <button type="submit">上传</button>
-            </form>
-            <div id="result"></div>
-        </div>
+        <h2>Upload Your IELTS Essay</h2>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="title">Essay Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="essay">Upload Your Essay:</label>
+            <input type="file" id="essay" name="essay" required>
+            <button type="submit" class="btn">Upload</button>
+        </form>
     </section>
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- JavaScript to display upload status -->
-    <script>
-        const form = document.getElementById('uploadForm');
-        const resultDiv = document.getElementById('result');
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const formData = new FormData(form);
-            const xhr = new XMLHttpRequest();
-
-            xhr.open('POST', form.action, true);
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    resultDiv.innerHTML = '<p>File successfully uploaded.</p>';
-                    resultDiv.classList.add('success');
-                } else {
-                    resultDiv.innerHTML = '<p>File upload failed. Please try again.</p>';
-                    resultDiv.classList.add('error');
-                }
-            };
-
-            xhr.onerror = function() {
-                resultDiv.innerHTML = '<p>File upload failed. Please try again.</p>';
-                resultDiv.classList.add('error');
-            };
-
-            xhr.send(formData);
-        });
-    </script>
 </body>
 </html>
