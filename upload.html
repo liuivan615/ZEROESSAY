@@ -37,5 +37,37 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- JavaScript to display upload status -->
+    <script>
+        const form = document.getElementById('uploadForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', form.action, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    resultDiv.innerHTML = '<p>File successfully uploaded.</p>';
+                    resultDiv.classList.add('success');
+                } else {
+                    resultDiv.innerHTML = '<p>File upload failed. Please try again.</p>';
+                    resultDiv.classList.add('error');
+                }
+            };
+
+            xhr.onerror = function() {
+                resultDiv.innerHTML = '<p>File upload failed. Please try again.</p>';
+                resultDiv.classList.add('error');
+            };
+
+            xhr.send(formData);
+        });
+    </script>
 </body>
 </html>
