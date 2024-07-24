@@ -1,82 +1,54 @@
-body {
-    font-family: Arial, sans-serif;
+body, html {
     margin: 0;
     padding: 0;
-    color: #333;
+    font-family: Arial, sans-serif;
+    color: white;
 }
 
 .container {
     width: 80%;
-    margin: 0 auto;
+    margin: auto;
     padding: 20px 0;
 }
 
 header {
-    background: #fff;
-    border-bottom: 1px solid #ddd;
+    background: #000;
+    color: #fff;
+    padding: 20px 0;
 }
 
-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-nav ul {
+header nav ul {
     list-style: none;
-    margin: 0;
     padding: 0;
-    display: flex;
+    text-align: center;
 }
 
-nav ul li {
-    margin-left: 20px;
+header nav ul li {
+    display: inline;
+    margin-right: 20px;
 }
 
-nav ul li a {
+header nav ul li a {
     text-decoration: none;
-    color: #333;
+    color: #fff;
     font-weight: bold;
 }
 
-.email {
-    color: #007bff;
-    text-decoration: none;
-    margin-left: auto;
+.contact-info {
+    text-align: center;
+    margin-top: 10px;
 }
 
 .hero {
-    background: url('static/images/statics.png') no-repeat center center;
+    background: url('static/images/statics.png') no-repeat center center fixed;
     background-size: cover;
     text-align: center;
-    position: relative;
-    padding: 200px 0;
-    color: #fff;
+    padding: 200px 20px;
 }
 
-.hero .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-.hero .container {
-    position: relative;
-    z-index: 2;
-}
-
-.hero h2 {
-    margin: 0 0 20px 0;
+.hero h1 {
     font-size: 48px;
+    margin-bottom: 20px;
 }
 
 .hero p {
@@ -84,88 +56,46 @@ nav ul li a {
     margin-bottom: 20px;
 }
 
-.hero .btn {
-    background: #007bff;
-    color: #fff;
-    padding: 10px 20px;
+.btn {
+    background-color: #007bff;
     border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
-    font-size: 18px;
 }
 
 .about, .services {
+    background: #f8f9fa;
+    color: black;
     padding: 50px 0;
+}
+
+.about img, .services .service img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.text-content {
+    padding: 20px;
 }
 
 .about h2, .services h2 {
     font-size: 32px;
-    margin-bottom: 20px;
+    color: #333;
 }
 
-.about img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.about p {
-    line-height: 1.6;
+.about p, .services p {
     font-size: 18px;
-}
-
-.services h2 {
-    text-align: center;
-    font-size: 32px;
-}
-
-.services p {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 40px;
-}
-
-.services .container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.services .service {
-    flex: 1 1 calc(50% - 20px);
-    box-sizing: border-box;
-    text-align: center;
-    background: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.services .service img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.services h3 {
-    font-size: 24px;
-    margin-top: 10px;
-}
-
-.services p {
-    font-size: 16px;
-}
-
-.services .btn {
-    background: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
 }
 
 footer {
-    background: #333;
+    background-color: #333;
     color: #fff;
     text-align: center;
     padding: 20px 0;
