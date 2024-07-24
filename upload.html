@@ -146,9 +146,9 @@
     <section class="upload">
         <div class="container">
             <h2>Upload your IELTS essay</h2>
-            <form action="https://formspree.io/f/xgvwopwk" method="post" enctype="multipart/form-data">
+            <form id="upload-form">
                 <label for="essay">Upload your IELTS essay:</label>
-                <input type="file" id="essay" name="essay" accept=".doc, .docx, .pdf, .txt, .jpg, .png" required>
+                <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png" required>
                 <label for="text-essay">Or paste your essay here:</label>
                 <textarea id="text-essay" name="text_essay" rows="10"></textarea>
                 <button type="submit">Submit</button>
@@ -160,5 +160,38 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('essay');
+            const textEssay = document.getElementById('text-essay').value;
+
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            }
+
+            if (textEssay.trim() !== '') {
+                const blob = new Blob([textEssay], { type: 'text/plain' });
+                formData.append('file', blob, 'essay.txt');
+            }
+
+            formData.append('upload_preset', 'anonymous_upload');
+
+            try {
+                const response = await axios.post('https://api.cloudinary.com/v1_1/dk8aeedal/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                alert('Upload successful! URL: ' + response.data.secure_url);
+            } catch (error) {
+                console.error('Error uploading the file', error);
+                alert('Upload failed!');
+            }
+        });
+    </script>
 </body>
 </html>
+
