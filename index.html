@@ -4,95 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="header-container">
+        <div class="container">
             <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="/" class="active">HOME</a></li>
+                    <li><a href="#home">HOME</a></li>
                     <li><a href="#about">ABOUT</a></li>
                     <li><a href="#services">SERVICES</a></li>
                     <li><a href="#contact">CONTACT</a></li>
                 </ul>
             </nav>
-            <p class="contact-email">thedethofromantic@outlook.com</p>
         </div>
     </header>
-    <section class="hero">
-        <div class="hero-content">
+
+    <section id="home" class="hero">
+        <div class="container">
             <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
-            <img src="static/images/about_image.png" alt="About image">
-            <a href="/upload.html" class="btn">View services</a>
+            <img src="static/images/statics.png" alt="雅思作文批改服务">
+            <button class="btn">View services</button>
         </div>
     </section>
-    <section class="about" id="about">
+
+    <section id="about" class="about">
         <div class="container">
             <h2>Expert essay correction</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
-                </div>
-                <div class="about-image">
-                    <img src="static/images/about_image.png" alt="About Image">
-                </div>
-            </div>
-            <a href="#contact" class="btn">Get in touch</a>
+            <img src="static/images/about_image.png" alt="Expert essay correction">
+            <p>Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
+            <button class="btn">Get in touch</button>
         </div>
     </section>
-    <section class="services" id="services">
-        <div class="service-container">
-            <div class="service-item">
-                <h3>Detailed essay evaluation</h3>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="service">
                 <img src="static/images/detailed_evaluation.png" alt="Detailed essay evaluation">
+                <h3>Detailed essay evaluation</h3>
                 <p>Get in-depth feedback on your essay.</p>
-                <a href="/upload.html" class="btn">Upload your essay</a>
+                <button class="btn">Upload your essay</button>
             </div>
-            <div class="service-item">
-                <h3>Grammar correction</h3>
+            <div class="service">
                 <img src="static/images/grammar_correction.png" alt="Grammar correction">
+                <h3>Grammar correction</h3>
                 <p>Improve your grammar skills.</p>
-                <a href="/upload.html" class="btn">Upload your essay</a>
+                <button class="btn">Upload your essay</button>
             </div>
-            <div class="service-item">
-                <h3>Vocabulary enhancement</h3>
+            <div class="service">
                 <img src="static/images/vocabulary_enhancement.png" alt="Vocabulary enhancement">
+                <h3>Vocabulary enhancement</h3>
                 <p>Expand your vocabulary repertoire.</p>
-                <a href="/upload.html" class="btn">Upload your essay</a>
+                <button class="btn">Upload your essay</button>
             </div>
-            <div class="service-item">
-                <h3>Coherence assessment</h3>
+            <div class="service">
                 <img src="static/images/coherence_assessment.png" alt="Coherence assessment">
+                <h3>Coherence assessment</h3>
                 <p>Ensure your essay flows smoothly.</p>
-                <a href="/upload.html" class="btn">Upload your essay</a>
+                <button class="btn">Upload your essay</button>
             </div>
-            <div class="service-item">
-                <h3>Task response analysis</h3>
+            <div class="service">
                 <img src="static/images/task_response_analysis.png" alt="Task response analysis">
+                <h3>Task response analysis</h3>
                 <p>Address task requirements effectively.</p>
-                <a href="/upload.html" class="btn">Upload your essay</a>
+                <button class="btn">Upload your essay</button>
             </div>
         </div>
     </section>
+
     <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        <div class="container">
+            <p>© 2024 Zero Essay. All rights reserved.</p>
+            <p>liuivan615.github.io</p>
         </div>
     </footer>
-
-    <!-- JavaScript for smooth scrolling -->
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
