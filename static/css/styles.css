@@ -17,10 +17,10 @@ body, html {
 /* Header Styles */
 header {
     background-color: #fff;
-    border-bottom: 3px solid #007BFF;
     color: #000;
     padding: 20px 0;
     text-align: center;
+    position: relative;
 }
 
 .header-container {
@@ -80,7 +80,7 @@ header nav ul li a.active::after {
 
 /* Hero Section Styles */
 .hero {
-    background-color: #5a5a5a;
+    background: url('/mnt/data/image.png') no-repeat center center/cover;
     height: 500px;
     display: flex;
     justify-content: center;
@@ -188,6 +188,12 @@ header nav ul li a.active::after {
     font-size: 1.5em;
     margin-bottom: 10px;
 }
+
+.service-item p {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
 
 .service-item p {
     font-size: 1em;
