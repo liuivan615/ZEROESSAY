@@ -47,6 +47,42 @@
             font-size: 1.2em;
             line-height: 1.6;
         }
+        .language-switcher {
+            position: relative;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +99,16 @@
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
         </div>
         <div class="header-bottom-bar"></div>
     </header>
@@ -71,8 +117,8 @@
             <img src="static/images/detailed_evaluation.png" alt="Detailed essay evaluation">
         </div>
         <div class="text-container">
-            <h2>Detailed Essay Evaluation</h2>
-            <p>Get in-depth feedback on your essay that goes beyond surface-level corrections. Our detailed essay evaluation service examines your writing from multiple angles, including content depth, argument strength, and overall cohesiveness. We provide personalized comments and actionable suggestions to help you understand where your essay excels and where it needs improvement. Whether you’re preparing for academic exams or professional writing, our thorough evaluation will guide you towards writing more compelling and effective essays.</p>
+            <h2 id="service-title">Detailed Essay Evaluation</h2>
+            <p id="service-text">Get in-depth feedback on your essay that goes beyond surface-level corrections. Our detailed essay evaluation service examines your writing from multiple angles, including content depth, argument strength, and overall cohesiveness. We provide personalized comments and actionable suggestions to help you understand where your essay excels and where it needs improvement. Whether you’re preparing for academic exams or professional writing, our thorough evaluation will guide you towards writing more compelling and effective essays.</p>
         </div>
     </section>
     <footer>
@@ -80,5 +126,45 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- JavaScript for language switcher -->
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    serviceTitle: 'Detailed Essay Evaluation',
+                    serviceText: 'Get in-depth feedback on your essay that goes beyond surface-level corrections. Our detailed essay evaluation service examines your writing from multiple angles, including content depth, argument strength, and overall cohesiveness. We provide personalized comments and actionable suggestions to help you understand where your essay excels and where it needs improvement. Whether you’re preparing for academic exams or professional writing, our thorough evaluation will guide you towards writing more compelling and effective essays.'
+                },
+                zh: {
+                    serviceTitle: '详细作文评估',
+                    serviceText: '获得深入的作文反馈，超越表面的修改。我们的详细作文评估服务从多个角度审查您的写作，包括内容深度、论点强度和整体连贯性。我们提供个性化的评论和可操作的建议，帮助您了解您的作文的优点和需要改进的地方。无论您是在准备学术考试还是专业写作，我们的全面评估将指导您写出更具吸引力和效果的作文。'
+                },
+                fr: {
+                    serviceTitle: 'Évaluation détaillée de l\'essai',
+                    serviceText: 'Obtenez des commentaires approfondis sur votre essai qui vont au-delà des corrections de surface. Notre service d\'évaluation détaillée de l\'essai examine votre écriture sous plusieurs angles, y compris la profondeur du contenu, la force de l\'argumentation et la cohérence globale. Nous fournissons des commentaires personnalisés et des suggestions concrètes pour vous aider à comprendre où votre essai excelle et où il doit être amélioré. Que vous vous prépariez à des examens académiques ou à une rédaction professionnelle, notre évaluation approfondie vous guidera vers la rédaction d\'essais plus convaincants et efficaces.'
+                },
+                de: {
+                    serviceTitle: 'Detaillierte Aufsatzbewertung',
+                    serviceText: 'Erhalten Sie detailliertes Feedback zu Ihrem Aufsatz, das über oberflächliche Korrekturen hinausgeht. Unser detaillierter Aufsatzbewertungsdienst untersucht Ihr Schreiben aus verschiedenen Blickwinkeln, einschließlich Inhaltstiefe, Argumentationsstärke und Gesamtkohärenz. Wir bieten personalisierte Kommentare und umsetzbare Vorschläge, die Ihnen helfen zu verstehen, wo Ihr Aufsatz glänzt und wo Verbesserungen erforderlich sind. Egal, ob Sie sich auf akademische Prüfungen oder professionelles Schreiben vorbereiten, unsere gründliche Bewertung wird Ihnen helfen, überzeugendere und effektivere Aufsätze zu schreiben.'
+                },
+                jp: {
+                    serviceTitle: '詳細な作文評価',
+                    serviceText: '表面的な修正を超えた、詳細なフィードバックを得ることができます。私たちの詳細な作文評価サービスは、内容の深さ、論点の強さ、全体の一貫性など、さまざまな角度からあなたの作文を検討します。個別のコメントと実行可能な提案を提供し、あなたの作文がどこで優れているのか、どこを改善する必要があるのかを理解するのに役立ちます。学術試験の準備や専門的なライティングのために、私たちの徹底的な評価は、より魅力的で効果的な作文を書くためのガイドとなります。'
+                }
+            };
+
+            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
+            document.getElementById('service-text').textContent = texts[lang].serviceText;
+        }
+    </script>
 </body>
 </html>
