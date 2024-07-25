@@ -193,9 +193,3 @@ header nav ul li a.active::after {
     font-size: 1em;
     margin-bottom: 20px;
 }
-
-
-.service-item p {
-    font-size: 1em;
-    margin-bottom: 20px;
-}
