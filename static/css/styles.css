@@ -81,7 +81,7 @@ header nav ul li a.active::after {
 }
 
 /* Hero Section Styles */
-.hero {
+.hero-section {
     position: relative;
     height: 500px;
     display: flex;
@@ -91,16 +91,14 @@ header nav ul li a.active::after {
     overflow: hidden;
 }
 
-.hero::before {
-    content: "";
-    background: url('/mnt/data/image.png') no-repeat center center/cover;
+.hero-section img {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 1;
-    opacity: 0.5; /* 调整背景图透明度 */
 }
 
 .hero-content {
@@ -204,7 +202,6 @@ header nav ul li a.active::after {
     margin-bottom: 20px;
 }
 
-.service-item p {
     font-size: 1em;
     margin-bottom: 20px;
 }
