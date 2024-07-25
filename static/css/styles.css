@@ -6,6 +6,7 @@ body, html {
     background-color: #f4f4f4;
     color: #333;
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 .container {
@@ -21,6 +22,7 @@ header {
     padding: 20px 0;
     text-align: center;
     position: relative;
+    z-index: 3;
 }
 
 .header-container {
@@ -80,23 +82,31 @@ header nav ul li a.active::after {
 
 /* Hero Section Styles */
 .hero {
-    background: url('/mnt/data/image.png') no-repeat center center/cover;
+    position: relative;
     height: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #fff;
-    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    background: url('/mnt/data/image.png') no-repeat center center/cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0.5; /* 调整背景图透明度 */
 }
 
 .hero-content {
-    z-index: 1;
-}
-
-.hero h2 {
-    font-size: 3em;
-    margin: 0;
+    position: relative;
+    z-index: 2;
+    color: #fff;
 }
 
 .btn {
@@ -187,6 +197,11 @@ header nav ul li a.active::after {
 .service-item h3 {
     font-size: 1.5em;
     margin-bottom: 10px;
+}
+
+.service-item p {
+    font-size: 1em;
+    margin-bottom: 20px;
 }
 
 .service-item p {
