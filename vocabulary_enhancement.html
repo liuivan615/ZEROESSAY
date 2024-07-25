@@ -47,6 +47,42 @@
             font-size: 1.2em;
             line-height: 1.6;
         }
+        .language-switcher {
+            position: relative;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +99,16 @@
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
         </div>
         <div class="header-bottom-bar"></div>
     </header>
@@ -71,9 +117,54 @@
             <img src="static/images/vocabulary_enhancement.png" alt="Vocabulary enhancement">
         </div>
         <div class="text-container">
-            <h2>Vocabulary Enhancement</h2>
-            <p>Expand your vocabulary repertoire to make your essays more dynamic and persuasive. Our vocabulary enhancement service introduces you to a broader range of words and phrases, helping you avoid repetition and convey your ideas with greater precision and impact. We provide contextual examples and usage tips, so you can seamlessly integrate new vocabulary into your writing. Enhance your language skills and impress your readers with a more varied and sophisticated lexicon.</p>
+            <h2 id="service-title">Vocabulary Enhancement</h2>
+            <p id="service-text">Expand your vocabulary repertoire to make your essays more dynamic and persuasive. Our vocabulary enhancement service introduces you to a broader range of words and phrases, helping you avoid repetition and convey your ideas with greater precision and impact. We provide contextual examples and usage tips, so you can seamlessly integrate new vocabulary into your writing. Enhance your language skills and impress your readers with a more varied and sophisticated lexicon.</p>
         </div>
     </section>
     <footer>
-        <div class="
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for language switcher -->
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    serviceTitle: 'Vocabulary Enhancement',
+                    serviceText: 'Expand your vocabulary repertoire to make your essays more dynamic and persuasive. Our vocabulary enhancement service introduces you to a broader range of words and phrases, helping you avoid repetition and convey your ideas with greater precision and impact. We provide contextual examples and usage tips, so you can seamlessly integrate new vocabulary into your writing. Enhance your language skills and impress your readers with a more varied and sophisticated lexicon.'
+                },
+                zh: {
+                    serviceTitle: '词汇增强',
+                    serviceText: '扩展你的词汇量，使你的文章更具活力和说服力。我们的词汇增强服务为您介绍更广泛的单词和短语，帮助您避免重复，更精确地传达您的想法。我们提供上下文示例和使用技巧，让您可以无缝地将新词汇融入到您的写作中。提升您的语言技能，用更丰富和复杂的词汇给读者留下深刻印象。'
+                },
+                fr: {
+                    serviceTitle: 'Amélioration du vocabulaire',
+                    serviceText: 'Élargissez votre répertoire de vocabulaire pour rendre vos essais plus dynamiques et persuasifs. Notre service d\'amélioration du vocabulaire vous présente une gamme plus large de mots et d\'expressions, vous aidant à éviter les répétitions et à exprimer vos idées avec plus de précision et d\'impact. Nous fournissons des exemples contextuels et des conseils d\'utilisation, afin que vous puissiez intégrer de nouveaux mots de manière transparente dans votre écriture. Améliorez vos compétences linguistiques et impressionnez vos lecteurs avec un vocabulaire plus varié et sophistiqué.'
+                },
+                de: {
+                    serviceTitle: 'Wortschatzverbesserung',
+                    serviceText: 'Erweitern Sie Ihr Wortschatzrepertoire, um Ihre Aufsätze dynamischer und überzeugender zu gestalten. Unser Wortschatzverbesserungsdienst stellt Ihnen eine breitere Palette von Wörtern und Phrasen vor, damit Sie Wiederholungen vermeiden und Ihre Ideen präziser und wirkungsvoller vermitteln können. Wir bieten kontextbezogene Beispiele und Nutzungstipps, damit Sie neue Wörter nahtlos in Ihr Schreiben integrieren können. Verbessern Sie Ihre Sprachkenntnisse und beeindrucken Sie Ihre Leser mit einem abwechslungsreicheren und anspruchsvolleren Wortschatz.'
+                },
+                jp: {
+                    serviceTitle: '語彙の強化',
+                    serviceText: 'エッセイをよりダイナミックで説得力のあるものにするために、語彙のレパートリーを拡大します。私たちの語彙強化サービスは、幅広い単語やフレーズを紹介し、繰り返しを避け、より正確かつ効果的にアイデアを伝えるのに役立ちます。文脈に基づいた例と使用法のヒントを提供し、新しい語彙をスムーズに執筆に取り入れることができます。言語スキルを向上させ、より多様で洗練された語彙で読者を感動させましょう。'
+                }
+            };
+
+            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
+            document.getElementById('service-text').textContent = texts[lang].serviceText;
+        }
+    </script>
+</body>
+</html>
