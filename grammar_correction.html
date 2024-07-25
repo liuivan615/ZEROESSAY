@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Correction - Zero Essay</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .image-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .text-container {
+            flex: 2;
+            padding: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 8px;
+        }
+        .text-container h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .text-container p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .language-switcher {
+            position: relative;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top-bar"></div>
+        <div class="header-container">
+            <h1>ZERO ESSAY</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom-bar"></div>
+    </header>
+    <section class="container">
+        <div class="image-container">
+            <img src="static/images/grammar_correction.png" alt="Grammar correction">
+        </div>
+        <div class="text-container">
+            <h2 id="service-title">Grammar Correction</h2>
+            <p id="service-text">Improve your grammar skills with our expert correction service. Grammar errors can undermine the clarity and professionalism of your writing. We meticulously review your essay for grammatical mistakes, including tense consistency, subject-verb agreement, punctuation, and sentence structure. By correcting these errors, we help you express your ideas more clearly and confidently. Our service not only fixes errors but also explains the rules behind them, empowering you to avoid similar mistakes in the future.</p>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for language switcher -->
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    serviceTitle: 'Grammar Correction',
+                    serviceText: 'Improve your grammar skills with our expert correction service. Grammar errors can undermine the clarity and professionalism of your writing. We meticulously review your essay for grammatical mistakes, including tense consistency, subject-verb agreement, punctuation, and sentence structure. By correcting these errors, we help you express your ideas more clearly and confidently. Our service not only fixes errors but also explains the rules behind them, empowering you to avoid similar mistakes in the future.'
+                },
+                zh: {
+                    serviceTitle: '语法纠正',
+                    serviceText: '通过我们的专家纠正服务，提高您的语法技能。语法错误会破坏您写作的清晰度和专业性。我们仔细审查您的作文是否存在语法错误，包括时态一致性、主谓一致、标点符号和句子结构。通过纠正这些错误，我们帮助您更清晰、自信地表达您的想法。我们的服务不仅修正错误，还解释其背后的规则，使您能够避免将来出现类似的错误。'
+                },
+                fr: {
+                    serviceTitle: 'Correction grammaticale',
+                    serviceText: 'Améliorez vos compétences en grammaire grâce à notre service de correction expert. Les erreurs grammaticales peuvent nuire à la clarté et au professionnalisme de votre écriture. Nous examinons minutieusement votre essai pour détecter les erreurs grammaticales, y compris la cohérence des temps, l\'accord sujet-verbe, la ponctuation et la structure des phrases. En corrigeant ces erreurs, nous vous aidons à exprimer vos idées de manière plus claire et plus confiante. Notre service ne se contente pas de corriger les erreurs, mais explique également les règles qui les sous-tendent, vous permettant ainsi d\'éviter des erreurs similaires à l\'avenir.'
+                },
+                de: {
+                    serviceTitle: 'Grammatik-Korrektur',
+                    serviceText: 'Verbessern Sie Ihre Grammatikkenntnisse mit unserem Expertenkorrekturdienst. Grammatikfehler können die Klarheit und Professionalität Ihres Schreibens beeinträchtigen. Wir überprüfen Ihren Aufsatz sorgfältig auf grammatikalische Fehler, einschließlich Zeitkonsistenz, Subjekt-Verb-Übereinstimmung, Interpunktion und Satzstruktur. Durch die Korrektur dieser Fehler helfen wir Ihnen, Ihre Ideen klarer und selbstbewusster auszudrücken. Unser Service behebt nicht nur Fehler, sondern erklärt auch die dahinter stehenden Regeln, damit Sie ähnliche Fehler in Zukunft vermeiden können.'
+                },
+                jp: {
+                    serviceTitle: '文法修正',
+                    serviceText: '私たちの専門的な修正サービスで文法スキルを向上させましょう。文法の誤りは、文章の明確さと専門性を損なう可能性があります。私たちは、時制の一貫性、主語と動詞の一致、句読点、文の構造など、文法の誤りを徹底的にチェックします。これらの誤りを修正することで、あなたが自分の考えをより明確に、自信を持って表現できるようにします。私たちのサービスは、エラーを修正するだけでなく、その背後にあるルールも説明し、将来的に同様の誤りを避けることができるようにします。'
+                }
+            };
+
+            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
+            document.getElementById('service-text').textContent = texts[lang].serviceText;
+        }
+    </script>
+</body>
+</html>
