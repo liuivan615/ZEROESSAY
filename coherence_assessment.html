@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocabulary Enhancement - Zero Essay</title>
+    <title>Coherence Assessment - Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -47,6 +47,42 @@
             font-size: 1.2em;
             line-height: 1.6;
         }
+        .language-switcher {
+            position: relative;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
@@ -63,17 +99,72 @@
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
         </div>
         <div class="header-bottom-bar"></div>
     </header>
     <section class="container">
         <div class="image-container">
-            <img src="static/images/vocabulary_enhancement.png" alt="Vocabulary enhancement">
+            <img src="static/images/coherence_assessment.png" alt="Coherence assessment">
         </div>
         <div class="text-container">
-            <h2>Vocabulary Enhancement</h2>
-            <p>Expand your vocabulary repertoire to make your essays more dynamic and persuasive. Our vocabulary enhancement service introduces you to a broader range of words and phrases, helping you avoid repetition and convey your ideas with greater precision and impact. We provide contextual examples and usage tips, so you can seamlessly integrate new vocabulary into your writing. Enhance your language skills and impress your readers with a more varied and sophisticated lexicon.</p>
+            <h2 id="service-title">Coherence Assessment</h2>
+            <p id="service-text">Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.</p>
         </div>
     </section>
     <footer>
-        <div class="
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for language switcher -->
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    serviceTitle: 'Coherence Assessment',
+                    serviceText: 'Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.'
+                },
+                zh: {
+                    serviceTitle: '连贯性评估',
+                    serviceText: '通过我们的连贯性评估服务，确保您的作文流畅且逻辑清晰。连贯性是使您的论点易于理解和有说服力的关键。我们评估您的想法的逻辑进展，过渡的有效性以及您的作文的整体组织。我们的反馈帮助您创建一个连贯的结构，使您的读者可以毫不费力地从一个观点过渡到另一个观点。写出不仅能清晰传达信息而且能全程吸引读者的文章。'
+                },
+                fr: {
+                    serviceTitle: 'Évaluation de la cohérence',
+                    serviceText: 'Assurez-vous que votre essai coule de manière fluide et logique avec notre service d\'évaluation de la cohérence. La cohérence est essentielle pour rendre vos arguments compréhensibles et convaincants. Nous évaluons la progression logique de vos idées, l\'efficacité de vos transitions et l\'organisation globale de votre essai. Nos commentaires vous aident à créer une structure cohérente qui guide vos lecteurs sans effort d\'un point à un autre. Écrivez des essais qui non seulement transmettent clairement votre message, mais qui engagent également votre audience tout au long.'
+                },
+                de: {
+                    serviceTitle: 'Kohärenzbewertung',
+                    serviceText: 'Stellen Sie mit unserem Kohärenzbewertungsdienst sicher, dass Ihr Aufsatz reibungslos und logisch fließt. Kohärenz ist der Schlüssel, um Ihre Argumente verständlich und überzeugend zu machen. Wir bewerten den logischen Verlauf Ihrer Ideen, die Wirksamkeit Ihrer Übergänge und die Gesamtorganisation Ihres Aufsatzes. Unser Feedback hilft Ihnen, eine kohärente Struktur zu erstellen, die Ihre Leser mühelos von einem Punkt zum nächsten führt. Schreiben Sie Aufsätze, die nicht nur Ihre Botschaft klar vermitteln, sondern auch Ihre Leser durchgehend fesseln.'
+                },
+                jp: {
+                    serviceTitle: '一貫性の評価',
+                    serviceText: '私たちの一貫性評価サービスを利用して、あなたのエッセイがスムーズで論理的に流れるようにします。一貫性は、あなたの議論を理解しやすく、説得力のあるものにするための鍵です。私たちは、あなたのアイデアの論理的な進行、移行の有効性、そしてエッセイの全体的な組織を評価します。私たちのフィードバックは、読者があるポイントから次のポイントに無理なく移行できるような一貫した構造を作成するのに役立ちます。あなたのメッセージを明確に伝えるだけでなく、読者を通して引き付けるエッセイを書きましょう。'
+                }
+            };
+
+            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
+            document.getElementById('service-text').textContent = texts[lang].serviceText;
+        }
+    </script>
+</body>
+</html>
