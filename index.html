@@ -4,7 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay - Professional IELTS Essay Correction Services</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
+        .hero {
+            position: relative;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            background: url('/mnt/data/image.png') no-repeat center center/cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            opacity: 0.5; /* 调整背景图透明度 */
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <header>
