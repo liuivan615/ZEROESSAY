@@ -215,3 +215,52 @@ header nav ul li a.active::after {
     font-size: 1em;
     margin-bottom: 20px;
 }
+
+/* Media Queries for Mobile Devices */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+    }
+
+    .header-container nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-container nav ul li {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .hero {
+        height: 300px;
+        padding: 20px;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .about-content {
+        width: 100%;
+    }
+
+    .about-text {
+        width: 100%;
+    }
+
+    .service-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-item {
+        width: 90%;
+        margin: 10px 0;
+    }
+
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+}
