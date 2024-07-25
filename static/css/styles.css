@@ -80,7 +80,7 @@ header nav ul li a.active::after {
 
 /* Hero Section Styles */
 .hero {
-    background: url('/mnt/data/image.png') no-repeat center center/cover;
+    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
     height: 500px;
     display: flex;
     justify-content: center;
@@ -88,10 +88,32 @@ header nav ul li a.active::after {
     text-align: center;
     color: #fff;
     position: relative;
+    overflow: hidden;
+}
+
+.hero::before, .hero::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.hero::before {
+    top: -75%;
+    left: -75%;
+}
+
+.hero::after {
+    bottom: -75%;
+    right: -75%;
 }
 
 .hero-content {
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero h2 {
