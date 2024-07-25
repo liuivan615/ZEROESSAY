@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay - Professional IELTS Essay Correction Services</title>
-    <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
             margin: 0;
@@ -75,7 +74,7 @@
             font-size: 0.9em;
             color: #007BFF;
         }
-        .hero {
+        .hero-section {
             position: relative;
             height: 500px;
             display: flex;
@@ -84,16 +83,14 @@
             text-align: center;
             overflow: hidden;
         }
-        .hero::before {
-            content: "";
-            background: url('/mnt/data/image.png') no-repeat center center/cover;
+        .hero-section img {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: 1;
-            opacity: 0.5; /* 调整背景图透明度 */
         }
         .hero-content {
             position: relative;
@@ -132,7 +129,8 @@
             <p class="contact-email">thedethofromantic@outlook.com</p>
         </div>
     </header>
-    <section class="hero">
+    <section class="hero-section">
+        <img src="/mnt/data/image.png" alt="Background Image">
         <div class="hero-content">
             <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
             <a href="upload.html" class="btn">View services</a>
