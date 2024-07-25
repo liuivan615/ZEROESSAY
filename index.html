@@ -269,6 +269,20 @@
             color: #333;
             border-top: 1px solid #ccc;
         }
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .language-switcher a {
+            margin-left: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .language-switcher a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -285,81 +299,85 @@
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <a href="#" id="en-link">English</a>
+                <a href="#" id="zh-link">中文</a>
+            </div>
         </div>
         <div class="header-bottom-bar"></div>
     </header>
     <section class="hero">
         <div class="hero-content">
-            <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
-            <a href="upload.html" class="btn">View services</a>
+            <h2 id="hero-text">雅思作文批改服务，全⾯提高写作质量。</h2>
+            <a href="upload.html" class="btn" id="hero-button">View services</a>
         </div>
     </section>
     <section class="about" id="about">
         <div class="container">
-            <h2>Expert essay correction</h2>
+            <h2 id="about-title">Expert essay correction</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
+                    <p id="about-text">Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay's overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.</p>
                 </div>
             </div>
-            <a href="#contact" class="btn">Get in touch</a>
+            <a href="#contact" class="btn" id="contact-button">Get in touch</a>
         </div>
     </section>
     <section class="services" id="services">
         <div class="service-container">
             <div class="service-item">
-                <h3>Detailed Essay Evaluation</h3>
+                <h3 id="service1-title">Detailed Essay Evaluation</h3>
                 <img src="static/images/detailed_evaluation.png" alt="Detailed essay evaluation">
-                <p>Get in-depth feedback on your essay.</p>
-                <a href="detailed_evaluation.html" class="btn">Read more</a>
+                <p id="service1-text">Get in-depth feedback on your essay.</p>
+                <a href="detailed_evaluation.html" class="btn" id="service1-button">Read more</a>
             </div>
             <div class="service-item">
-                <h3>Grammar Correction</h3>
+                <h3 id="service2-title">Grammar Correction</h3>
                 <img src="static/images/grammar_correction.png" alt="Grammar correction">
-                <p>Improve your grammar skills.</p>
-                <a href="grammar_correction.html" class="btn">Read more</a>
+                <p id="service2-text">Improve your grammar skills.</p>
+                <a href="grammar_correction.html" class="btn" id="service2-button">Read more</a>
             </div>
             <div class="service-item">
-                <h3>Vocabulary Enhancement</h3>
+                <h3 id="service3-title">Vocabulary Enhancement</h3>
                 <img src="static/images/vocabulary_enhancement.png" alt="Vocabulary enhancement">
-                <p>Expand your vocabulary repertoire.</p>
-                <a href="vocabulary_enhancement.html" class="btn">Read more</a>
+                <p id="service3-text">Expand your vocabulary repertoire.</p>
+                <a href="vocabulary_enhancement.html" class="btn" id="service3-button">Read more</a>
             </div>
             <div class="service-item">
-                <h3>Coherence Assessment</h3>
+                <h3 id="service4-title">Coherence Assessment</h3>
                 <img src="static/images/coherence_assessment.png" alt="Coherence assessment">
-                <p>Ensure your essay flows smoothly.</p>
-                <a href="coherence_assessment.html" class="btn">Read more</a>
+                <p id="service4-text">Ensure your essay flows smoothly.</p>
+                <a href="coherence_assessment.html" class="btn" id="service4-button">Read more</a>
             </div>
             <div class="service-item">
-                <h3>Task Response Analysis</h3>
+                <h3 id="service5-title">Task Response Analysis</h3>
                 <img src="static/images/task_response_analysis.png" alt="Task response analysis">
-                <p>Address task requirements effectively.</p>
-                <a href="task_response_analysis.html" class="btn">Read more</a>
+                <p id="service5-text">Address task requirements effectively.</p>
+                <a href="task_response_analysis.html" class="btn" id="service5-button">Read more</a>
             </div>
         </div>
     </section>
     <section class="contact" id="contact">
         <div class="container">
-            <h2>Get in touch</h2>
+            <h2 id="contact-title">Get in touch</h2>
             <div class="contact-form-container">
                 <div class="contact-form">
                     <form action="mailto:thedethofromantic@outlook.com" method="post" enctype="text/plain">
-                        <label for="name">Name:</label>
+                        <label for="name" id="form-name-label">Name:</label>
                         <input type="text" id="name" name="name" required>
-                        <label for="email">Email address:</label>
+                        <label for="email" id="form-email-label">Email address:</label>
                         <input type="email" id="email" name="email" required>
-                        <label for="phone">Phone number:</label>
+                        <label for="phone" id="form-phone-label">Phone number:</label>
                         <input type="tel" id="phone" name="phone" required>
-                        <label for="message">Message:</label>
+                        <label for="message" id="form-message-label">Message:</label>
                         <textarea id="message" name="message" rows="5" required></textarea>
-                        <button type="submit">Submit</button>
+                        <button type="submit" id="form-submit-button">Submit</button>
                     </form>
                 </div>
                 <div class="contact-info">
-                    <h3>Contact Information</h3>
-                    <p>Email: <a href="mailto:thedethofromantic@outlook.com">thedethofromantic@outlook.com</a></p>
-                    <div class="hours">
+                    <h3 id="contact-info-title">Contact Information</h3>
+                    <p id="contact-info-email">Email: <a href="mailto:thedethofromantic@outlook.com">thedethofromantic@outlook.com</a></p>
+                    <div class="hours" id="contact-info-hours">
                         <p>Hours</p>
                         <p>Monday: 9:00am - 10:00pm</p>
                         <p>Tuesday: 9:00am - 10:00pm</p>
@@ -389,6 +407,69 @@
                     behavior: 'smooth'
                 });
             });
+        });
+
+        // Language switcher
+        document.getElementById('en-link').addEventListener('click', function() {
+            document.getElementById('hero-text').textContent = 'IELTS Essay Correction Service, Improve Writing Quality.';
+            document.getElementById('hero-button').textContent = 'View services';
+            document.getElementById('about-title').textContent = 'Expert essay correction';
+            document.getElementById('about-text').textContent = 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.';
+            document.getElementById('contact-button').textContent = 'Get in touch';
+            document.getElementById('service1-title').textContent = 'Detailed Essay Evaluation';
+            document.getElementById('service1-text').textContent = 'Get in-depth feedback on your essay.';
+            document.getElementById('service1-button').textContent = 'Read more';
+            document.getElementById('service2-title').textContent = 'Grammar Correction';
+            document.getElementById('service2-text').textContent = 'Improve your grammar skills.';
+            document.getElementById('service2-button').textContent = 'Read more';
+            document.getElementById('service3-title').textContent = 'Vocabulary Enhancement';
+            document.getElementById('service3-text').textContent = 'Expand your vocabulary repertoire.';
+            document.getElementById('service3-button').textContent = 'Read more';
+            document.getElementById('service4-title').textContent = 'Coherence Assessment';
+            document.getElementById('service4-text').textContent = 'Ensure your essay flows smoothly.';
+            document.getElementById('service4-button').textContent = 'Read more';
+            document.getElementById('service5-title').textContent = 'Task Response Analysis';
+            document.getElementById('service5-text').textContent = 'Address task requirements effectively.';
+            document.getElementById('service5-button').textContent = 'Read more';
+            document.getElementById('contact-title').textContent = 'Get in touch';
+            document.getElementById('form-name-label').textContent = 'Name:';
+            document.getElementById('form-email-label').textContent = 'Email address:';
+            document.getElementById('form-phone-label').textContent = 'Phone number:';
+            document.getElementById('form-message-label').textContent = 'Message:';
+            document.getElementById('form-submit-button').textContent = 'Submit';
+            document.getElementById('contact-info-title').textContent = 'Contact Information';
+            document.getElementById('contact-info-email').textContent = 'Email: ';
+        });
+
+        document.getElementById('zh-link').addEventListener('click', function() {
+            document.getElementById('hero-text').textContent = '雅思作文批改服务，全⾯提高写作质量。';
+            document.getElementById('hero-button').textContent = '查看服务';
+            document.getElementById('about-title').textContent = '专家作文批改';
+            document.getElementById('about-text').textContent = '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。';
+            document.getElementById('contact-button').textContent = '联系我们';
+            document.getElementById('service1-title').textContent = '详细作文评估';
+            document.getElementById('service1-text').textContent = '获得深入的作文反馈。';
+            document.getElementById('service1-button').textContent = '了解更多';
+            document.getElementById('service2-title').textContent = '语法纠正';
+            document.getElementById('service2-text').textContent = '提高你的语法技能。';
+            document.getElementById('service2-button').textContent = '了解更多';
+            document.getElementById('service3-title').textContent = '词汇增强';
+            document.getElementById('service3-text').textContent = '扩展你的词汇量。';
+            document.getElementById('service3-button').textContent = '了解更多';
+            document.getElementById('service4-title').textContent = '连贯性评估';
+            document.getElementById('service4-text').textContent = '确保你的作文连贯流畅。';
+            document.getElementById('service4-button').textContent = '了解更多';
+            document.getElementById('service5-title').textContent = '任务回应分析';
+            document.getElementById('service5-text').textContent = '有效回应任务要求。';
+            document.getElementById('service5-button').textContent = '了解更多';
+            document.getElementById('contact-title').textContent = '联系我们';
+            document.getElementById('form-name-label').textContent = '姓名：';
+            document.getElementById('form-email-label').textContent = '电子邮件地址：';
+            document.getElementById('form-phone-label').textContent = '电话号码：';
+            document.getElementById('form-message-label').textContent = '留言：';
+            document.getElementById('form-submit-button').textContent = '提交';
+            document.getElementById('contact-info-title').textContent = '联系信息';
+            document.getElementById('contact-info-email').textContent = '电子邮件：';
         });
     </script>
 </body>
