@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Zero Essay</title>
+    <title>Login - Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -167,6 +167,10 @@
             color: #333;
             border-top: 1px solid #ccc;
         }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -180,8 +184,8 @@
                     <li><a href="index.html#about">ABOUT</a></li>
                     <li><a href="index.html#services">SERVICES</a></li>
                     <li><a href="index.html#contact">CONTACT</a></li>
-                    <li><a href="login.html">LOGIN</a></li>
-                    <li><a href="register.html" class="active">REGISTER</a></li>
+                    <li><a href="login.html" class="active">LOGIN</a></li>
+                    <li><a href="register.html">REGISTER</a></li>
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
@@ -190,19 +194,20 @@
     </header>
     <section class="hero">
         <div class="hero-content">
-            <h2>Register</h2>
+            <h2>Login</h2>
         </div>
     </section>
     <section class="content">
         <div class="container">
-            <h2>Create an Account</h2>
-            <form id="register-form">
-                <label for="register-username">Username:</label>
-                <input type="text" id="register-username" name="username" required>
-                <label for="register-password">Password:</label>
-                <input type="password" id="register-password" name="password" required>
-                <button type="submit">Register</button>
+            <h2>Login to Your Account</h2>
+            <form id="login-form">
+                <label for="login-username">Username:</label>
+                <input type="text" id="login-username" name="username" required>
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" name="password" required>
+                <button type="submit">Login</button>
             </form>
+            <p class="error-message" id="error-message"></p>
         </div>
     </section>
     <footer>
@@ -211,44 +216,51 @@
         </div>
     </footer>
     <script>
-        document.getElementById('register-form').addEventListener('submit', function(event) {
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const username = document.getElementById('register-username').value;
-            const password = document.getElementById('register-password').value;
-            registerUser(username, password);
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                const response = await loginUser(username, password);
+                if (response.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.textContent = 'Invalid username or password. Please try again.';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Error logging in. Please try again.';
+            }
         });
 
-        function registerUser(username, password) {
-            if (username.length < 5 || password.length < 5) {
-                alert('Username and password must be at least 5 characters long.');
-                return;
-            }
+        async function loginUser(username, password) {
+            const apiKey = '171272812288197';
+            const apiSecret = 'HEX6ayHSRPpjai6vC8oghdDFUEY';
+            const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dk8aeedal/resources/image`;
 
-            const user = {
-                username: username,
-                password: password,
-                points: 1
-            };
-
-            fetch(`https://api.cloudinary.com/v1_1/dk8aeedal/raw/upload`, {
-                method: 'POST',
+            const response = await fetch(cloudinaryUrl, {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    file: `data:application/json;base64,${btoa(JSON.stringify(user))}`,
-                    upload_preset: 'your_upload_preset' // 替换为你的上传预设
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Registration successful!');
-                window.location.href = 'login.html';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error registering. Please try again.');
+                    'Authorization': 'Basic ' + btoa(`${apiKey}:${apiSecret}`)
+                }
             });
+
+            if (response.ok) {
+                const result = await response.json();
+                const userData = result.resources.find(user => {
+                    const userInfo = JSON.parse(user.context.custom.caption);
+                    return userInfo.username === username && userInfo.password === password;
+                });
+
+                if (userData) {
+                    return { success: true, points: userInfo.points };
+                } else {
+                    return { success: false };
+                }
+            } else {
+                throw new Error('Failed to login user.');
+            }
         }
     </script>
 </body>
