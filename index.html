@@ -305,51 +305,16 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .login-form {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .login-form label {
-            display: block;
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
-        .login-form input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .login-form button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .login-form button:hover {
-            background-color: #0056b3;
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .service-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .service-item {
+                width: 90%;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
@@ -378,6 +343,7 @@
                 </div>
             </div>
         </div>
+        <div class="header-bottom-bar"></div>
     </header>
     <section class="hero" id="home">
         <div class="hero-content">
@@ -464,29 +430,21 @@
             </div>
         </div>
     </section>
-    <section class="login-container" id="login">
-        <div class="login-form">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    </section>
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- JavaScript for smooth scrolling, language switcher, and login functionality -->
+    <!-- JavaScript for smooth scrolling and language switcher -->
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
         }
 
         function changeLanguage(lang) {
@@ -733,74 +691,44 @@
             });
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+        // User registration and login
+        const users = [];
 
-            const user = storedUsers.find(user => user.username === username && user.password === password);
+        function registerUser(username, password) {
+            if (users.find(user => user.username === username)) {
+                alert('Username already exists!');
+                return false;
+            }
+            users.push({ username, password });
+            alert('Registration successful!');
+            return true;
+        }
+
+        function loginUser(username, password) {
+            const user = users.find(user => user.username === username && user.password === password);
             if (user) {
                 alert('Login successful!');
-                // Redirect to another page or perform other actions upon successful login
+                return true;
             } else {
-                alert('Invalid username or password');
+                alert('Invalid username or password!');
+                return false;
             }
+        }
+
+        // Example usage:
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            registerUser(username, password);
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            loginUser(username, password);
         });
     </script>
 </body>
 </html>
-<section class="register-container" id="register">
-    <div class="register-form">
-        <h2>Register</h2>
-        <form id="registerForm">
-            <label for="newUsername">Username:</label>
-            <input type="text" id="newUsername" name="newUsername" required>
-            <label for="newPassword">Password:</label>
-            <input type="password" id="newPassword" name="newPassword" required>
-            <button type="submit">Register</button>
-        </form>
-    </div>
-</section>
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const newUsername = document.getElementById('newUsername').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-    const userExists = storedUsers.some(user => user.username === newUsername);
-    if (userExists) {
-        alert('Username already exists. Please choose another one.');
-    } else {
-        storedUsers.push({ username: newUsername, password: newPassword });
-        localStorage.setItem('users', JSON.stringify(storedUsers));
-        alert('Registration successful!');
-    }
-});
-<header>
-    <div class="header-top-bar"></div>
-    <div class="header-container">
-        <h1>ZERO ESSAY</h1>
-        <nav>
-            <ul>
-                <li><a href="#home" class="active">HOME</a></li>
-                <li><a href="#about">ABOUT</a></li>
-                <li><a href="#services">SERVICES</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-                <li><a href="#login">LOGIN</a></li>
-                <li><a href="#register">REGISTER</a></li>
-            </ul>
-        </nav>
-        <p class="contact-email">thedethofromantic@outlook.com</p>
-        <div class="language-switcher">
-            <button onclick="toggleLanguageOptions()">Language</button>
-            <div class="language-options" id="language-options">
-                <a onclick="changeLanguage('en')">English</a>
-                <a onclick="changeLanguage('zh')">中文</a>
-                <a onclick="changeLanguage('fr')">Français</a>
-                <a onclick="changeLanguage('de')">Deutsch</a>
-                <a onclick="changeLanguage('jp')">日本語</a>
-            </div>
-        </div>
-    </div>
-</header>
