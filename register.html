@@ -167,6 +167,10 @@
             color: #333;
             border-top: 1px solid #ccc;
         }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -203,7 +207,7 @@
                 <input type="password" id="register-password" name="password" required>
                 <button type="submit">Register</button>
             </form>
-            <p id="error-message" style="color: red;"></p>
+            <p class="error-message" id="error-message"></p>
         </div>
     </section>
     <footer>
@@ -212,49 +216,50 @@
         </div>
     </footer>
     <script>
-        document.getElementById('register-form').addEventListener('submit', function(event) {
+        document.getElementById('register-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
-            registerUser(username, password);
-        });
-
-        function registerUser(username, password) {
             const errorMessage = document.getElementById('error-message');
+            
             if (username.length < 5 || password.length < 5) {
-                errorMessage.textContent = 'Username and password must be at least 5 characters long.';
+                errorMessage.textContent = 'Username or password is too short.';
                 return;
             }
-
-            const user = {
-                username: username,
-                password: password,
-                points: 1
-            };
-
-            fetch(`https://api.cloudinary.com/v1_1/dk8aeedal/raw/upload`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    file: `data:application/json;base64,${btoa(JSON.stringify(user))}`,
-                    upload_preset: 'your_upload_preset' // 替换为你的上传预设
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    errorMessage.textContent = 'Error registering. Please try again.';
-                } else {
-                    alert('Registration successful!');
+            
+            try {
+                const response = await registerUser(username, password);
+                if (response.success) {
                     window.location.href = 'login.html';
+                } else {
+                    errorMessage.textContent = 'Error registering. Please try again.';
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            } catch (error) {
                 errorMessage.textContent = 'Error registering. Please try again.';
+            }
+        });
+
+        async function registerUser(username, password) {
+            const apiKey = '171272812288197';
+            const apiSecret = 'HEX6ayHSRPpjai6vC8oghdDFUEY';
+            const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dk8aeedal/auto/upload`;
+            
+            const data = new FormData();
+            data.append('file', JSON.stringify({username, password, points: 1}));
+            data.append('upload_preset', 'your_upload_preset');
+            data.append('api_key', apiKey);
+            data.append('timestamp', Math.floor(Date.now() / 1000));
+
+            const response = await fetch(cloudinaryUrl, {
+                method: 'POST',
+                body: data
             });
+            
+            if (response.ok) {
+                return await response.json();
+            } else {
+                throw new Error('Failed to register user.');
+            }
         }
     </script>
 </body>
