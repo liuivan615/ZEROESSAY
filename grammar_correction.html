@@ -126,6 +126,36 @@
             line-height: 1.6;
             margin-bottom: 30px;
         }
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .language-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .language-options a:hover {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
@@ -197,7 +227,24 @@
                     contentText: '通过我们的专家纠正服务，提高您的语法技能。语法错误会削弱您的写作的清晰度和专业性。我们仔细审查您的作文中的语法错误，包括时态一致性、主谓一致、标点符号和句子结构。通过纠正这些错误，我们帮助您更清楚地、自信地表达您的想法。',
                     contactButton: '联系我们'
                 },
-                // Add other languages here...
+                fr: {
+                    heroText: 'Correction Grammaticale',
+                    contentTitle: 'Service de Correction Grammaticale',
+                    contentText: 'Améliorez vos compétences grammaticales avec notre service de correction expert. Les erreurs grammaticales peuvent nuire à la clarté et au professionnalisme de votre écriture. Nous examinons minutieusement votre essai pour les erreurs grammaticales, y compris la cohérence des temps, l\'accord sujet-verbe, la ponctuation et la structure des phrases. En corrigeant ces erreurs, nous vous aidons à exprimer vos idées plus clairement et avec plus de confiance.',
+                    contactButton: 'Contactez-nous'
+                },
+                de: {
+                    heroText: 'Grammatik Korrektur',
+                    contentTitle: 'Grammatik Korrektur Service',
+                    contentText: 'Verbessern Sie Ihre Grammatikkenntnisse mit unserem Expert-Korrekturservice. Grammatikfehler können die Klarheit und Professionalität Ihres Schreibens beeinträchtigen. Wir überprüfen Ihr Essay sorgfältig auf grammatikalische Fehler, einschließlich Zeitkonsistenz, Subjekt-Verb-Übereinstimmung, Interpunktion und Satzstruktur. Durch die Korrektur dieser Fehler helfen wir Ihnen, Ihre Ideen klarer und selbstbewusster auszudrücken.',
+                    contactButton: 'Kontaktieren Sie uns'
+                },
+                jp: {
+                    heroText: '文法訂正',
+                    contentTitle: '文法訂正サービス',
+                    contentText: '私たちの専門的な訂正サービスで文法スキルを向上させましょう。文法の誤りは、あなたの文章の明確さとプロフェッショナリズムを損なうことがあります。時制の一貫性、主語と動詞の一致、句読点、文の構造を含む文法の誤りを注意深くチェックします。これらの誤りを訂正することで、あなたの考えをより明確かつ自信を持って表現できるようにします。',
+                    contactButton: 'お問い合わせ'
+                }
             };
 
             document.querySelector('.hero h2').textContent = texts[lang].heroText;
@@ -208,4 +255,3 @@
     </script>
 </body>
 </html>
-```
