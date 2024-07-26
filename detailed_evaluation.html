@@ -12,6 +12,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            scroll-behavior: smooth;
         }
         .container {
             display: flex;
@@ -24,16 +25,8 @@
             margin: 20px auto;
             max-width: 1200px;
         }
-        .image-container {
-            flex: 1;
-            margin-right: 20px;
-        }
-        .image-container img {
-            width: 100%;
-            border-radius: 8px;
-        }
         .text-container {
-            flex: 2;
+            flex: 1;
             padding: 20px;
             background-color: #007BFF;
             color: #fff;
@@ -83,6 +76,64 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-top-bar {
+            background-color: #007BFF;
+            height: 4px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
@@ -113,9 +164,6 @@
         <div class="header-bottom-bar"></div>
     </header>
     <section class="container">
-        <div class="image-container">
-            <img src="static/images/detailed_evaluation.png" alt="Detailed essay evaluation">
-        </div>
         <div class="text-container">
             <h2 id="service-title">Detailed Essay Evaluation</h2>
             <p id="service-text">Get in-depth feedback on your essay that goes beyond surface-level corrections. Our detailed essay evaluation service examines your writing from multiple angles, including content depth, argument strength, and overall cohesiveness. We provide personalized comments and actionable suggestions to help you understand where your essay excels and where it needs improvement. Whether you’re preparing for academic exams or professional writing, our thorough evaluation will guide you towards writing more compelling and effective essays.</p>
@@ -127,7 +175,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript for language switcher -->
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
