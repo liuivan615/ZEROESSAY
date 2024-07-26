@@ -12,28 +12,17 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            scroll-behavior: smooth;
         }
         .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            width: 80%;
+            margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-        .image-container {
-            flex: 1;
-            margin-right: 20px;
-        }
-        .image-container img {
-            width: 100%;
-            border-radius: 8px;
         }
         .text-container {
-            flex: 2;
             padding: 20px;
             background-color: #007BFF;
             color: #fff;
@@ -83,6 +72,64 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-top-bar {
+            background-color: #007BFF;
+            height: 4px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
@@ -113,9 +160,6 @@
         <div class="header-bottom-bar"></div>
     </header>
     <section class="container">
-        <div class="image-container">
-            <img src="static/images/task_response_analysis.png" alt="Task response analysis">
-        </div>
         <div class="text-container">
             <h2 id="service-title">Task Response Analysis</h2>
             <p id="service-text">Address task requirements effectively with our task response analysis. Meeting the specific demands of an essay prompt is crucial for achieving a high score. We analyze your essay to ensure it fully addresses the prompt, covers all necessary points, and stays on topic throughout. Our detailed feedback highlights any areas where you may have deviated from the task or missed critical points. With our guidance, you can craft well-rounded responses that demonstrate a thorough understanding of the prompt and fulfill all requirements.</p>
