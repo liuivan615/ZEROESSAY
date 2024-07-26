@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Zero Essay</title>
+    <title>Register - Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -180,8 +180,8 @@
                     <li><a href="index.html#about">ABOUT</a></li>
                     <li><a href="index.html#services">SERVICES</a></li>
                     <li><a href="index.html#contact">CONTACT</a></li>
-                    <li><a href="login.html" class="active">LOGIN</a></li>
-                    <li><a href="register.html">REGISTER</a></li>
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html" class="active">REGISTER</a></li>
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
@@ -190,18 +190,18 @@
     </header>
     <section class="hero">
         <div class="hero-content">
-            <h2>Login</h2>
+            <h2>Register</h2>
         </div>
     </section>
     <section class="content">
         <div class="container">
-            <h2>Login to Your Account</h2>
-            <form id="login-form">
-                <label for="login-username">Username:</label>
-                <input type="text" id="login-username" name="username" required>
-                <label for="login-password">Password:</label>
-                <input type="password" id="login-password" name="password" required>
-                <button type="submit">Login</button>
+            <h2>Create an Account</h2>
+            <form id="register-form">
+                <label for="register-username">Username:</label>
+                <input type="text" id="register-username" name="username" required>
+                <label for="register-password">Password:</label>
+                <input type="password" id="register-password" name="password" required>
+                <button type="submit">Register</button>
             </form>
         </div>
     </section>
@@ -211,33 +211,44 @@
         </div>
     </footer>
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
+        document.getElementById('register-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            loginUser(username, password);
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            registerUser(username, password);
         });
 
-        function loginUser(username, password) {
-            const cloudinaryUrl = `https://res.cloudinary.com/dk8aeedal/raw/upload/v1627898760/users.json`;
+        function registerUser(username, password) {
+            if (username.length < 5 || password.length < 5) {
+                alert('Username and password must be at least 5 characters long.');
+                return;
+            }
 
-            fetch(cloudinaryUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const user = data.find(user => user.username === username && user.password === password);
-                    if (user) {
-                        alert('Login successful!');
-                        document.cookie = `username=${username}; path=/`;
-                        document.cookie = `points=${user.points}; path=/`;
-                        window.location.href = 'index.html';
-                    } else {
-                        alert('Invalid username or password.');
-                    }
+            const user = {
+                username: username,
+                password: password,
+                points: 1
+            };
+
+            fetch(`https://api.cloudinary.com/v1_1/dk8aeedal/raw/upload`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    file: `data:application/json;base64,${btoa(JSON.stringify(user))}`,
+                    upload_preset: 'your_upload_preset' // 替换为你的上传预设
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error logging in. Please try again.');
-                });
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Registration successful!');
+                window.location.href = 'login.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error registering. Please try again.');
+            });
         }
     </script>
 </body>
