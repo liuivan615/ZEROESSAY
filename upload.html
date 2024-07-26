@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Essay</title>
+    <title>Upload Essay - Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -63,6 +63,45 @@
         header nav ul li a.active::after {
             width: 100%;
             left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #fff;
+        }
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%;
+            right: 0;
+        }
+        .language-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .language-options a:hover {
+            background-color: #ddd;
         }
         .upload {
             padding: 50px 20px;
@@ -126,17 +165,27 @@
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
         </div>
     </header>
     <section class="upload">
         <div class="container">
-            <h2>Upload your IELTS essay</h2>
+            <h2 id="upload-title">Upload your IELTS essay</h2>
             <form id="upload-form">
-                <label for="essay">Upload your IELTS essay:</label>
+                <label for="essay" id="upload-label">Upload your IELTS essay:</label>
                 <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png" required>
-                <label for="text-essay">Or paste your essay here:</label>
+                <label for="text-essay" id="paste-label">Or paste your essay here:</label>
                 <textarea id="text-essay" name="text_essay" rows="10"></textarea>
-                <button type="submit">Submit</button>
+                <button type="submit" id="submit-button">Submit</button>
             </form>
         </div>
     </section>
@@ -147,6 +196,51 @@
     </footer>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    uploadTitle: 'Upload your IELTS essay',
+                    uploadLabel: 'Upload your IELTS essay:',
+                    pasteLabel: 'Or paste your essay here:',
+                    submitButton: 'Submit'
+                },
+                zh: {
+                    uploadTitle: '上传您的雅思作文',
+                    uploadLabel: '上传您的雅思作文:',
+                    pasteLabel: '或者在这里粘贴您的作文:',
+                    submitButton: '提交'
+                },
+                fr: {
+                    uploadTitle: 'Téléchargez votre essai IELTS',
+                    uploadLabel: 'Téléchargez votre essai IELTS:',
+                    pasteLabel: 'Ou collez votre essai ici:',
+                    submitButton: 'Soumettre'
+                },
+                de: {
+                    uploadTitle: 'Laden Sie Ihr IELTS-Aufsatz hoch',
+                    uploadLabel: 'Laden Sie Ihr IELTS-Aufsatz hoch:',
+                    pasteLabel: 'Oder fügen Sie Ihren Aufsatz hier ein:',
+                    submitButton: 'Einreichen'
+                },
+                jp: {
+                    uploadTitle: 'IELTSエッセイをアップロード',
+                    uploadLabel: 'IELTSエッセイをアップロード:',
+                    pasteLabel: 'または、ここにエッセイを貼り付けます:',
+                    submitButton: '提出する'
+                }
+            };
+
+            document.getElementById('upload-title').textContent = texts[lang].uploadTitle;
+            document.getElementById('upload-label').textContent = texts[lang].uploadLabel;
+            document.getElementById('paste-label').textContent = texts[lang].pasteLabel;
+            document.getElementById('submit-button').textContent = texts[lang].submitButton;
+        }
+
         document.getElementById('upload-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const formData = new FormData();
@@ -170,8 +264,7 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                alert('Upload successful! Redirecting to report...');
-                window.location.href = 'report.html';
+                alert('Upload successful! URL: ' + response.data.secure_url);
             } catch (error) {
                 console.error('Error uploading the file', error);
                 alert('Upload failed!');
