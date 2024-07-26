@@ -12,6 +12,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            scroll-behavior: smooth;
         }
         .container {
             width: 80%;
@@ -20,13 +21,6 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .image-container {
-            margin-bottom: 20px;
-        }
-        .image-container img {
-            width: 100%;
-            border-radius: 8px;
         }
         .text-container {
             padding: 20px;
@@ -78,6 +72,64 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-top-bar {
+            background-color: #007BFF;
+            height: 4px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
@@ -108,9 +160,6 @@
         <div class="header-bottom-bar"></div>
     </header>
     <section class="container">
-        <div class="image-container">
-            <img src="static/images/coherence_assessment.png" alt="Coherence assessment">
-        </div>
         <div class="text-container">
             <h2 id="service-title">Coherence Assessment</h2>
             <p id="service-text">Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.</p>
