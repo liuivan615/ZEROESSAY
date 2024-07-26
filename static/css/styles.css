@@ -336,3 +336,29 @@ header nav ul li a.active::after {
         margin: 0 auto;
     }
 }
+
+/* Additional Styles for Desktop */
+@media (min-width: 769px) {
+    .container {
+        max-width: 900px;
+    }
+
+    .image-container, .text-container {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .image-container {
+        width: 45%;
+    }
+
+    .text-container {
+        width: 45%;
+        margin-left: 5%;
+        text-align: left;
+    }
+
+    footer {
+        margin-top: 50px;
+    }
+}
