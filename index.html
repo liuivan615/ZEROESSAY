@@ -287,13 +287,16 @@
         .language-options {
             display: none;
             position: absolute;
-            top: 100%;
+            top: 40px; /* 调整位置，确保不被遮挡 */
             right: 0;
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             z-index: 1;
+        }
+        .language-options.show {
+            display: block;
         }
         .language-options a {
             display: block;
@@ -304,6 +307,70 @@
         }
         .language-options a:hover {
             background-color: #f4f4f4;
+        }
+        @media only screen and (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header-container nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header-container nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .hero {
+                height: auto;
+                padding: 50px 20px;
+            }
+            .hero h2 {
+                font-size: 2em;
+            }
+            .about-content, .service-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .service-item {
+                width: 100%;
+                max-width: 400px;
+            }
+            .image-container, .text-container {
+                flex: 1;
+                width: 100%;
+                margin: 0;
+            }
+            .text-container {
+                text-align: center;
+                padding: 10px;
+            }
+            .text-container h2 {
+                font-size: 1.5em;
+            }
+            .text-container p {
+                font-size: 1em;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .image-container img {
+                width: 100%;
+                height: auto;
+            }
+            .text-container {
+                width: 100%;
+                background-color: #007BFF;
+                color: #fff;
+                border-radius: 8px;
+                padding: 20px;
+            }
+            .language-switcher {
+                position: relative;
+                z-index: 1000;
+            }
         }
     </style>
 </head>
@@ -573,112 +640,113 @@
                     service3Title: 'Wortschatzverbesserung',
                     service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
                     service3Button: 'Mehr erfahren',
-                    service4Title: 'Kohärenzbewertung',
-                    service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
-                    service4Button: 'Mehr erfahren',
-                    service5Title: 'Aufgabenantwort-Analyse',
-                    service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
-                    service5Button: 'Mehr erfahren',
-                    contactTitle: 'Kontaktieren Sie uns',
-                    formNameLabel: 'Name:',
-                    formEmailLabel: 'E-Mail-Adresse:',
-                    formPhoneLabel: 'Telefonnummer:',
-                    formMessageLabel: 'Nachricht:',
-                    formSubmitButton: 'Einreichen',
-                    contactInfoTitle: 'Kontaktinformation',
-                    contactInfoEmail: 'E-Mail: ',
-                    contactInfoHours: 'Öffnungszeiten',
-                    hours: [
-                        'Montag: 9:00 - 22:00 Uhr',
-                        'Dienstag: 9:00 - 22:00 Uhr',
-                        'Mittwoch: 9:00 - 22:00 Uhr',
-                        'Donnerstag: 9:00 - 22:00 Uhr',
-                        'Freitag: 9:00 - 22:00 Uhr',
-                        'Samstag: 9:00 - 18:00 Uhr',
-                        'Sonntag: 9:00 - 12:00 Uhr'
-                    ]
-                },
-                jp: {
-                    heroText: 'IELTS作文の添削サービス、ライティング品質の向上。',
-                    heroButton: 'サービスを見る',
-                    aboutTitle: 'エキスパートによる作文の添削',
-                    aboutText: 'タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。',
-                    contactButton: 'お問い合わせ',
-                    service1Title: '詳細な作文評価',
-                    service1Text: 'エッセイに関する詳細なフィードバックを受け取る。',
-                    service1Button: 'もっと詳しく',
-                    service2Title: '文法修正',
-                    service2Text: '文法スキルを向上させる。',
-                    service2Button: 'もっと詳しく',
-                    service3Title: '語彙の強化',
-                    service3Text: '語彙のレパートリーを拡大する。',
-                    service3Button: 'もっと詳しく',
-                    service4Title: '一貫性の評価',
-                    service4Text: 'エッセイがスムーズに流れるようにする。',
-                    service4Button: 'もっと詳しく',
-                    service5Title: 'タスク応答分析',
-                    service5Text: 'タスクの要求を効果的に満たす。',
-                    service5Button: 'もっと詳しく',
-                    contactTitle: 'お問い合わせ',
-                    formNameLabel: '名前：',
-                    formEmailLabel: 'メールアドレス：',
-                    formPhoneLabel: '電話番号：',
-                    formMessageLabel: 'メッセージ：',
-                    formSubmitButton: '送信',
-                    contactInfoTitle: '連絡先情報',
-                    contactInfoEmail: 'メールアドレス：',
-                    contactInfoHours: '営業時間',
-                    hours: [
-                        '月曜日：9:00〜22:00',
-                        '火曜日：9:00〜22:00',
-                        '水曜日：9:00〜22:00',
-                        '木曜日：9:00〜22:00',
-                        '金曜日：9:00〜22:00',
-                        '土曜日：9:00〜18:00',
-                        '日曜日：9:00〜12:00'
-                    ]
-                }
-            };
+                    service4Text: ‘Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.’,
+service4Button: ‘Mehr erfahren’,
+service5Title: ‘Aufgabenantwort-Analyse’,
+service5Text: ‘Erfüllen Sie die Aufgabenanforderungen effektiv.’,
+service5Button: ‘Mehr erfahren’,
+contactTitle: ‘Kontaktieren Sie uns’,
+formNameLabel: ‘Name:’,
+formEmailLabel: ‘E-Mail-Adresse:’,
+formPhoneLabel: ‘Telefonnummer:’,
+formMessageLabel: ‘Nachricht:’,
+formSubmitButton: ‘Einreichen’,
+contactInfoTitle: ‘Kontaktinformation’,
+contactInfoEmail: ’E-Mail: ’,
+contactInfoHours: ‘Öffnungszeiten’,
+hours: [
+‘Montag: 9:00 - 22:00 Uhr’,
+‘Dienstag: 9:00 - 22:00 Uhr’,
+‘Mittwoch: 9:00 - 22:00 Uhr’,
+‘Donnerstag: 9:00 - 22:00 Uhr’,
+‘Freitag: 9:00 - 22:00 Uhr’,
+‘Samstag: 9:00 - 18:00 Uhr’,
+‘Sonntag: 9:00 - 12:00 Uhr’
+]
+},
+jp: {
+heroText: ‘IELTS作文の添削サービス、ライティング品質の向上。’,
+heroButton: ‘サービスを見る’,
+aboutTitle: ‘エキスパートによる作文の添削’,
+aboutText: ‘タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。’,
+contactButton: ‘お問い合わせ’,
+service1Title: ‘詳細な作文評価’,
+service1Text: ‘エッセイに関する詳細なフィードバックを受け取る。’,
+service1Button: ‘もっと詳しく’,
+service2Title: ‘文法修正’,
+service2Text: ‘文法スキルを向上させる。’,
+service2Button: ‘もっと詳しく’,
+service3Title: ‘語彙の強化’,
+service3Text: ‘語彙のレパートリーを拡大する。’,
+service3Button: ‘もっと詳しく’,
+service4Title: ‘一貫性の評価’,
+service4Text: ‘エッセイがスムーズに流れるようにする。’,
+service4Button: ‘もっと詳しく’,
+service5Title: ‘タスク応答分析’,
+service5Text: ‘タスクの要求を効果的に満たす。’,
+service5Button: ‘もっと詳しく’,
+contactTitle: ‘お問い合わせ’,
+formNameLabel: ‘名前：’,
+formEmailLabel: ‘メールアドレス：’,
+formPhoneLabel: ‘電話番号：’,
+formMessageLabel: ‘メッセージ：’,
+formSubmitButton: ‘送信’,
+contactInfoTitle: ‘連絡先情報’,
+contactInfoEmail: ‘メールアドレス：’,
+contactInfoHours: ‘営業時間’,
+hours: [
+‘月曜日：9:00〜22:00’,
+‘火曜日：9:00〜22:00’,
+‘水曜日：9:00〜22:00’,
+‘木曜日：9:00〜22:00’,
+‘金曜日：9:00〜22:00’,
+‘土曜日：9:00〜18:00’,
+‘日曜日：9:00〜12:00’
+]
+}
+};
 
-            document.getElementById('hero-text').textContent = texts[lang].heroText;
-            document.getElementById('hero-button').textContent = texts[lang].heroButton;
-            document.getElementById('about-title').textContent = texts[lang].aboutTitle;
-            document.getElementById('about-text').textContent = texts[lang].aboutText;
-            document.getElementById('contact-button').textContent = texts[lang].contactButton;
-            document.getElementById('service1-title').textContent = texts[lang].service1Title;
-            document.getElementById('service1-text').textContent = texts[lang].service1Text;
-            document.getElementById('service1-button').textContent = texts[lang].service1Button;
-            document.getElementById('service2-title').textContent = texts[lang].service2Title;
-            document.getElementById('service2-text').textContent = texts[lang].service2Text;
-            document.getElementById('service2-button').textContent = texts[lang].service2Button;
-            document.getElementById('service3-title').textContent = texts[lang].service3Title;
-            document.getElementById('service3-text').textContent = texts[lang].service3Text;
-            document.getElementById('service3-button').textContent = texts[lang].service3Button;
-            document.getElementById('service4-title').textContent = texts[lang].service4Title;
-            document.getElementById('service4-text').textContent = texts[lang].service4Text;
-            document.getElementById('service4-button').textContent = texts[lang].service4Button;
-            document.getElementById('service5-title').textContent = texts[lang].service5Title;
-            document.getElementById('service5-text').textContent = texts[lang].service5Text;
-            document.getElementById('service5-button').textContent = texts[lang].service5Button;
-            document.getElementById('contact-title').textContent = texts[lang].contactTitle;
-            document.getElementById('form-name-label').textContent = texts[lang].formNameLabel;
-            document.getElementById('form-email-label').textContent = texts[lang].formEmailLabel;
-            document.getElementById('form-phone-label').textContent = texts[lang].formPhoneLabel;
-            document.getElementById('form-message-label').textContent = texts[lang].formMessageLabel;
-            document.getElementById('form-submit-button').textContent = texts[lang].formSubmitButton;
-            document.getElementById('contact-info-title').textContent = texts[lang].contactInfoTitle;
-            document.getElementById('contact-info-email').textContent = texts[lang].contactInfoEmail;
-            document.getElementById('contact-info-hours').textContent = texts[lang].contactInfoHours;
-            const hoursList = document.getElementById('contact-info-hours').nextElementSibling;
-            while (hoursList.firstChild) {
-                hoursList.removeChild(hoursList.firstChild);
-            }
-            texts[lang].hours.forEach(hour => {
-                const p = document.createElement('p');
-                p.textContent = hour;
-                hoursList.appendChild(p);
-            });
+        document.getElementById('hero-text').textContent = texts[lang].heroText;
+        document.getElementById('hero-button').textContent = texts[lang].heroButton;
+        document.getElementById('about-title').textContent = texts[lang].aboutTitle;
+        document.getElementById('about-text').textContent = texts[lang].aboutText;
+        document.getElementById('contact-button').textContent = texts[lang].contactButton;
+        document.getElementById('service1-title').textContent = texts[lang].service1Title;
+        document.getElementById('service1-text').textContent = texts[lang].service1Text;
+        document.getElementById('service1-button').textContent = texts[lang].service1Button;
+        document.getElementById('service2-title').textContent = texts[lang].service2Title;
+        document.getElementById('service2-text').textContent = texts[lang].service2Text;
+        document.getElementById('service2-button').textContent = texts[lang].service2Button;
+        document.getElementById('service3-title').textContent = texts[lang].service3Title;
+        document.getElementById('service3-text').textContent = texts[lang].service3Text;
+        document.getElementById('service3-button').textContent = texts[lang].service3Button;
+        document.getElementById('service4-title').textContent = texts[lang].service4Title;
+        document.getElementById('service4-text').textContent = texts[lang].service4Text;
+        document.getElementById('service4-button').textContent = texts[lang].service4Button;
+        document.getElementById('service5-title').textContent = texts[lang].service5Title;
+        document.getElementById('service5-text').textContent = texts[lang].service5Text;
+        document.getElementById('service5-button').textContent = texts[lang].service5Button;
+        document.getElementById('contact-title').textContent = texts[lang].contactTitle;
+        document.getElementById('form-name-label').textContent = texts[lang].formNameLabel;
+        document.getElementById('form-email-label').textContent = texts[lang].formEmailLabel;
+        document.getElementById('form-phone-label').textContent = texts[lang].formPhoneLabel;
+        document.getElementById('form-message-label').textContent = texts[lang].formMessageLabel;
+        document.getElementById('form-submit-button').textContent = texts[lang].formSubmitButton;
+        document.getElementById('contact-info-title').textContent = texts[lang].contactInfoTitle;
+        document.getElementById('contact-info-email').textContent = texts[lang].contactInfoEmail;
+        document.getElementById('contact-info-hours').textContent = texts[lang].contactInfoHours;
+        const hoursList = document.getElementById('contact-info-hours').nextElementSibling;
+        while (hoursList.firstChild) {
+            hoursList.removeChild(hoursList.firstChild);
         }
-    </script>
+        texts[lang].hours.forEach(hour => {
+            const p = document.createElement('p');
+            p.textContent = hour;
+            hoursList.appendChild(p);
+        });
+    }
+</script>
+
 </body>
 </html>
+```
