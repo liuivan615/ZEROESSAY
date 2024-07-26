@@ -61,7 +61,7 @@
                 const users = JSON.parse(fileContent);
                 users.push(data);
 
-                const updatedContent = btoa(JSON.stringify(users));
+                const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(users))));
 
                 return fetch('https://api.github.com/repos/liuivan615/ZEROESSAY/contents/storage/users.json', {
                     method: 'PUT',
