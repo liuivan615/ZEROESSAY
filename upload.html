@@ -14,14 +14,6 @@
             color: #333;
             scroll-behavior: smooth;
         }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
         header {
             background-color: #007BFF;
             color: #fff;
@@ -72,10 +64,6 @@
             width: 100%;
             left: 0;
         }
-        .contact-email {
-            font-size: 0.9em;
-            color: #fff;
-        }
         .upload {
             padding: 50px 20px;
             text-align: center;
@@ -125,42 +113,6 @@
             background-color: #f4f4f4;
             color: #333;
             border-top: 1px solid #ccc;
-        }
-        .language-switcher {
-            position: relative;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 1;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
         }
     </style>
 </head>
@@ -218,63 +170,13 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                alert('Upload successful! URL: ' + response.data.secure_url);
+                alert('Upload successful! Redirecting to report...');
+                window.location.href = 'report.html';
             } catch (error) {
                 console.error('Error uploading the file', error);
                 alert('Upload failed!');
             }
         });
-
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            if (options.style.display === 'block') {
-                options.style.display = 'none';
-            } else {
-                options.style.display = 'block';
-            }
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    uploadTitle: 'Upload your IELTS essay',
-                    uploadLabel: 'Upload your IELTS essay:',
-                    pasteLabel: 'Or paste your essay here:',
-                    submitButton: 'Submit'
-                },
-                zh: {
-                    uploadTitle: '上传您的雅思作文',
-                    uploadLabel: '上传您的雅思作文：',
-                    pasteLabel: '或者在这里粘贴您的作文：',
-                    submitButton: '提交'
-                },
-                fr: {
-                    uploadTitle: 'Téléchargez votre essai IELTS',
-                    uploadLabel: 'Téléchargez votre essai IELTS :',
-                    pasteLabel: 'Ou collez votre essai ici :',
-                    submitButton: 'Soumettre'
-                },
-                de: {
-                    uploadTitle: 'Laden Sie Ihren IELTS-Aufsatz hoch',
-                    uploadLabel: 'Laden Sie Ihren IELTS-Aufsatz hoch:',
-                    pasteLabel: 'Oder fügen Sie Ihren Aufsatz hier ein:',
-                    submitButton: 'Einreichen'
-                },
-                jp: {
-                    uploadTitle: 'IELTSエッセイをアップロードする',
-                    uploadLabel: 'IELTSエッセイをアップロードする：',
-                    pasteLabel: 'またはここにエッセイを貼り付けてください：',
-                    submitButton: '提出する'
-                }
-            };
-
-            document.querySelector('.upload h2').textContent = texts[lang].uploadTitle;
-            document.querySelector('label[for="essay“]’).textContent = texts[lang].uploadLabel;
-document.querySelector(‘label[for=“text-essay”]’).textContent = texts[lang].pasteLabel;
-document.querySelector(’.upload form button’).textContent = texts[lang].submitButton;
-}
-
-
+    </script>
 </body>
 </html>
-```
