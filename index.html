@@ -329,6 +329,8 @@
                     <li><a href="#about">ABOUT</a></li>
                     <li><a href="#services">SERVICES</a></li>
                     <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html">REGISTER</a></li>
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
@@ -440,11 +442,7 @@
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
-            if (options.style.display === 'block') {
-                options.style.display = 'none';
-            } else {
-                options.style.display = 'block';
-            }
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
         }
 
         function changeLanguage(lang) {
@@ -690,45 +688,6 @@
                 hoursList.appendChild(p);
             });
         }
-
-        // User registration and login
-        const users = [];
-
-        function registerUser(username, password) {
-            if (users.find(user => user.username === username)) {
-                alert('Username already exists!');
-                return false;
-            }
-            users.push({ username, password });
-            alert('Registration successful!');
-            return true;
-        }
-
-        function loginUser(username, password) {
-            const user = users.find(user => user.username === username && user.password === password);
-            if (user) {
-                alert('Login successful!');
-                return true;
-            } else {
-                alert('Invalid username or password!');
-                return false;
-            }
-        }
-
-        // Example usage:
-        document.getElementById('register-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const username = document.getElementById('register-username').value;
-            const password = document.getElementById('register-password').value;
-            registerUser(username, password);
-        });
-
-        document.getElementById('login-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            loginUser(username, password);
-        });
     </script>
 </body>
 </html>
