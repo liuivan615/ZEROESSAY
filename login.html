@@ -203,6 +203,7 @@
                 <input type="password" id="login-password" name="password" required>
                 <button type="submit">Login</button>
             </form>
+            <div id="login-error" style="color: red; display: none;">Invalid username or password.</div>
         </div>
     </section>
     <footer>
@@ -217,9 +218,31 @@
             const password = document.getElementById('login-password').value;
             loginUser(username, password);
         });
-    </script>
-</body>
-</html>
 
+        function loginUser(username, password) {
+            fetch('https://api.cloudinary.com/v1_1/dk8aeedal/auto/upload', {
+                method: 'POST',
+                body: JSON.stringify({
+                    file: username + ":" + password,
+                    upload_preset: 'YOUR_UPLOAD_PRESET'
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 在 Cloudinary 中验证用户名和密码
+                if (data.secure_url) {
+                    window.location.href = 'index.html';
+                } else {
+                    document.getElementById('login-error').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('login-error').style.display = 'block';
+            });
+        }
+    </script>
 </body>
 </html>
