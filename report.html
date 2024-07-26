@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailed Evaluation Report - Zero Essay</title>
+    <title>Detailed Evaluation Report</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -12,51 +12,88 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            scroll-behavior: smooth;
         }
         .container {
-            width: 90%;
-            margin: 20px auto;
+            width: 80%;
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .section {
-            margin-bottom: 20px;
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid #0056b3;
         }
-        .section h2 {
-            font-size: 1.8em;
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        .evaluation-section {
+            padding: 20px 0;
+        }
+        .evaluation-section h2 {
+            font-size: 1.5em;
             margin-bottom: 10px;
-            color: #007BFF;
         }
-        .section p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-        .section img {
-            max-width: 100%;
-            border-radius: 8px;
+        .evaluation-section p {
+            font-size: 1em;
+            margin: 5px 0;
         }
         .score {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            padding: 5px 0;
         }
-        .score .label {
+        .score span {
+            font-weight: bold;
+        }
+        .overall-score {
             font-size: 1.2em;
-            color: #007BFF;
+            font-weight: bold;
         }
-        .score .value {
-            font-size: 1.8em;
-            color: #007BFF;
+        .language-switcher {
+            position: relative;
+            display: inline-block;
         }
-        .feedback {
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
             padding: 10px;
-            background-color: #e7f3ff;
+            font-size: 1em;
+            cursor: pointer;
             border-radius: 5px;
-            font-size: 1.2em;
-            line-height: 1.6;
+            margin: 10px;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .language-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .language-options a:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -64,50 +101,126 @@
     <header>
         <div class="header-container">
             <h1>DETAILED EVALUATION REPORT</h1>
+            <div class="language-switcher">
+                <button onclick="toggleLanguageOptions()">Language</button>
+                <div class="language-options" id="language-options">
+                    <a onclick="changeLanguage('en')">English</a>
+                    <a onclick="changeLanguage('zh')">中文</a>
+                    <a onclick="changeLanguage('fr')">Français</a>
+                    <a onclick="changeLanguage('de')">Deutsch</a>
+                    <a onclick="changeLanguage('jp')">日本語</a>
+                </div>
+            </div>
         </div>
     </header>
-    <section class="container">
-        <div class="section">
-            <h2>题目</h2>
-            <img src="static/images/your_image.jpg" alt="Essay Question">
-            <p>自动读图结果: Your automatic reading result text goes here...</p>
+    <div class="container">
+        <div class="evaluation-section">
+            <h2 id="title-essay-question">题目</h2>
+            <p id="essay-question"></p>
         </div>
-        <div class="section">
-            <h2>分数</h2>
-            <div class="score">
-                <div class="label">任务完成度 Task Achievement</div>
-                <div class="value">6</div>
-            </div>
-            <div class="score">
-                <div class="label">连贯性和衔接 Coherence and Cohesion</div>
-                <div class="value">7</div>
-            </div>
-            <div class="score">
-                <div class="label">词汇资源 Lexical Resource</div>
-                <div class="value">6</div>
-            </div>
-            <div class="score">
-                <div class="label">语法范围和准确性 Grammatical Range & Accuracy</div>
-                <div class="value">7</div>
-            </div>
-            <div class="score">
-                <div class="label">总分 Overall Score</div>
-                <div class="value">6.5</div>
-            </div>
+        <div class="evaluation-section">
+            <h2 id="title-automatic-reading-result">自动读图结果</h2>
+            <p id="automatic-reading-result"></p>
         </div>
-        <div class="section">
-            <h2>作文批改</h2>
-            <p class="feedback">The detailed feedback on the essay goes here. Highlight specific areas where the essay can be improved, including grammar, vocabulary, coherence, and task achievement.</p>
+        <div class="evaluation-section">
+            <h2 id="title-scores">分数</h2>
+            <div class="score"><span id="label-task-achievement">任务完成度 Task Achievement</span><span id="task-achievement"></span></div>
+            <div class="score"><span id="label-coherence-cohesion">连贯性和衔接 Coherence and Cohesion</span><span id="coherence-cohesion"></span></div>
+            <div class="score"><span id="label-lexical-resource">词汇资源 Lexical Resource</span><span id="lexical-resource"></span></div>
+            <div class="score"><span id="label-grammatical-range">语法范围和准确性 Grammatical Range & Accuracy</span><span id="grammatical-range"></span></div>
+            <div class="score overall-score"><span id="label-overall-score">总分 Overall Score</span><span id="overall-score"></span></div>
         </div>
-        <div class="section">
-            <h2>总体评价</h2>
-            <p class="feedback">The overall evaluation text goes here, providing a summary of the essay's strengths and areas for improvement.</p>
+        <div class="evaluation-section">
+            <h2 id="title-detailed-feedback">作文批改</h2>
+            <p id="detailed-feedback"></p>
         </div>
-    </section>
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        <div class="evaluation-section">
+            <h2 id="title-overall-evaluation">总体评价</h2>
+            <p id="overall-evaluation"></p>
         </div>
-    </footer>
+    </div>
+
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    titleEssayQuestion: 'Essay Question',
+                    titleAutomaticReadingResult: 'Automatic Reading Result',
+                    titleScores: 'Scores',
+                    labelTaskAchievement: 'Task Achievement',
+                    labelCoherenceCohesion: 'Coherence and Cohesion',
+                    labelLexicalResource: 'Lexical Resource',
+                    labelGrammaticalRange: 'Grammatical Range & Accuracy',
+                    labelOverallScore: 'Overall Score',
+                    titleDetailedFeedback: 'Detailed Feedback',
+                    titleOverallEvaluation: 'Overall Evaluation'
+                },
+                zh: {
+                    titleEssayQuestion: '题目',
+                    titleAutomaticReadingResult: '自动读图结果',
+                    titleScores: '分数',
+                    labelTaskAchievement: '任务完成度',
+                    labelCoherenceCohesion: '连贯性和衔接',
+                    labelLexicalResource: '词汇资源',
+                    labelGrammaticalRange: '语法范围和准确性',
+                    labelOverallScore: '总分',
+                    titleDetailedFeedback: '作文批改',
+                    titleOverallEvaluation: '总体评价'
+                },
+                fr: {
+                    titleEssayQuestion: 'Question de dissertation',
+                    titleAutomaticReadingResult: 'Résultat de lecture automatique',
+                    titleScores: 'Scores',
+                    labelTaskAchievement: 'Achèvement des tâches',
+                    labelCoherenceCohesion: 'Cohérence et Cohésion',
+                    labelLexicalResource: 'Ressource lexicale',
+                    labelGrammaticalRange: 'Étendue et précision grammaticale',
+                    labelOverallScore: 'Score global',
+                    titleDetailedFeedback: 'Commentaires détaillés',
+                    titleOverallEvaluation: 'Évaluation globale'
+                },
+                de: {
+                    titleEssayQuestion: 'Aufsatzfrage',
+                    titleAutomaticReadingResult: 'Automatisches Leseergebnis',
+                    titleScores: 'Punkte',
+                    labelTaskAchievement: 'Aufgabenerfüllung',
+                    labelCoherenceCohesion: 'Kohärenz und Kohäsion',
+                    labelLexicalResource: 'Wortschatz',
+                    labelGrammaticalRange: 'Grammatikalischer Umfang und Genauigkeit',
+                    labelOverallScore: 'Gesamtpunktzahl',
+                    titleDetailedFeedback: 'Detailliertes Feedback',
+                    titleOverallEvaluation: 'Gesamtbewertung'
+                },
+                jp: {
+                    titleEssayQuestion: 'エッセイの質問',
+                    titleAutomaticReadingResult: '自動読み取り結果',
+                    titleScores: 'スコア',
+                    labelTaskAchievement: 'タスクの達成',
+                    labelCoherenceCohesion: '一貫性と結束性',
+                    labelLexicalResource: '語彙のリソース',
+                    labelGrammaticalRange: '文法範囲と正確性',
+                    labelOverallScore: '総合スコア',
+                    titleDetailedFeedback: '詳細なフィードバック',
+                    titleOverallEvaluation: '全体評価'
+                }
+            };
+
+            document.getElementById('title-essay-question').textContent = texts[lang].titleEssayQuestion;
+            document.getElementById('title-automatic-reading-result').textContent = texts[lang].titleAutomaticReadingResult;
+            document.getElementById('title-scores').textContent = texts[lang].titleScores;
+            document.getElementById('label-task-achievement').textContent = texts[lang].labelTaskAchievement;
+            document.getElementById('label-coherence-cohesion').textContent = texts[lang].labelCoherenceCohesion;
+            document.getElementById('label-lexical-resource').textContent = texts[lang].labelLexicalResource;
+            document.getElementById('label-grammatical-range').textContent = texts[lang].labelGrammaticalRange;
+            document.getElementById('label-overall-score').textContent = texts[lang].labelOverallScore;
+            document.getElementById('title-detailed-feedback').textContent = texts[lang].titleDetailedFeedback;
+            document.getElementById('title-overall-evaluation').textContent = texts[lang].titleOverallEvaluation;
+        }
+    </script>
 </body>
 </html>
