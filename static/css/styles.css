@@ -307,3 +307,30 @@ header nav ul li a.active::after {
         padding: 10px;
     }
 }
+
+/* Specific styles for detailed page layout on mobile */
+@media (max-width: 768px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-container, .text-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .image-container img {
+        width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .text-container {
+        padding: 20px;
+        background-color: #007BFF;
+        color: #fff;
+        border-radius: 0 0 8px 8px;
+    }
+}
