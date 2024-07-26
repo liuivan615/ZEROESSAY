@@ -68,41 +68,6 @@
             font-size: 0.9em;
             color: #fff;
         }
-        .language-switcher {
-            position: relative;
-            display: inline-block;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            top: 100%;
-            right: 0;
-        }
-        .language-options a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .language-options a:hover {
-            background-color: #ddd;
-        }
         .upload {
             padding: 50px 20px;
             text-align: center;
@@ -153,6 +118,43 @@
             color: #333;
             border-top: 1px solid #ccc;
         }
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1;
+            top: 100%;
+            right: 0;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 1em;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
@@ -201,7 +203,11 @@
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
         }
 
         function changeLanguage(lang) {
@@ -214,27 +220,27 @@
                 },
                 zh: {
                     uploadTitle: '上传您的雅思作文',
-                    uploadLabel: '上传您的雅思作文:',
-                    pasteLabel: '或者在这里粘贴您的作文:',
+                    uploadLabel: '上传您的雅思作文：',
+                    pasteLabel: '或者在这里粘贴您的作文：',
                     submitButton: '提交'
                 },
                 fr: {
                     uploadTitle: 'Téléchargez votre essai IELTS',
-                    uploadLabel: 'Téléchargez votre essai IELTS:',
-                    pasteLabel: 'Ou collez votre essai ici:',
+                    uploadLabel: 'Téléchargez votre essai IELTS :',
+                    pasteLabel: 'Ou collez votre essai ici :',
                     submitButton: 'Soumettre'
                 },
                 de: {
-                    uploadTitle: 'Laden Sie Ihr IELTS-Aufsatz hoch',
-                    uploadLabel: 'Laden Sie Ihr IELTS-Aufsatz hoch:',
+                    uploadTitle: 'Laden Sie Ihren IELTS-Aufsatz hoch',
+                    uploadLabel: 'Laden Sie Ihren IELTS-Aufsatz hoch:',
                     pasteLabel: 'Oder fügen Sie Ihren Aufsatz hier ein:',
                     submitButton: 'Einreichen'
                 },
                 jp: {
                     uploadTitle: 'IELTSエッセイをアップロード',
-                    uploadLabel: 'IELTSエッセイをアップロード:',
-                    pasteLabel: 'または、ここにエッセイを貼り付けます:',
-                    submitButton: '提出する'
+                    uploadLabel: 'IELTSエッセイをアップロード：',
+                    pasteLabel: 'またはここにエッセイを貼り付けます：',
+                    submitButton: '送信'
                 }
             };
 
