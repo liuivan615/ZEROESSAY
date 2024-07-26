@@ -285,39 +285,94 @@
             background-color: #0056b3;
         }
         .language-options {
-display: none;
-position: absolute;
-top: 100%;
-right: 0;
-background-color: white;
-border: 1px solid #ccc;
-border-radius: 5px;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-z-index: 1;
-}
-.language-options a {
-display: block;
-padding: 10px;
-text-decoration: none;
-color: #007BFF;
-cursor: pointer;
-}
-.language-options a:hover {
-background-color: #f4f4f4;
-}
-/* Mobile Styles */
-@media (max-width: 768px) {
-.service-container {
-flex-direction: column;
-align-items: center;
-}
-.service-item {
-width: 90%;
-margin: 10px 0;
-}
-}
-
-
+            display: none;
+            position: absolute;
+            top: 40px; /* 调整位置，确保不被遮挡 */
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        .language-options.show {
+            display: block;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
+        @media only screen and (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header-container nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header-container nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .hero {
+                height: auto;
+                padding: 50px 20px;
+            }
+            .hero h2 {
+                font-size: 2em;
+            }
+            .about-content, .service-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .service-item {
+                width: 100%;
+                max-width: 400px;
+            }
+            .image-container, .text-container {
+                flex: 1;
+                width: 100%;
+                margin: 0;
+            }
+            .text-container {
+                text-align: center;
+                padding: 10px;
+            }
+            .text-container h2 {
+                font-size: 1.5em;
+            }
+            .text-container p {
+                font-size: 1em;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .image-container img {
+                width: 100%;
+                height: auto;
+            }
+            .text-container {
+                width: 100%;
+                background-color: #007BFF;
+                color: #fff;
+                border-radius: 8px;
+                padding: 20px;
+            }
+            .language-switcher {
+                position: relative;
+                z-index: 1000;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -425,20 +480,7 @@ margin: 10px 0;
                         <p>周四：上午9:00 - 晚上10:00</p>
                         <p>周五：上午9:00 - 晚上10:00</p>
                         <p>周六：上午9:00 - 下午6:00</p>
-                        <p>周日：上午9:00 - 中午12:00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
-        </div>
-    </footer>
-
-
-<!-- JavaScript for smooth scrolling and language switcher -->
+                        <p>周日<!-- JavaScript for smooth scrolling and language switcher -->
 <script>
     function toggleLanguageOptions() {
         var options = document.getElementById('language-options');
@@ -586,32 +628,31 @@ margin: 10px 0;
                 service3Title: 'Wortschatzverbesserung',
                 service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
                 service3Button: 'Mehr erfahren',
-                service4Title: 'Kohärenzbewertung',
-                service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
-                service4Button: 'Mehr erfahren',
-                service5Title: 'Aufgabenantwort-Analyse',
-                service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
-                service5Button: 'Mehr erfahren',
-                contactTitle: 'Kontaktieren Sie uns',
-                formNameLabel: 'Name:',
-                formEmailLabel: 'E-Mail-Adresse:',
-                formPhoneLabel: 'Telefonnummer:',
-                formMessageLabel: 'Nachricht:',
-                formSubmitButton: 'Einreichen',
-                contactInfoTitle: 'Kontaktinformation',
-                contactInfoEmail: 'E-Mail: ',
-                contactInfoHours: 'Öffnungszeiten',
-                hours: [
-                    'Montag: 9:00 - 22:00 Uhr',
-                    'Dienstag: 9:00 - 22:00 Uhr',
-                    'Mittwoch: 9:00 - 22:00 Uhr',
-                    'Donnerstag: 9:00 - 22:00 Uhr',
-                    'Freitag: 9:00 - 22:00 Uhr',
-                    'Samstag: 9:00 - 18:00 Uhr',
-                    'Sonntag: 9:00 - 12:00 Uhr'
-                ]
-            },
-            jp: {
+                service4Text: ‘Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.’,
+service4Button: ‘Mehr erfahren’,
+service5Title: ‘Aufgabenantwort-Analyse’,
+service5Text: ‘Erfüllen Sie die Aufgabenanforderungen effektiv.’,
+service5Button: ‘Mehr erfahren’,
+contactTitle: ‘Kontaktieren Sie uns’,
+formNameLabel: ‘Name:’,
+formEmailLabel: ‘E-Mail-Adresse:’,
+formPhoneLabel: ‘Telefonnummer:’,
+formMessageLabel: ‘Nachricht:’,
+formSubmitButton: ‘Einreichen’,
+contactInfoTitle: ‘Kontaktinformation’,
+contactInfoEmail: ’E-Mail: ’,
+contactInfoHours: ‘Öffnungszeiten’,
+hours: [
+‘Montag: 9:00 - 22:00 Uhr’,
+‘Dienstag: 9:00 - 22:00 Uhr’,
+‘Mittwoch: 9:00 - 22:00 Uhr’,
+‘Donnerstag: 9:00 - 22:00 Uhr’,
+‘Freitag: 9:00 - 22:00 Uhr’,
+‘Samstag: 9:00 - 18:00 Uhr’,
+‘Sonntag: 9:00 - 12:00 Uhr’
+]
+},
+jp: {
 heroText: ‘IELTS作文の添削サービス、ライティング品質の向上。’,
 heroButton: ‘サービスを見る’,
 aboutTitle: ‘エキスパートによる作文の添削’,
