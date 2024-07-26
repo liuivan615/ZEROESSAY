@@ -14,64 +14,6 @@
             color: #333;
             scroll-behavior: smooth;
         }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .text-container {
-            padding: 20px;
-            background-color: #007BFF;
-            color: #fff;
-            border-radius: 8px;
-        }
-        .text-container h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .text-container p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-        .language-switcher {
-            position: relative;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
-        }
         header {
             background-color: #fff;
             color: #000;
@@ -130,6 +72,89 @@
             font-size: 0.9em;
             color: #007BFF;
         }
+        .hero {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .hero-content {
+            z-index: 1;
+        }
+        .hero h2 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .content {
+            background-color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1;
+            top: 100%;
+            right: 0;
+        }
+        .language-options a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 1em;
+        }
+        .language-options a:hover {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
@@ -159,10 +184,16 @@
         </div>
         <div class="header-bottom-bar"></div>
     </header>
-    <section class="container">
-        <div class="text-container">
-            <h2 id="service-title">Task Response Analysis</h2>
-            <p id="service-text">Address task requirements effectively with our task response analysis. Meeting the specific demands of an essay prompt is crucial for achieving a high score. We analyze your essay to ensure it fully addresses the prompt, covers all necessary points, and stays on topic throughout. Our detailed feedback highlights any areas where you may have deviated from the task or missed critical points. With our guidance, you can craft well-rounded responses that demonstrate a thorough understanding of the prompt and fulfill all requirements.</p>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Task Response Analysis</h2>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <h2>Task Response Analysis</h2>
+            <p>Address task requirements effectively with our task response analysis. Meeting the specific demands of an essay prompt is crucial for achieving a high score. We analyze your essay to ensure it fully addresses the prompt, covers all necessary points, and stays on topic throughout. Our detailed feedback highlights any areas where you may have deviated from the task or missed critical points. With our guidance, you can craft well-rounded responses that demonstrate a thorough understanding of the prompt and fulfill all requirements.</p>
+            <a href="#contact" class="btn">Contact Us</a>
         </div>
     </section>
     <footer>
@@ -171,7 +202,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript for language switcher -->
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
@@ -185,29 +215,41 @@
         function changeLanguage(lang) {
             const texts = {
                 en: {
-                    serviceTitle: 'Task Response Analysis',
-                    serviceText: 'Address task requirements effectively with our task response analysis. Meeting the specific demands of an essay prompt is crucial for achieving a high score. We analyze your essay to ensure it fully addresses the prompt, covers all necessary points, and stays on topic throughout. Our detailed feedback highlights any areas where you may have deviated from the task or missed critical points. With our guidance, you can craft well-rounded responses that demonstrate a thorough understanding of the prompt and fulfill all requirements.'
+                    heroText: 'Task Response Analysis',
+                    contentTitle: 'Task Response Analysis',
+                    contentText: 'Address task requirements effectively with our task response analysis. Meeting the specific demands of an essay prompt is crucial for achieving a high score. We analyze your essay to ensure it fully addresses the prompt, covers all necessary points, and stays on topic throughout. Our detailed feedback highlights any areas where you may have deviated from the task or missed critical points. With our guidance, you can craft well-rounded responses that demonstrate a thorough understanding of the prompt and fulfill all requirements.',
+                    contactButton: 'Contact Us'
                 },
                 zh: {
-                    serviceTitle: '任务回应分析',
-                    serviceText: '通过我们的任务回应分析，有效地满足任务要求。满足作文提示的具体要求对于获得高分至关重要。我们分析您的作文，以确保其完全满足提示，涵盖所有必要点，并始终保持主题。我们的详细反馈突出显示了您可能偏离任务或遗漏关键点的任何地方。在我们的指导下，您可以编写全面的回应，展示对提示的透彻理解并满足所有要求。'
+                    heroText: '任务回应分析',
+                    contentTitle: '任务回应分析',
+                    contentText: '通过我们的任务回应分析，有效地满足任务要求。满足作文提示的具体要求对于获得高分至关重要。我们分析您的作文，以确保其完全满足提示，涵盖所有必要点，并始终保持主题。我们的详细反馈突出显示了您可能偏离任务或遗漏关键点的任何地方。在我们的指导下，您可以编写全面的回应，展示对提示的透彻理解并满足所有要求。',
+                    contactButton: '联系我们'
                 },
                 fr: {
-                    serviceTitle: 'Analyse de la réponse à la tâche',
-                    serviceText: 'Répondez efficacement aux exigences de la tâche grâce à notre analyse de réponse à la tâche. Répondre aux exigences spécifiques d\'une consigne de dissertation est crucial pour obtenir un score élevé. Nous analysons votre dissertation pour nous assurer qu\'elle répond pleinement à la consigne, couvre tous les points nécessaires et reste sur le sujet tout au long. Nos commentaires détaillés mettent en évidence les domaines où vous avez pu vous écarter de la tâche ou manquer des points critiques. Avec notre aide, vous pouvez rédiger des réponses bien équilibrées qui démontrent une compréhension approfondie de la consigne et répondent à toutes les exigences.'
+                    heroText: 'Analyse de la réponse à la tâche',
+                    contentTitle: 'Analyse de la réponse à la tâche',
+                    contentText: 'Répondez efficacement aux exigences de la tâche grâce à notre analyse de réponse à la tâche. Répondre aux exigences spécifiques d\'une consigne de dissertation est crucial pour obtenir un score élevé. Nous analysons votre dissertation pour nous assurer qu\'elle répond pleinement à la consigne, couvre tous les points nécessaires et reste sur le sujet tout au long. Nos commentaires détaillés mettent en évidence les domaines où vous avez pu vous écarter de la tâche ou manquer des points critiques. Avec notre aide, vous pouvez rédiger des réponses bien équilibrées qui démontrent une compréhension approfondie de la consigne et répondent à toutes les exigences.',
+                    contactButton: 'Contactez-nous'
                 },
                 de: {
-                    serviceTitle: 'Aufgabenantwort-Analyse',
-                    serviceText: 'Erfüllen Sie die Aufgabenanforderungen effektiv mit unserer Aufgabenantwort-Analyse. Die Erfüllung der spezifischen Anforderungen einer Aufsatzvorgabe ist entscheidend für das Erreichen einer hohen Punktzahl. Wir analysieren Ihren Aufsatz, um sicherzustellen, dass er die Vorgabe vollständig erfüllt, alle notwendigen Punkte abdeckt und durchgehend beim Thema bleibt. Unser detailliertes Feedback hebt alle Bereiche hervor, in denen Sie möglicherweise von der Aufgabe abgewichen sind oder kritische Punkte übersehen haben. Mit unserer Anleitung können Sie gut abgerundete Antworten verfassen, die ein gründliches Verständnis der Vorgabe zeigen und alle Anforderungen erfüllen.'
+                    heroText: 'Aufgabenantwort-Analyse',
+                    contentTitle: 'Aufgabenantwort-Analyse',
+                    contentText: 'Erfüllen Sie die Aufgabenanforderungen effektiv mit unserer Aufgabenantwort-Analyse. Die Erfüllung der spezifischen Anforderungen einer Aufsatzvorgabe ist entscheidend für das Erreichen einer hohen Punktzahl. Wir analysieren Ihren Aufsatz, um sicherzustellen, dass er die Vorgabe vollständig erfüllt, alle notwendigen Punkte abdeckt und durchgehend beim Thema bleibt. Unser detailliertes Feedback hebt alle Bereiche hervor, in denen Sie möglicherweise von der Aufgabe abgewichen sind oder kritische Punkte übersehen haben. Mit unserer Anleitung können Sie gut abgerundete Antworten verfassen, die ein gründliches Verständnis der Vorgabe zeigen und alle Anforderungen erfüllen.',
+                    contactButton: 'Kontaktieren Sie uns'
                 },
                 jp: {
-                    serviceTitle: 'タスク応答分析',
-                    serviceText: 'タスク応答分析を使用して、タスク要件に効果的に対応します。エッセイの指示に対する具体的な要求を満たすことは、高得点を得るために重要です。エッセイが指示を完全に満たし、必要なポイントをすべてカバーし、全体を通してトピックに沿っていることを確認するために分析します。私たちの詳細なフィードバックは、タスクから逸脱したり重要なポイントを見逃したりする可能性のある領域を強調します。私たちの指導により、指示を十分に理解し、すべての要件を満たす十分に洗練された応答を作成できます。'
+                    heroText: 'タスク応答分析',
+                    contentTitle: 'タスク応答分析',
+                    contentText: 'タスク応答分析を使用して、タスク要件に効果的に対応します。エッセイの指示に対する具体的な要求を満たすことは、高得点を得るために重要です。エッセイが指示を完全に満たし、必要なポイントをすべてカバーし、全体を通してトピックに沿っていることを確認するために分析します。私たちの詳細なフィードバックは、タスクから逸脱したり重要なポイントを見逃したりする可能性のある領域を強調します。私たちの指導により、指示を十分に理解し、すべての要件を満たす十分に洗練された応答を作成できます。',
+                    contactButton: 'お問い合わせ'
                 }
             };
 
-            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
-            document.getElementById('service-text').textContent = texts[lang].serviceText;
+            document.querySelector('.hero h2').textContent = texts[lang].heroText;
+            document.querySelector('.content h2').textContent = texts[lang].contentTitle;
+            document.querySelector('.content p').textContent = texts[lang].contentText;
+            document.querySelector('.content .btn').textContent = texts[lang].contactButton;
         }
     </script>
 </body>
