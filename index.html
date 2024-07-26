@@ -287,16 +287,13 @@
         .language-options {
             display: none;
             position: absolute;
-            top: 40px; /* 调整位置，确保不被遮挡 */
+            top: 100%;
             right: 0;
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1;
-        }
-        .language-options.show {
-            display: block;
         }
         .language-options a {
             display: block;
@@ -308,68 +305,15 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
-        @media only screen and (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header-container nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header-container nav ul li {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-            .hero {
-                height: auto;
-                padding: 50px 20px;
-            }
-            .hero h2 {
-                font-size: 2em;
-            }
-            .about-content, .service-container {
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .service-container {
                 flex-direction: column;
                 align-items: center;
             }
             .service-item {
-                width: 100%;
-                max-width: 400px;
-            }
-            .image-container, .text-container {
-                flex: 1;
-                width: 100%;
-                margin: 0;
-            }
-            .text-container {
-                text-align: center;
-                padding: 10px;
-            }
-            .text-container h2 {
-                font-size: 1.5em;
-            }
-            .text-container p {
-                font-size: 1em;
-            }
-            .container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .image-container img {
-                width: 100%;
-                height: auto;
-            }
-            .text-container {
-                width: 100%;
-                background-color: #007BFF;
-                color: #fff;
-                border-radius: 8px;
-                padding: 20px;
-            }
-            .language-switcher {
-                position: relative;
-                z-index: 1000;
+                width: 90%;
+                margin: 10px 0;
             }
         }
     </style>
@@ -381,7 +325,7 @@
             <h1>ZERO ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="/" class="active">HOME</a></li>
+                    <li><a href="#home" class="active">HOME</a></li>
                     <li><a href="#about">ABOUT</a></li>
                     <li><a href="#services">SERVICES</a></li>
                     <li><a href="#contact">CONTACT</a></li>
@@ -401,7 +345,7 @@
         </div>
         <div class="header-bottom-bar"></div>
     </header>
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
             <h2 id="hero-text">雅思作文批改服务，全⾯提高写作质量。</h2>
             <a href="upload.html" class="btn" id="hero-button">查看服务</a>
@@ -480,31 +424,43 @@
                         <p>周四：上午9:00 - 晚上10:00</p>
                         <p>周五：上午9:00 - 晚上10:00</p>
                         <p>周六：上午9:00 - 下午6:00</p>
-                        <p>周日<!-- JavaScript for smooth scrolling and language switcher -->
-<script>
-    function toggleLanguageOptions() {
-        var options = document.getElementById('language-options');
-        if (options.style.display === 'block') {
-            options.style.display = 'none';
-        } else {
-            options.style.display = 'block';
-        }
-    }
+                        <p>周日：上午9:00 - 中午12:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
 
-    function changeLanguage(lang) {
-        const texts = {
-            en: {
-                heroText: 'IELTS Essay Correction Service, Improve Writing Quality.',
-                heroButton: 'View services',
-                aboutTitle: 'Expert essay correction',
-                aboutText: 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.',
-                contactButton: 'Get in touch',
-                service1Title: 'Detailed Essay Evaluation',
-                service1Text: 'Get in-depth feedback on your essay.',
-                service1Button: 'Read more',
-                service2Title: 'Grammar Correction',
-                service2Text: 'Improve your grammar skills.',
-                service2Button: 'Read more',
+    <!-- JavaScript for smooth scrolling and language switcher -->
+    <script>
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            if (options.style.display === 'block') {
+                options.style.display = 'none';
+            } else {
+                options.style.display = 'block';
+            }
+        }
+
+        function changeLanguage(lang) {
+            const texts = {
+                en: {
+                    heroText: 'IELTS Essay Correction Service, Improve Writing Quality.',
+                    heroButton: 'View services',
+                    aboutTitle: 'Expert essay correction',
+                    aboutText: 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.',
+                    contactButton: 'Get in touch',
+                    service1Title: 'Detailed Essay Evaluation',
+                    service1Text: 'Get in-depth feedback on your essay.',
+                    service1Button: 'Read more',
+                    service2Title: 'Grammar Correction',
+                    service2Text: 'Improve your grammar skills.',
+                                    service2Button: 'Read more',
                 service3Title: 'Vocabulary Enhancement',
                 service3Text: 'Expand your vocabulary repertoire.',
                 service3Button: 'Read more',
@@ -628,71 +584,72 @@
                 service3Title: 'Wortschatzverbesserung',
                 service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
                 service3Button: 'Mehr erfahren',
-                service4Text: ‘Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.’,
-service4Button: ‘Mehr erfahren’,
-service5Title: ‘Aufgabenantwort-Analyse’,
-service5Text: ‘Erfüllen Sie die Aufgabenanforderungen effektiv.’,
-service5Button: ‘Mehr erfahren’,
-contactTitle: ‘Kontaktieren Sie uns’,
-formNameLabel: ‘Name:’,
-formEmailLabel: ‘E-Mail-Adresse:’,
-formPhoneLabel: ‘Telefonnummer:’,
-formMessageLabel: ‘Nachricht:’,
-formSubmitButton: ‘Einreichen’,
-contactInfoTitle: ‘Kontaktinformation’,
-contactInfoEmail: ’E-Mail: ’,
-contactInfoHours: ‘Öffnungszeiten’,
-hours: [
-‘Montag: 9:00 - 22:00 Uhr’,
-‘Dienstag: 9:00 - 22:00 Uhr’,
-‘Mittwoch: 9:00 - 22:00 Uhr’,
-‘Donnerstag: 9:00 - 22:00 Uhr’,
-‘Freitag: 9:00 - 22:00 Uhr’,
-‘Samstag: 9:00 - 18:00 Uhr’,
-‘Sonntag: 9:00 - 12:00 Uhr’
-]
-},
-jp: {
-heroText: ‘IELTS作文の添削サービス、ライティング品質の向上。’,
-heroButton: ‘サービスを見る’,
-aboutTitle: ‘エキスパートによる作文の添削’,
-aboutText: ‘タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。’,
-contactButton: ‘お問い合わせ’,
-service1Title: ‘詳細な作文評価’,
-service1Text: ‘エッセイに関する詳細なフィードバックを受け取る。’,
-service1Button: ‘もっと詳しく’,
-service2Title: ‘文法修正’,
-service2Text: ‘文法スキルを向上させる。’,
-service2Button: ‘もっと詳しく’,
-service3Title: ‘語彙の強化’,
-service3Text: ‘語彙のレパートリーを拡大する。’,
-service3Button: ‘もっと詳しく’,
-service4Title: ‘一貫性の評価’,
-service4Text: ‘エッセイがスムーズに流れるようにする。’,
-service4Button: ‘もっと詳しく’,
-service5Title: ‘タスク応答分析’,
-service5Text: ‘タスクの要求を効果的に満たす。’,
-service5Button: ‘もっと詳しく’,
-contactTitle: ‘お問い合わせ’,
-formNameLabel: ‘名前：’,
-formEmailLabel: ‘メールアドレス：’,
-formPhoneLabel: ‘電話番号：’,
-formMessageLabel: ‘メッセージ：’,
-formSubmitButton: ‘送信’,
-contactInfoTitle: ‘連絡先情報’,
-contactInfoEmail: ‘メールアドレス：’,
-contactInfoHours: ‘営業時間’,
-hours: [
-‘月曜日：9:00〜22:00’,
-‘火曜日：9:00〜22:00’,
-‘水曜日：9:00〜22:00’,
-‘木曜日：9:00〜22:00’,
-‘金曜日：9:00〜22:00’,
-‘土曜日：9:00〜18:00’,
-‘日曜日：9:00〜12:00’
-]
-}
-};
+                service4Title: 'Kohärenzbewertung',
+                service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
+                service4Button: 'Mehr erfahren',
+                service5Title: 'Aufgabenantwort-Analyse',
+                service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
+                service5Button: 'Mehr erfahren',
+                contactTitle: 'Kontaktieren Sie uns',
+                formNameLabel: 'Name:',
+                formEmailLabel: 'E-Mail-Adresse:',
+                formPhoneLabel: 'Telefonnummer:',
+                formMessageLabel: 'Nachricht:',
+                formSubmitButton: 'Einreichen',
+                contactInfoTitle: 'Kontaktinformation',
+                contactInfoEmail: 'E-Mail: ',
+                contactInfoHours: 'Öffnungszeiten',
+                hours: [
+                    'Montag: 9:00 - 22:00 Uhr',
+                    'Dienstag: 9:00 - 22:00 Uhr',
+                    'Mittwoch: 9:00 - 22:00 Uhr',
+                    'Donnerstag: 9:00 - 22:00 Uhr',
+                    'Freitag: 9:00 - 22:00 Uhr',
+                    'Samstag: 9:00 - 18:00 Uhr',
+                    'Sonntag: 9:00 - 12:00 Uhr'
+                ]
+            },
+            jp: {
+                heroText: 'IELTS作文の添削サービス、ライティング品質の向上。',
+                heroButton: 'サービスを見る',
+                aboutTitle: 'エキスパートによる作文の添削',
+                                aboutText: 'タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。',
+                contactButton: 'お問い合わせ',
+                service1Title: '詳細な作文評価',
+                service1Text: 'エッセイに関する詳細なフィードバックを受け取る。',
+                service1Button: 'もっと詳しく',
+                service2Title: '文法修正',
+                service2Text: '文法スキルを向上させる。',
+                service2Button: 'もっと詳しく',
+                service3Title: '語彙の強化',
+                service3Text: '語彙のレパートリーを拡大する。',
+                service3Button: 'もっと詳しく',
+                service4Title: '一貫性の評価',
+                service4Text: 'エッセイがスムーズに流れるようにする。',
+                service4Button: 'もっと詳しく',
+                service5Title: 'タスク応答分析',
+                service5Text: 'タスクの要求を効果的に満たす。',
+                service5Button: 'もっと詳しく',
+                contactTitle: 'お問い合わせ',
+                formNameLabel: '名前：',
+                formEmailLabel: 'メールアドレス：',
+                formPhoneLabel: '電話番号：',
+                formMessageLabel: 'メッセージ：',
+                formSubmitButton: '送信',
+                contactInfoTitle: '連絡先情報',
+                contactInfoEmail: 'メールアドレス：',
+                contactInfoHours: '営業時間',
+                hours: [
+                    '月曜日：9:00〜22:00',
+                    '火曜日：9:00〜22:00',
+                    '水曜日：9:00〜22:00',
+                    '木曜日：9:00〜22:00',
+                    '金曜日：9:00〜22:00',
+                    '土曜日：9:00〜18:00',
+                    '日曜日：9:00〜12:00'
+                ]
+            }
+        };
 
         document.getElementById('hero-text').textContent = texts[lang].heroText;
         document.getElementById('hero-button').textContent = texts[lang].heroButton;
@@ -734,7 +691,7 @@ hours: [
         });
     }
 </script>
-
 </body>
 </html>
 ```
+    
