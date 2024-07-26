@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Essay - Zero Essay</title>
+    <title>Upload Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -13,6 +13,14 @@
             background-color: #f4f4f4;
             color: #333;
             scroll-behavior: smooth;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         header {
             background-color: #007BFF;
@@ -120,7 +128,6 @@
         }
         .language-switcher {
             position: relative;
-            display: inline-block;
         }
         .language-switcher button {
             background-color: #007BFF;
@@ -137,20 +144,20 @@
         .language-options {
             display: none;
             position: absolute;
+            top: 100%;
+            right: 0;
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             z-index: 1;
-            top: 100%;
-            right: 0;
         }
         .language-options a {
             display: block;
-            padding: 10px 20px;
+            padding: 10px;
             text-decoration: none;
             color: #007BFF;
-            font-size: 1em;
+            cursor: pointer;
         }
         .language-options a:hover {
             background-color: #f4f4f4;
@@ -163,34 +170,21 @@
             <h1>UPLOAD ESSAY</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="about.html">ABOUT</a></li>
-                    <li><a href="services.html">SERVICES</a></li>
-                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="index.html" class="active">HOME</a></li>
                 </ul>
             </nav>
             <p class="contact-email">thedethofromantic@outlook.com</p>
-            <div class="language-switcher">
-                <button onclick="toggleLanguageOptions()">Language</button>
-                <div class="language-options" id="language-options">
-                    <a onclick="changeLanguage('en')">English</a>
-                    <a onclick="changeLanguage('zh')">中文</a>
-                    <a onclick="changeLanguage('fr')">Français</a>
-                    <a onclick="changeLanguage('de')">Deutsch</a>
-                    <a onclick="changeLanguage('jp')">日本語</a>
-                </div>
-            </div>
         </div>
     </header>
     <section class="upload">
         <div class="container">
-            <h2 id="upload-title">Upload your IELTS essay</h2>
+            <h2>Upload your IELTS essay</h2>
             <form id="upload-form">
-                <label for="essay" id="upload-label">Upload your IELTS essay:</label>
+                <label for="essay">Upload your IELTS essay:</label>
                 <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png" required>
-                <label for="text-essay" id="paste-label">Or paste your essay here:</label>
+                <label for="text-essay">Or paste your essay here:</label>
                 <textarea id="text-essay" name="text_essay" rows="10"></textarea>
-                <button type="submit" id="submit-button">Submit</button>
+                <button type="submit">Submit</button>
             </form>
         </div>
     </section>
@@ -201,6 +195,36 @@
     </footer>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('essay');
+            const textEssay = document.getElementById('text-essay').value;
+
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            }
+
+            if (textEssay.trim() !== '') {
+                const blob = new Blob([textEssay], { type: 'text/plain' });
+                formData.append('file', blob, 'essay.txt');
+            }
+
+            formData.append('upload_preset', 'anonymous_upload');
+
+            try {
+                const response = await axios.post('https://api.cloudinary.com/v1_1/dk8aeedal/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                alert('Upload successful! URL: ' + response.data.secure_url);
+            } catch (error) {
+                console.error('Error uploading the file', error);
+                alert('Upload failed!');
+            }
+        });
+
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
             if (options.style.display === 'block') {
@@ -237,50 +261,20 @@
                     submitButton: 'Einreichen'
                 },
                 jp: {
-                    uploadTitle: 'IELTSエッセイをアップロード',
-                    uploadLabel: 'IELTSエッセイをアップロード：',
-                    pasteLabel: 'またはここにエッセイを貼り付けます：',
-                    submitButton: '送信'
+                    uploadTitle: 'IELTSエッセイをアップロードする',
+                    uploadLabel: 'IELTSエッセイをアップロードする：',
+                    pasteLabel: 'またはここにエッセイを貼り付けてください：',
+                    submitButton: '提出する'
                 }
             };
 
-            document.getElementById('upload-title').textContent = texts[lang].uploadTitle;
-            document.getElementById('upload-label').textContent = texts[lang].uploadLabel;
-            document.getElementById('paste-label').textContent = texts[lang].pasteLabel;
-            document.getElementById('submit-button').textContent = texts[lang].submitButton;
-        }
+            document.querySelector('.upload h2').textContent = texts[lang].uploadTitle;
+            document.querySelector('label[for="essay“]’).textContent = texts[lang].uploadLabel;
+document.querySelector(‘label[for=“text-essay”]’).textContent = texts[lang].pasteLabel;
+document.querySelector(’.upload form button’).textContent = texts[lang].submitButton;
+}
 
-        document.getElementById('upload-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const formData = new FormData();
-            const fileInput = document.getElementById('essay');
-            const textEssay = document.getElementById('text-essay').
-                value;
 
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
-
-            if (textEssay.trim() !== '') {
-                const blob = new Blob([textEssay], { type: 'text/plain' });
-                formData.append('file', blob, 'essay.txt');
-            }
-
-            formData.append('upload_preset', 'anonymous_upload');
-
-            try {
-                const response = await axios.post('https://api.cloudinary.com/v1_1/dk8aeedal/upload', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                alert('Upload successful! URL: ' + response.data.secure_url);
-            } catch (error) {
-                console.error('Error uploading the file', error);
-                alert('Upload failed!');
-            }
-        });
-    </script>
 </body>
 </html>
-```              
+```
