@@ -305,16 +305,51 @@
         .language-options a:hover {
             background-color: #f4f4f4;
         }
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .service-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .service-item {
-                width: 90%;
-                margin: 10px 0;
-            }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-form label {
+            display: block;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .login-form button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -343,7 +378,6 @@
                 </div>
             </div>
         </div>
-        <div class="header-bottom-bar"></div>
     </header>
     <section class="hero" id="home">
         <div class="hero-content">
@@ -430,21 +464,29 @@
             </div>
         </div>
     </section>
+    <section class="login-container" id="login">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </section>
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- JavaScript for smooth scrolling and language switcher -->
+    <!-- JavaScript for smooth scrolling, language switcher, and login functionality -->
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
-            if (options.style.display === 'block') {
-                options.style.display = 'none';
-            } else {
-                options.style.display = 'block';
-            }
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
         }
 
         function changeLanguage(lang) {
@@ -461,236 +503,304 @@
                     service2Title: 'Grammar Correction',
                     service2Text: 'Improve your grammar skills.',
                     service2Button: 'Read more',
-                service3Title: 'Vocabulary Enhancement',
-                service3Text: 'Expand your vocabulary repertoire.',
-                service3Button: 'Read more',
-                service4Title: 'Coherence Assessment',
-                service4Text: 'Ensure your essay flows smoothly.',
-                service4Button: 'Read more',
-                service5Title: 'Task Response Analysis',
-                service5Text: 'Address task requirements effectively.',
-                service5Button: 'Read more',
-                contactTitle: 'Get in touch',
-                formNameLabel: 'Name:',
-                formEmailLabel: 'Email address:',
-                formPhoneLabel: 'Phone number:',
-                formMessageLabel: 'Message:',
-                formSubmitButton: 'Submit',
-                contactInfoTitle: 'Contact Information',
-                contactInfoEmail: 'Email: ',
-                contactInfoHours: 'Hours',
-                hours: [
-                    'Monday: 9:00am - 10:00pm',
-                    'Tuesday: 9:00am - 10:00pm',
-                    'Wednesday: 9:00am - 10:00pm',
-                    'Thursday: 9:00am - 10:00pm',
-                    'Friday: 9:00am - 10:00pm',
-                    'Saturday: 9:00am - 6:00pm',
-                    'Sunday: 9:00am - 12:00pm'
-                ]
-            },
-            zh: {
-                heroText: '雅思作文批改服务，全⾯提高写作质量。',
-                heroButton: '查看服务',
-                aboutTitle: '专家作文批改',
-                aboutText: '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。',
-                contactButton: '联系我们',
-                service1Title: '详细作文评估',
-                service1Text: '获得深入的作文反馈。',
-                service1Button: '了解更多',
-                service2Title: '语法纠正',
-                service2Text: '提高你的语法技能。',
-                service2Button: '了解更多',
-                service3Title: '词汇增强',
-                service3Text: '扩展你的词汇量。',
-                service3Button: '了解更多',
-                service4Title: '连贯性评估',
-                service4Text: '确保你的作文连贯流畅。',
-                service4Button: '了解更多',
-                service5Title: '任务回应分析',
-                service5Text: '有效回应任务要求。',
-                service5Button: '了解更多',
-                contactTitle: '联系我们',
-                formNameLabel: '姓名：',
-                formEmailLabel: '电子邮件地址：',
-                formPhoneLabel: '电话号码：',
-                formMessageLabel: '留言：',
-                formSubmitButton: '提交',
-                contactInfoTitle: '联系信息',
-                contactInfoEmail: '电子邮件：',
-                contactInfoHours: '工作时间',
-                hours: [
-                    '周一：上午9:00 - 晚上10:00',
-                    '周二：上午9:00 - 晚上10:00',
-                    '周三：上午9:00 - 晚上10:00',
-                    '周四：上午9:00 - 晚上10:00',
-                    '周五：上午9:00 - 晚上10:00',
-                    '周六：上午9:00 - 下午6:00',
-                    '周日：上午9:00 - 中午12:00'
-                ]
-            },
-            fr: {
-                heroText: 'Service de correction de dissertation IELTS, améliorez la qualité de l\'écriture.',
-                heroButton: 'Voir les services',
-                aboutTitle: 'Correction d\'essai par des experts',
-                aboutText: 'Service d\'évaluation et de correction de dissertation détaillée se concentrant sur quatre domaines clés: l\'achèvement des tâches, la cohérence et la cohésion, la diversité du vocabulaire et la précision grammaticale. Nous fournissons un score global pour aider les candidats à comprendre le niveau global de leur dissertation. Les erreurs spécifiques sont soulignées avec des suggestions d\'amélioration détaillées pour améliorer la qualité de l\'écriture. Recevez une dissertation entièrement révisée pour comparaison entre la version originale et révisée, identifiant clairement les domaines à améliorer.',
-                contactButton: 'Contactez-nous',
-                service1Title: 'Évaluation détaillée de l\'essai',
-                service1Text: 'Obtenez des commentaires approfondis sur votre essai.',
-                service1Button: 'En savoir plus',
-                service2Title: 'Correction grammaticale',
-                service2Text: 'Améliorez vos compétences en grammaire.',
-                service2Button: 'En savoir plus',
-                service3Title: 'Amélioration du vocabulaire',
-                service3Text: 'Élargissez votre répertoire de vocabulaire.',
-                service3Button: 'En savoir plus',
-                service4Title: 'Évaluation de la cohérence',
-                service4Text: 'Assurez-vous que votre essai est fluide.',
-                service4Button: 'En savoir plus',
-                service5Title: 'Analyse de la réponse à la tâche',
-                service5Text: 'Répondez efficacement aux exigences de la tâche.',
-                service5Button: 'En savoir plus',
-                contactTitle: 'Contactez-nous',
-                formNameLabel: 'Nom:',
-                formEmailLabel: 'Adresse e-mail:',
-                formPhoneLabel: 'Numéro de téléphone:',
-                formMessageLabel: 'Message:',
-                formSubmitButton: 'Soumettre',
-                contactInfoTitle: 'Informations de contact',
-                contactInfoEmail: 'E-mail: ',
-                contactInfoHours: 'Heures',
-                hours: [
-                    'Lundi: 9h00 - 22h00',
-                    'Mardi: 9h00 - 22h00',
-                    'Mercredi: 9h00 - 22h00',
-                    'Jeudi: 9h00 - 22h00',
-                    'Vendredi: 9h00 - 22h00',
-                    'Samedi: 9h00 - 18h00',
-                    'Dimanche: 9h00 - 12h00'
-                ]
-            },
-            de: {
-                heroText: 'IELTS-Aufsatzkorrekturdienst, Verbesserung der Schreibqualität.',
-                heroButton: 'Dienstleistungen anzeigen',
-                aboutTitle: 'Experten-Aufsatzkorrektur',
-                aboutText: 'Detaillierter Aufsatzbewertungs- und Korrekturservice, der sich auf vier Schlüsselbereiche konzentriert: Aufgabenerfüllung, Kohärenz und Kohäsion, Wortschatzvielfalt und grammatikalische Genauigkeit. Wir bieten eine Gesamtnote, um den Kandidaten zu helfen, das Gesamtniveau ihres Aufsatzes zu verstehen. Spezifische Fehler werden mit detaillierten Verbesserungsvorschlägen hervorgehoben, um die Schreibqualität zu verbessern. Erhalten Sie einen gründlich überarbeiteten Aufsatz zum Vergleich zwischen der Original- und der überarbeiteten Version, wobei die zu verbessernden Bereiche klar identifiziert werden.',
-                contactButton: 'Kontaktieren Sie uns',
-                service1Title: 'Detaillierte Aufsatzbewertung',
-                service1Text: 'Erhalten Sie detailliertes Feedback zu Ihrem Aufsatz.',
-                service1Button: 'Mehr erfahren',
-                service2Title: 'Grammatik-Korrektur',
-                service2Text: 'Verbessern Sie Ihre Grammatikkenntnisse.',
-                service2Button: 'Mehr erfahren',
-                service3Title: 'Wortschatzverbesserung',
-                service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
-                service3Button: 'Mehr erfahren',
-                service4Title: 'Kohärenzbewertung',
-                service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
-                service4Button: 'Mehr erfahren',
-                service5Title: 'Aufgabenantwort-Analyse',
-                service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
-                service5Button: 'Mehr erfahren',
-                contactTitle: 'Kontaktieren Sie uns',
-                formNameLabel: 'Name:',
-                formEmailLabel: 'E-Mail-Adresse:',
-                formPhoneLabel: 'Telefonnummer:',
-                formMessageLabel: 'Nachricht:',
-                formSubmitButton: 'Einreichen',
-                contactInfoTitle: 'Kontaktinformation',
-                contactInfoEmail: 'E-Mail: ',
-                contactInfoHours: 'Öffnungszeiten',
-                hours: [
-                    'Montag: 9:00 - 22:00 Uhr',
-                    'Dienstag: 9:00 - 22:00 Uhr',
-                    'Mittwoch: 9:00 - 22:00 Uhr',
-                    'Donnerstag: 9:00 - 22:00 Uhr',
-                    'Freitag: 9:00 - 22:00 Uhr',
-                    'Samstag: 9:00 - 18:00 Uhr',
-                    'Sonntag: 9:00 - 12:00 Uhr'
-                ]
-            },
-            jp: {
-                heroText: 'IELTS作文の添削サービス、ライティング品質の向上。',
-                heroButton: 'サービスを見る',
-                aboutTitle: 'エキスパートによる作文の添削',
-                                aboutText: 'タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。',
-                contactButton: 'お問い合わせ',
-                service1Title: '詳細な作文評価',
-                service1Text: 'エッセイに関する詳細なフィードバックを受け取る。',
-                service1Button: 'もっと詳しく',
-                service2Title: '文法修正',
-                service2Text: '文法スキルを向上させる。',
-                service2Button: 'もっと詳しく',
-                service3Title: '語彙の強化',
-                service3Text: '語彙のレパートリーを拡大する。',
-                service3Button: 'もっと詳しく',
-                service4Title: '一貫性の評価',
-                service4Text: 'エッセイがスムーズに流れるようにする。',
-                service4Button: 'もっと詳しく',
-                service5Title: 'タスク応答分析',
-                service5Text: 'タスクの要求を効果的に満たす。',
-                service5Button: 'もっと詳しく',
-                contactTitle: 'お問い合わせ',
-                formNameLabel: '名前：',
-                formEmailLabel: 'メールアドレス：',
-                formPhoneLabel: '電話番号：',
-                formMessageLabel: 'メッセージ：',
-                formSubmitButton: '送信',
-                contactInfoTitle: '連絡先情報',
-                contactInfoEmail: 'メールアドレス：',
-                contactInfoHours: '営業時間',
-                hours: [
-                    '月曜日：9:00〜22:00',
-                    '火曜日：9:00〜22:00',
-                    '水曜日：9:00〜22:00',
-                    '木曜日：9:00〜22:00',
-                    '金曜日：9:00〜22:00',
-                    '土曜日：9:00〜18:00',
-                    '日曜日：9:00〜12:00'
-                ]
-            }
-        };
+                    service3Title: 'Vocabulary Enhancement',
+                    service3Text: 'Expand your vocabulary repertoire.',
+                    service3Button: 'Read more',
+                    service4Title: 'Coherence Assessment',
+                    service4Text: 'Ensure your essay flows smoothly.',
+                    service4Button: 'Read more',
+                    service5Title: 'Task Response Analysis',
+                    service5Text: 'Address task requirements effectively.',
+                    service5Button: 'Read more',
+                    contactTitle: 'Get in touch',
+                    formNameLabel: 'Name:',
+                    formEmailLabel: 'Email address:',
+                    formPhoneLabel: 'Phone number:',
+                    formMessageLabel: 'Message:',
+                    formSubmitButton: 'Submit',
+                    contactInfoTitle: 'Contact Information',
+                    contactInfoEmail: 'Email: ',
+                    contactInfoHours: 'Hours',
+                    hours: [
+                        'Monday: 9:00am - 10:00pm',
+                        'Tuesday: 9:00am - 10:00pm',
+                        'Wednesday: 9:00am - 10:00pm',
+                        'Thursday: 9:00am - 10:00pm',
+                        'Friday: 9:00am - 10:00pm',
+                        'Saturday: 9:00am - 6:00pm',
+                        'Sunday: 9:00am - 12:00pm'
+                    ]
+                },
+                zh: {
+                    heroText: '雅思作文批改服务，全⾯提高写作质量。',
+                    heroButton: '查看服务',
+                    aboutTitle: '专家作文批改',
+                    aboutText: '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。',
+                    contactButton: '联系我们',
+                    service1Title: '详细作文评估',
+                    service1Text: '获得深入的作文反馈。',
+                    service1Button: '了解更多',
+                    service2Title: '语法纠正',
+                    service2Text: '提高你的语法技能。',
+                    service2Button: '了解更多',
+                    service3Title: '词汇增强',
+                    service3Text: '扩展你的词汇量。',
+                    service3Button: '了解更多',
+                    service4Title: '连贯性评估',
+                    service4Text: '确保你的作文连贯流畅。',
+                    service4Button: '了解更多',
+                    service5Title: '任务回应分析',
+                    service5Text: '有效回应任务要求。',
+                    service5Button: '了解更多',
+                    contactTitle: '联系我们',
+                    formNameLabel: '姓名：',
+                    formEmailLabel: '电子邮件地址：',
+                    formPhoneLabel: '电话号码：',
+                    formMessageLabel: '留言：',
+                    formSubmitButton: '提交',
+                    contactInfoTitle: '联系信息',
+                    contactInfoEmail: '电子邮件：',
+                    contactInfoHours: '工作时间',
+                    hours: [
+                        '周一：上午9:00 - 晚上10:00',
+                        '周二：上午9:00 - 晚上10:00',
+                        '周三：上午9:00 - 晚上10:00',
+                        '周四：上午9:00 - 晚上10:00',
+                        '周五：上午9:00 - 晚上10:00',
+                        '周六：上午9:00 - 下午6:00',
+                        '周日：上午9:00 - 中午12:00'
+                    ]
+                },
+                fr: {
+                    heroText: 'Service de correction de dissertation IELTS, améliorez la qualité de l\'écriture.',
+                    heroButton: 'Voir les services',
+                    aboutTitle: 'Correction d\'essai par des experts',
+                    aboutText: 'Service d\'évaluation et de correction de dissertation détaillée se concentrant sur quatre domaines clés: l\'achèvement des tâches, la cohérence et la cohésion, la diversité du vocabulaire et la précision grammaticale. Nous fournissons un score global pour aider les candidats à comprendre le niveau global de leur dissertation. Les erreurs spécifiques sont soulignées avec des suggestions d\'amélioration détaillées pour améliorer la qualité de l\'écriture. Recevez une dissertation entièrement révisée pour comparaison entre la version originale et révisée, identifiant clairement les domaines à améliorer.',
+                    contactButton: 'Contactez-nous',
+                    service1Title: 'Évaluation détaillée de l\'essai',
+                    service1Text: 'Obtenez des commentaires approfondis sur votre essai.',
+                    service1Button: 'En savoir plus',
+                    service2Title: 'Correction grammaticale',
+                    service2Text: 'Améliorez vos compétences en grammaire.',
+                    service2Button: 'En savoir plus',
+                    service3Title: 'Amélioration du vocabulaire',
+                    service3Text: 'Élargissez votre répertoire de vocabulaire.',
+                    service3Button: 'En savoir plus',
+                    service4Title: 'Évaluation de la cohérence',
+                    service4Text: 'Assurez-vous que votre essai est fluide.',
+                    service4Button: 'En savoir plus',
+                    service5Title: 'Analyse de la réponse à la tâche',
+                    service5Text: 'Répondez efficacement aux exigences de la tâche.',
+                    service5Button: 'En savoir plus',
+                    contactTitle: 'Contactez-nous',
+                    formNameLabel: 'Nom:',
+                    formEmailLabel: 'Adresse e-mail:',
+                    formPhoneLabel: 'Numéro de téléphone:',
+                    formMessageLabel: 'Message:',
+                    formSubmitButton: 'Soumettre',
+                    contactInfoTitle: 'Informations de contact',
+                    contactInfoEmail: 'E-mail: ',
+                    contactInfoHours: 'Heures',
+                    hours: [
+                        'Lundi: 9h00 - 22h00',
+                        'Mardi: 9h00 - 22h00',
+                        'Mercredi: 9h00 - 22h00',
+                        'Jeudi: 9h00 - 22h00',
+                        'Vendredi: 9h00 - 22h00',
+                        'Samedi: 9h00 - 18h00',
+                        'Dimanche: 9h00 - 12h00'
+                    ]
+                },
+                de: {
+                    heroText: 'IELTS-Aufsatzkorrekturdienst, Verbesserung der Schreibqualität.',
+                    heroButton: 'Dienstleistungen anzeigen',
+                    aboutTitle: 'Experten-Aufsatzkorrektur',
+                    aboutText: 'Detaillierter Aufsatzbewertungs- und Korrekturservice, der sich auf vier Schlüsselbereiche konzentriert: Aufgabenerfüllung, Kohärenz und Kohäsion, Wortschatzvielfalt und grammatikalische Genauigkeit. Wir bieten eine Gesamtnote, um den Kandidaten zu helfen, das Gesamtniveau ihres Aufsatzes zu verstehen. Spezifische Fehler werden mit detaillierten Verbesserungsvorschlägen hervorgehoben, um die Schreibqualität zu verbessern. Erhalten Sie einen gründlich überarbeiteten Aufsatz zum Vergleich zwischen der Original- und der überarbeiteten Version, wobei die zu verbessernden Bereiche klar identifiziert werden.',
+                    contactButton: 'Kontaktieren Sie uns',
+                    service1Title: 'Detaillierte Aufsatzbewertung',
+                    service1Text: 'Erhalten Sie detailliertes Feedback zu Ihrem Aufsatz.',
+                    service1Button: 'Mehr erfahren',
+                    service2Title: 'Grammatik-Korrektur',
+                    service2Text: 'Verbessern Sie Ihre Grammatikkenntnisse.',
+                    service2Button: 'Mehr erfahren',
+                    service3Title: 'Wortschatzverbesserung',
+                    service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
+                    service3Button: 'Mehr erfahren',
+                    service4Title: 'Kohärenzbewertung',
+                    service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
+                    service4Button: 'Mehr erfahren',
+                    service5Title: 'Aufgabenantwort-Analyse',
+                    service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
+                    service5Button: 'Mehr erfahren',
+                    contactTitle: 'Kontaktieren Sie uns',
+                    formNameLabel: 'Name:',
+                    formEmailLabel: 'E-Mail-Adresse:',
+                    formPhoneLabel: 'Telefonnummer:',
+                    formMessageLabel: 'Nachricht:',
+                    formSubmitButton: 'Einreichen',
+                    contactInfoTitle: 'Kontaktinformation',
+                    contactInfoEmail: 'E-Mail: ',
+                    contactInfoHours: 'Öffnungszeiten',
+                    hours: [
+                        'Montag: 9:00 - 22:00 Uhr',
+                        'Dienstag: 9:00 - 22:00 Uhr',
+                        'Mittwoch: 9:00 - 22:00 Uhr',
+                        'Donnerstag: 9:00 - 22:00 Uhr',
+                        'Freitag: 9:00 - 22:00 Uhr',
+                        'Samstag: 9:00 - 18:00 Uhr',
+                        'Sonntag: 9:00 - 12:00 Uhr'
+                    ]
+                },
+                jp: {
+                    heroText: 'IELTS作文の添削サービス、ライティング品質の向上。',
+                    heroButton: 'サービスを見る',
+                    aboutTitle: 'エキスパートによる作文の添削',
+                    aboutText: 'タスク完了度、一貫性と連結性、語彙の多様性、文法の正確性という4つの重要な分野に焦点を当てた詳細なエッセイ評価および修正サービスを提供します。受験者がエッセイの全体的なレベルを理解できるように総合評価を提供します。具体的なエラーは、ライティングの質を向上させるための詳細な改善提案とともに強調表示されます。オリジナルと修正されたバージョンの比較のために徹底的に修正されたエッセイを受け取り、改善が必要な領域を明確に特定します。',
+                    contactButton: 'お問い合わせ',
+                    service1Title: '詳細な作文評価',
+                    service1Text: 'エッセイに関する詳細なフィードバックを受け取る。',
+                    service1Button: 'もっと詳しく',
+                    service2Title: '文法修正',
+                    service2Text: '文法スキルを向上させる。',
+                    service2Button: 'もっと詳しく',
+                    service3Title: '語彙の強化',
+                    service3Text: '語彙のレパートリーを拡大する。',
+                    service3Button: 'もっと詳しく',
+                    service4Title: '一貫性の評価',
+                    service4Text: 'エッセイがスムーズに流れるようにする。',
+                    service4Button: 'もっと詳しく',
+                    service5Title: 'タスク応答分析',
+                    service5Text: 'タスクの要求を効果的に満たす。',
+                    service5Button: 'もっと詳しく',
+                    contactTitle: 'お問い合わせ',
+                    formNameLabel: '名前：',
+                    formEmailLabel: 'メールアドレス：',
+                    formPhoneLabel: '電話番号：',
+                    formMessageLabel: 'メッセージ：',
+                    formSubmitButton: '送信',
+                    contactInfoTitle: '連絡先情報',
+                    contactInfoEmail: 'メールアドレス：',
+                    contactInfoHours: '営業時間',
+                    hours: [
+                        '月曜日：9:00〜22:00',
+                        '火曜日：9:00〜22:00',
+                        '水曜日：9:00〜22:00',
+                        '木曜日：9:00〜22:00',
+                        '金曜日：9:00〜22:00',
+                        '土曜日：9:00〜18:00',
+                        '日曜日：9:00〜12:00'
+                    ]
+                }
+            };
 
-        document.getElementById('hero-text').textContent = texts[lang].heroText;
-        document.getElementById('hero-button').textContent = texts[lang].heroButton;
-        document.getElementById('about-title').textContent = texts[lang].aboutTitle;
-        document.getElementById('about-text').textContent = texts[lang].aboutText;
-        document.getElementById('contact-button').textContent = texts[lang].contactButton;
-        document.getElementById('service1-title').textContent = texts[lang].service1Title;
-        document.getElementById('service1-text').textContent = texts[lang].service1Text;
-        document.getElementById('service1-button').textContent = texts[lang].service1Button;
-        document.getElementById('service2-title').textContent = texts[lang].service2Title;
-        document.getElementById('service2-text').textContent = texts[lang].service2Text;
-        document.getElementById('service2-button').textContent = texts[lang].service2Button;
-        document.getElementById('service3-title').textContent = texts[lang].service3Title;
-        document.getElementById('service3-text').textContent = texts[lang].service3Text;
-        document.getElementById('service3-button').textContent = texts[lang].service3Button;
-        document.getElementById('service4-title').textContent = texts[lang].service4Title;
-        document.getElementById('service4-text').textContent = texts[lang].service4Text;
-        document.getElementById('service4-button').textContent = texts[lang].service4Button;
-        document.getElementById('service5-title').textContent = texts[lang].service5Title;
-        document.getElementById('service5-text').textContent = texts[lang].service5Text;
-        document.getElementById('service5-button').textContent = texts[lang].service5Button;
-        document.getElementById('contact-title').textContent = texts[lang].contactTitle;
-        document.getElementById('form-name-label').textContent = texts[lang].formNameLabel;
-        document.getElementById('form-email-label').textContent = texts[lang].formEmailLabel;
-        document.getElementById('form-phone-label').textContent = texts[lang].formPhoneLabel;
-        document.getElementById('form-message-label').textContent = texts[lang].formMessageLabel;
-        document.getElementById('form-submit-button').textContent = texts[lang].formSubmitButton;
-        document.getElementById('contact-info-title').textContent = texts[lang].contactInfoTitle;
-        document.getElementById('contact-info-email').textContent = texts[lang].contactInfoEmail;
-        document.getElementById('contact-info-hours').textContent = texts[lang].contactInfoHours;
-        const hoursList = document.getElementById('contact-info-hours').nextElementSibling;
-        while (hoursList.firstChild) {
-            hoursList.removeChild(hoursList.firstChild);
+            document.getElementById('hero-text').textContent = texts[lang].heroText;
+            document.getElementById('hero-button').textContent = texts[lang].heroButton;
+            document.getElementById('about-title').textContent = texts[lang].aboutTitle;
+            document.getElementById('about-text').textContent = texts[lang].aboutText;
+            document.getElementById('contact-button').textContent = texts[lang].contactButton;
+            document.getElementById('service1-title').textContent = texts[lang].service1Title;
+            document.getElementById('service1-text').textContent = texts[lang].service1Text;
+            document.getElementById('service1-button').textContent = texts[lang].service1Button;
+            document.getElementById('service2-title').textContent = texts[lang].service2Title;
+            document.getElementById('service2-text').textContent = texts[lang].service2Text;
+            document.getElementById('service2-button').textContent = texts[lang].service2Button;
+            document.getElementById('service3-title').textContent = texts[lang].service3Title;
+            document.getElementById('service3-text').textContent = texts[lang].service3Text;
+            document.getElementById('service3-button').textContent = texts[lang].service3Button;
+            document.getElementById('service4-title').textContent = texts[lang].service4Title;
+            document.getElementById('service4-text').textContent = texts[lang].service4Text;
+            document.getElementById('service4-button').textContent = texts[lang].service4Button;
+            document.getElementById('service5-title').textContent = texts[lang].service5Title;
+            document.getElementById('service5-text').textContent = texts[lang].service5Text;
+            document.getElementById('service5-button').textContent = texts[lang].service5Button;
+            document.getElementById('contact-title').textContent = texts[lang].contactTitle;
+            document.getElementById('form-name-label').textContent = texts[lang].formNameLabel;
+            document.getElementById('form-email-label').textContent = texts[lang].formEmailLabel;
+            document.getElementById('form-phone-label').textContent = texts[lang].formPhoneLabel;
+            document.getElementById('form-message-label').textContent = texts[lang].formMessageLabel;
+            document.getElementById('form-submit-button').textContent = texts[lang].formSubmitButton;
+            document.getElementById('contact-info-title').textContent = texts[lang].contactInfoTitle;
+            document.getElementById('contact-info-email').textContent = texts[lang].contactInfoEmail;
+            document.getElementById('contact-info-hours').textContent = texts[lang].contactInfoHours;
+            const hoursList = document.getElementById('contact-info-hours').nextElementSibling;
+            while (hoursList.firstChild) {
+                hoursList.removeChild(hoursList.firstChild);
+            }
+            texts[lang].hours.forEach(hour => {
+                const p = document.createElement('p');
+                p.textContent = hour;
+                hoursList.appendChild(p);
+            });
         }
-        texts[lang].hours.forEach(hour => {
-            const p = document.createElement('p');
-            p.textContent = hour;
-            hoursList.appendChild(p);
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+            const user = storedUsers.find(user => user.username === username && user.password === password);
+            if (user) {
+                alert('Login successful!');
+                // Redirect to another page or perform other actions upon successful login
+            } else {
+                alert('Invalid username or password');
+            }
         });
-    }
-</script>
+    </script>
 </body>
 </html>
-```
+<section class="register-container" id="register">
+    <div class="register-form">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</section>
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newUsername = document.getElementById('newUsername').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    const userExists = storedUsers.some(user => user.username === newUsername);
+    if (userExists) {
+        alert('Username already exists. Please choose another one.');
+    } else {
+        storedUsers.push({ username: newUsername, password: newPassword });
+        localStorage.setItem('users', JSON.stringify(storedUsers));
+        alert('Registration successful!');
+    }
+});
+<header>
+    <div class="header-top-bar"></div>
+    <div class="header-container">
+        <h1>ZERO ESSAY</h1>
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+                <li><a href="#login">LOGIN</a></li>
+                <li><a href="#register">REGISTER</a></li>
+            </ul>
+        </nav>
+        <p class="contact-email">thedethofromantic@outlook.com</p>
+        <div class="language-switcher">
+            <button onclick="toggleLanguageOptions()">Language</button>
+            <div class="language-options" id="language-options">
+                <a onclick="changeLanguage('en')">English</a>
+                <a onclick="changeLanguage('zh')">中文</a>
+                <a onclick="changeLanguage('fr')">Français</a>
+                <a onclick="changeLanguage('de')">Deutsch</a>
+                <a onclick="changeLanguage('jp')">日本語</a>
+            </div>
+        </div>
+    </div>
+</header>
