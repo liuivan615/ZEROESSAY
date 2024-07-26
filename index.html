@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <!-- Content Security Policy (CSP) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <!-- HTTP 安全头 -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
@@ -687,6 +685,92 @@
                 p.textContent = hour;
                 hoursList.appendChild(p);
             });
+        }
+    </script>
+    <script>
+        // Function to toggle the display of language options
+        function toggleLanguageOptions() {
+            var options = document.getElementById('language-options');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Function to register a new user
+        function registerUser(username, password) {
+            // Ensure username and password are at least 6 characters long
+            if (username.length < 6 || password.length < 6) {
+                alert('Username and password must be at least 6 characters long.');
+                return;
+            }
+
+            // Upload the user data to Cloudinary
+            var cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dk8aeedal/upload';
+            var formData = new FormData();
+            formData.append('file', new Blob([JSON.stringify({ username: username, password: password, points: 1 })], { type: 'application/json' }));
+            formData.append('upload_preset', 'ml_default'); // You might need to configure this preset in Cloudinary
+
+            fetch(cloudinaryUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.secure_url) {
+                    alert('User registered successfully!');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Error registering user. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error registering user. Please try again.');
+            });
+        }
+
+        // Function to log in a user
+        function loginUser(username, password) {
+            // Fetch the user data from Cloudinary
+            var cloudinaryUrl = `https://res.cloudinary.com/dk8aeedal/raw/upload/v1627898760/users.json`;
+
+            fetch(cloudinaryUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Check if the username and password match
+                var user = data.find(user => user.username === username && user.password === password);
+                if (user) {
+                    alert('Login successful!');
+                    document.cookie = `username=${username}; path=/`;
+                    document.cookie = `points=${user.points}; path=/`;
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Invalid username or password.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging in. Please try again.');
+            });
+        }
+
+        // Display the user's points if they are logged in
+        function displayUserPoints() {
+            var username = getCookie('username');
+            var points = getCookie('points');
+            if (username && points) {
+                document.getElementById('user-points').textContent = `Welcome, ${username}! You have ${points} points.`;
+            }
+        }
+
+        // Get a cookie value by name
+        function getCookie(name) {
+            var value = `; ${document.cookie}`;
+            var parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Call the function to display user points when the page loads
+        window.onload = function() {
+            displayUserPoints();
         }
     </script>
 </body>
