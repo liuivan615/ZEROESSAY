@@ -15,8 +15,9 @@
         }
         .container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -25,19 +26,20 @@
             max-width: 1200px;
         }
         .image-container {
-            flex: 1;
-            margin-right: 20px;
+            width: 100%;
+            margin-bottom: 20px;
         }
         .image-container img {
             width: 100%;
             border-radius: 8px;
         }
         .text-container {
-            flex: 2;
+            width: 100%;
             padding: 20px;
             background-color: #007BFF;
             color: #fff;
             border-radius: 8px;
+            box-sizing: border-box;
         }
         .text-container h2 {
             font-size: 2em;
