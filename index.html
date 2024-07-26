@@ -285,94 +285,39 @@
             background-color: #0056b3;
         }
         .language-options {
-            display: none;
-            position: absolute;
-            top: 40px; /* 调整位置，确保不被遮挡 */
-            right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 1;
-        }
-        .language-options.show {
-            display: block;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
-        }
-        @media only screen and (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header-container nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header-container nav ul li {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-            .hero {
-                height: auto;
-                padding: 50px 20px;
-            }
-            .hero h2 {
-                font-size: 2em;
-            }
-            .about-content, .service-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .service-item {
-                width: 100%;
-                max-width: 400px;
-            }
-            .image-container, .text-container {
-                flex: 1;
-                width: 100%;
-                margin: 0;
-            }
-            .text-container {
-                text-align: center;
-                padding: 10px;
-            }
-            .text-container h2 {
-                font-size: 1.5em;
-            }
-            .text-container p {
-                font-size: 1em;
-            }
-            .container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .image-container img {
-                width: 100%;
-                height: auto;
-            }
-            .text-container {
-                width: 100%;
-                background-color: #007BFF;
-                color: #fff;
-                border-radius: 8px;
-                padding: 20px;
-            }
-            .language-switcher {
-                position: relative;
-                z-index: 1000;
-            }
-        }
-    </style>
+display: none;
+position: absolute;
+top: 100%;
+right: 0;
+background-color: white;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+z-index: 1;
+}
+.language-options a {
+display: block;
+padding: 10px;
+text-decoration: none;
+color: #007BFF;
+cursor: pointer;
+}
+.language-options a:hover {
+background-color: #f4f4f4;
+}
+/* Mobile Styles */
+@media (max-width: 768px) {
+.service-container {
+flex-direction: column;
+align-items: center;
+}
+.service-item {
+width: 90%;
+margin: 10px 0;
+}
+}
+
+
 </head>
 <body>
     <header>
@@ -492,179 +437,181 @@
         </div>
     </footer>
 
-    <!-- JavaScript for smooth scrolling and language switcher -->
-    <script>
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            if (options.style.display === 'block') {
-                options.style.display = 'none';
-            } else {
-                options.style.display = 'block';
-            }
-        }
 
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    heroText: 'IELTS Essay Correction Service, Improve Writing Quality.',
-                    heroButton: 'View services',
-                    aboutTitle: 'Expert essay correction',
-                    aboutText: 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.',
-                    contactButton: 'Get in touch',
-                    service1Title: 'Detailed Essay Evaluation',
-                    service1Text: 'Get in-depth feedback on your essay.',
-                    service1Button: 'Read more',
-                    service2Title: 'Grammar Correction',
-                    service2Text: 'Improve your grammar skills.',
-                    service2Button: 'Read more',
-                    service3Title: 'Vocabulary Enhancement',
-                    service3Text: 'Expand your vocabulary repertoire.',
-                    service3Button: 'Read more',
-                    service4Title: 'Coherence Assessment',
-                    service4Text: 'Ensure your essay flows smoothly.',
-                    service4Button: 'Read more',
-                    service5Title: 'Task Response Analysis',
-                    service5Text: 'Address task requirements effectively.',
-                    service5Button: 'Read more',
-                    contactTitle: 'Get in touch',
-                    formNameLabel: 'Name:',
-                    formEmailLabel: 'Email address:',
-                    formPhoneLabel: 'Phone number:',
-                    formMessageLabel: 'Message:',
-                    formSubmitButton: 'Submit',
-                    contactInfoTitle: 'Contact Information',
-                    contactInfoEmail: 'Email: ',
-                    contactInfoHours: 'Hours',
-                    hours: [
-                        'Monday: 9:00am - 10:00pm',
-                        'Tuesday: 9:00am - 10:00pm',
-                        'Wednesday: 9:00am - 10:00pm',
-                        'Thursday: 9:00am - 10:00pm',
-                        'Friday: 9:00am - 10:00pm',
-                        'Saturday: 9:00am - 6:00pm',
-                        'Sunday: 9:00am - 12:00pm'
-                    ]
-                },
-                zh: {
-                    heroText: '雅思作文批改服务，全⾯提高写作质量。',
-                    heroButton: '查看服务',
-                    aboutTitle: '专家作文批改',
-                    aboutText: '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。',
-                    contactButton: '联系我们',
-                    service1Title: '详细作文评估',
-                    service1Text: '获得深入的作文反馈。',
-                    service1Button: '了解更多',
-                    service2Title: '语法纠正',
-                    service2Text: '提高你的语法技能。',
-                    service2Button: '了解更多',
-                    service3Title: '词汇增强',
-                    service3Text: '扩展你的词汇量。',
-                    service3Button: '了解更多',
-                    service4Title: '连贯性评估',
-                    service4Text: '确保你的作文连贯流畅。',
-                    service4Button: '了解更多',
-                    service5Title: '任务回应分析',
-                    service5Text: '有效回应任务要求。',
-                    service5Button: '了解更多',
-                    contactTitle: '联系我们',
-                    formNameLabel: '姓名：',
-                    formEmailLabel: '电子邮件地址：',
-                    formPhoneLabel: '电话号码：',
-                    formMessageLabel: '留言：',
-                    formSubmitButton: '提交',
-                    contactInfoTitle: '联系信息',
-                    contactInfoEmail: '电子邮件：',
-                    contactInfoHours: '工作时间',
-                    hours: [
-                        '周一：上午9:00 - 晚上10:00',
-                        '周二：上午9:00 - 晚上10:00',
-                        '周三：上午9:00 - 晚上10:00',
-                        '周四：上午9:00 - 晚上10:00',
-                        '周五：上午9:00 - 晚上10:00',
-                        '周六：上午9:00 - 下午6:00',
-                        '周日：上午9:00 - 中午12:00'
-                    ]
-                },
-                fr: {
-                    heroText: 'Service de correction de dissertation IELTS, améliorez la qualité de l\'écriture.',
-                    heroButton: 'Voir les services',
-                    aboutTitle: 'Correction d\'essai par des experts',
-                    aboutText: 'Service d\'évaluation et de correction de dissertation détaillée se concentrant sur quatre domaines clés: l\'achèvement des tâches, la cohérence et la cohésion, la diversité du vocabulaire et la précision grammaticale. Nous fournissons un score global pour aider les candidats à comprendre le niveau global de leur dissertation. Les erreurs spécifiques sont soulignées avec des suggestions d\'amélioration détaillées pour améliorer la qualité de l\'écriture. Recevez une dissertation entièrement révisée pour comparaison entre la version originale et révisée, identifiant clairement les domaines à améliorer.',
-                    contactButton: 'Contactez-nous',
-                    service1Title: 'Évaluation détaillée de l\'essai',
-                    service1Text: 'Obtenez des commentaires approfondis sur votre essai.',
-                    service1Button: 'En savoir plus',
-                    service2Title: 'Correction grammaticale',
-                    service2Text: 'Améliorez vos compétences en grammaire.',
-                    service2Button: 'En savoir plus',
-                    service3Title: 'Amélioration du vocabulaire',
-                    service3Text: 'Élargissez votre répertoire de vocabulaire.',
-                    service3Button: 'En savoir plus',
-                    service4Title: 'Évaluation de la cohérence',
-                    service4Text: 'Assurez-vous que votre essai est fluide.',
-                    service4Button: 'En savoir plus',
-                    service5Title: 'Analyse de la réponse à la tâche',
-                    service5Text: 'Répondez efficacement aux exigences de la tâche.',
-                    service5Button: 'En savoir plus',
-                    contactTitle: 'Contactez-nous',
-                    formNameLabel: 'Nom:',
-                    formEmailLabel: 'Adresse e-mail:',
-                    formPhoneLabel: 'Numéro de téléphone:',
-                    formMessageLabel: 'Message:',
-                    formSubmitButton: 'Soumettre',
-                    contactInfoTitle: 'Informations de contact',
-                    contactInfoEmail: 'E-mail: ',
-                    contactInfoHours: 'Heures',
-                    hours: [
-                        'Lundi: 9h00 - 22h00',
-                        'Mardi: 9h00 - 22h00',
-                        'Mercredi: 9h00 - 22h00',
-                        'Jeudi: 9h00 - 22h00',
-                        'Vendredi: 9h00 - 22h00',
-                        'Samedi: 9h00 - 18h00',
-                        'Dimanche: 9h00 - 12h00'
-                    ]
-                },
-                de: {
-                    heroText: 'IELTS-Aufsatzkorrekturdienst, Verbesserung der Schreibqualität.',
-                    heroButton: 'Dienstleistungen anzeigen',
-                    aboutTitle: 'Experten-Aufsatzkorrektur',
-                    aboutText: 'Detaillierter Aufsatzbewertungs- und Korrekturservice, der sich auf vier Schlüsselbereiche konzentriert: Aufgabenerfüllung, Kohärenz und Kohäsion, Wortschatzvielfalt und grammatikalische Genauigkeit. Wir bieten eine Gesamtnote, um den Kandidaten zu helfen, das Gesamtniveau ihres Aufsatzes zu verstehen. Spezifische Fehler werden mit detaillierten Verbesserungsvorschlägen hervorgehoben, um die Schreibqualität zu verbessern. Erhalten Sie einen gründlich überarbeiteten Aufsatz zum Vergleich zwischen der Original- und der überarbeiteten Version, wobei die zu verbessernden Bereiche klar identifiziert werden.',
-                    contactButton: 'Kontaktieren Sie uns',
-                    service1Title: 'Detaillierte Aufsatzbewertung',
-                    service1Text: 'Erhalten Sie detailliertes Feedback zu Ihrem Aufsatz.',
-                    service1Button: 'Mehr erfahren',
-                    service2Title: 'Grammatik-Korrektur',
-                    service2Text: 'Verbessern Sie Ihre Grammatikkenntnisse.',
-                    service2Button: 'Mehr erfahren',
-                    service3Title: 'Wortschatzverbesserung',
-                    service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
-                    service3Button: 'Mehr erfahren',
-                    service4Text: ‘Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.’,
-service4Button: ‘Mehr erfahren’,
-service5Title: ‘Aufgabenantwort-Analyse’,
-service5Text: ‘Erfüllen Sie die Aufgabenanforderungen effektiv.’,
-service5Button: ‘Mehr erfahren’,
-contactTitle: ‘Kontaktieren Sie uns’,
-formNameLabel: ‘Name:’,
-formEmailLabel: ‘E-Mail-Adresse:’,
-formPhoneLabel: ‘Telefonnummer:’,
-formMessageLabel: ‘Nachricht:’,
-formSubmitButton: ‘Einreichen’,
-contactInfoTitle: ‘Kontaktinformation’,
-contactInfoEmail: ’E-Mail: ’,
-contactInfoHours: ‘Öffnungszeiten’,
-hours: [
-‘Montag: 9:00 - 22:00 Uhr’,
-‘Dienstag: 9:00 - 22:00 Uhr’,
-‘Mittwoch: 9:00 - 22:00 Uhr’,
-‘Donnerstag: 9:00 - 22:00 Uhr’,
-‘Freitag: 9:00 - 22:00 Uhr’,
-‘Samstag: 9:00 - 18:00 Uhr’,
-‘Sonntag: 9:00 - 12:00 Uhr’
-]
-},
-jp: {
+<!-- JavaScript for smooth scrolling and language switcher -->
+<script>
+    function toggleLanguageOptions() {
+        var options = document.getElementById('language-options');
+        if (options.style.display === 'block') {
+            options.style.display = 'none';
+        } else {
+            options.style.display = 'block';
+        }
+    }
+
+    function changeLanguage(lang) {
+        const texts = {
+            en: {
+                heroText: 'IELTS Essay Correction Service, Improve Writing Quality.',
+                heroButton: 'View services',
+                aboutTitle: 'Expert essay correction',
+                aboutText: 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.',
+                contactButton: 'Get in touch',
+                service1Title: 'Detailed Essay Evaluation',
+                service1Text: 'Get in-depth feedback on your essay.',
+                service1Button: 'Read more',
+                service2Title: 'Grammar Correction',
+                service2Text: 'Improve your grammar skills.',
+                service2Button: 'Read more',
+                service3Title: 'Vocabulary Enhancement',
+                service3Text: 'Expand your vocabulary repertoire.',
+                service3Button: 'Read more',
+                service4Title: 'Coherence Assessment',
+                service4Text: 'Ensure your essay flows smoothly.',
+                service4Button: 'Read more',
+                service5Title: 'Task Response Analysis',
+                service5Text: 'Address task requirements effectively.',
+                service5Button: 'Read more',
+                contactTitle: 'Get in touch',
+                formNameLabel: 'Name:',
+                formEmailLabel: 'Email address:',
+                formPhoneLabel: 'Phone number:',
+                formMessageLabel: 'Message:',
+                formSubmitButton: 'Submit',
+                contactInfoTitle: 'Contact Information',
+                contactInfoEmail: 'Email: ',
+                contactInfoHours: 'Hours',
+                hours: [
+                    'Monday: 9:00am - 10:00pm',
+                    'Tuesday: 9:00am - 10:00pm',
+                    'Wednesday: 9:00am - 10:00pm',
+                    'Thursday: 9:00am - 10:00pm',
+                    'Friday: 9:00am - 10:00pm',
+                    'Saturday: 9:00am - 6:00pm',
+                    'Sunday: 9:00am - 12:00pm'
+                ]
+            },
+            zh: {
+                heroText: '雅思作文批改服务，全⾯提高写作质量。',
+                heroButton: '查看服务',
+                aboutTitle: '专家作文批改',
+                aboutText: '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。',
+                contactButton: '联系我们',
+                service1Title: '详细作文评估',
+                service1Text: '获得深入的作文反馈。',
+                service1Button: '了解更多',
+                service2Title: '语法纠正',
+                service2Text: '提高你的语法技能。',
+                service2Button: '了解更多',
+                service3Title: '词汇增强',
+                service3Text: '扩展你的词汇量。',
+                service3Button: '了解更多',
+                service4Title: '连贯性评估',
+                service4Text: '确保你的作文连贯流畅。',
+                service4Button: '了解更多',
+                service5Title: '任务回应分析',
+                service5Text: '有效回应任务要求。',
+                service5Button: '了解更多',
+                contactTitle: '联系我们',
+                formNameLabel: '姓名：',
+                formEmailLabel: '电子邮件地址：',
+                formPhoneLabel: '电话号码：',
+                formMessageLabel: '留言：',
+                formSubmitButton: '提交',
+                contactInfoTitle: '联系信息',
+                contactInfoEmail: '电子邮件：',
+                contactInfoHours: '工作时间',
+                hours: [
+                    '周一：上午9:00 - 晚上10:00',
+                    '周二：上午9:00 - 晚上10:00',
+                    '周三：上午9:00 - 晚上10:00',
+                    '周四：上午9:00 - 晚上10:00',
+                    '周五：上午9:00 - 晚上10:00',
+                    '周六：上午9:00 - 下午6:00',
+                    '周日：上午9:00 - 中午12:00'
+                ]
+            },
+            fr: {
+                heroText: 'Service de correction de dissertation IELTS, améliorez la qualité de l\'écriture.',
+                heroButton: 'Voir les services',
+                aboutTitle: 'Correction d\'essai par des experts',
+                aboutText: 'Service d\'évaluation et de correction de dissertation détaillée se concentrant sur quatre domaines clés: l\'achèvement des tâches, la cohérence et la cohésion, la diversité du vocabulaire et la précision grammaticale. Nous fournissons un score global pour aider les candidats à comprendre le niveau global de leur dissertation. Les erreurs spécifiques sont soulignées avec des suggestions d\'amélioration détaillées pour améliorer la qualité de l\'écriture. Recevez une dissertation entièrement révisée pour comparaison entre la version originale et révisée, identifiant clairement les domaines à améliorer.',
+                contactButton: 'Contactez-nous',
+                service1Title: 'Évaluation détaillée de l\'essai',
+                service1Text: 'Obtenez des commentaires approfondis sur votre essai.',
+                service1Button: 'En savoir plus',
+                service2Title: 'Correction grammaticale',
+                service2Text: 'Améliorez vos compétences en grammaire.',
+                service2Button: 'En savoir plus',
+                service3Title: 'Amélioration du vocabulaire',
+                service3Text: 'Élargissez votre répertoire de vocabulaire.',
+                service3Button: 'En savoir plus',
+                service4Title: 'Évaluation de la cohérence',
+                service4Text: 'Assurez-vous que votre essai est fluide.',
+                service4Button: 'En savoir plus',
+                service5Title: 'Analyse de la réponse à la tâche',
+                service5Text: 'Répondez efficacement aux exigences de la tâche.',
+                service5Button: 'En savoir plus',
+                contactTitle: 'Contactez-nous',
+                formNameLabel: 'Nom:',
+                formEmailLabel: 'Adresse e-mail:',
+                formPhoneLabel: 'Numéro de téléphone:',
+                formMessageLabel: 'Message:',
+                formSubmitButton: 'Soumettre',
+                contactInfoTitle: 'Informations de contact',
+                contactInfoEmail: 'E-mail: ',
+                contactInfoHours: 'Heures',
+                hours: [
+                    'Lundi: 9h00 - 22h00',
+                    'Mardi: 9h00 - 22h00',
+                    'Mercredi: 9h00 - 22h00',
+                    'Jeudi: 9h00 - 22h00',
+                    'Vendredi: 9h00 - 22h00',
+                    'Samedi: 9h00 - 18h00',
+                    'Dimanche: 9h00 - 12h00'
+                ]
+            },
+            de: {
+                heroText: 'IELTS-Aufsatzkorrekturdienst, Verbesserung der Schreibqualität.',
+                heroButton: 'Dienstleistungen anzeigen',
+                aboutTitle: 'Experten-Aufsatzkorrektur',
+                aboutText: 'Detaillierter Aufsatzbewertungs- und Korrekturservice, der sich auf vier Schlüsselbereiche konzentriert: Aufgabenerfüllung, Kohärenz und Kohäsion, Wortschatzvielfalt und grammatikalische Genauigkeit. Wir bieten eine Gesamtnote, um den Kandidaten zu helfen, das Gesamtniveau ihres Aufsatzes zu verstehen. Spezifische Fehler werden mit detaillierten Verbesserungsvorschlägen hervorgehoben, um die Schreibqualität zu verbessern. Erhalten Sie einen gründlich überarbeiteten Aufsatz zum Vergleich zwischen der Original- und der überarbeiteten Version, wobei die zu verbessernden Bereiche klar identifiziert werden.',
+                contactButton: 'Kontaktieren Sie uns',
+                service1Title: 'Detaillierte Aufsatzbewertung',
+                service1Text: 'Erhalten Sie detailliertes Feedback zu Ihrem Aufsatz.',
+                service1Button: 'Mehr erfahren',
+                service2Title: 'Grammatik-Korrektur',
+                service2Text: 'Verbessern Sie Ihre Grammatikkenntnisse.',
+                service2Button: 'Mehr erfahren',
+                service3Title: 'Wortschatzverbesserung',
+                service3Text: 'Erweitern Sie Ihr Wortschatzrepertoire.',
+                service3Button: 'Mehr erfahren',
+                service4Title: 'Kohärenzbewertung',
+                service4Text: 'Stellen Sie sicher, dass Ihr Aufsatz flüssig ist.',
+                service4Button: 'Mehr erfahren',
+                service5Title: 'Aufgabenantwort-Analyse',
+                service5Text: 'Erfüllen Sie die Aufgabenanforderungen effektiv.',
+                service5Button: 'Mehr erfahren',
+                contactTitle: 'Kontaktieren Sie uns',
+                formNameLabel: 'Name:',
+                formEmailLabel: 'E-Mail-Adresse:',
+                formPhoneLabel: 'Telefonnummer:',
+                formMessageLabel: 'Nachricht:',
+                formSubmitButton: 'Einreichen',
+                contactInfoTitle: 'Kontaktinformation',
+                contactInfoEmail: 'E-Mail: ',
+                contactInfoHours: 'Öffnungszeiten',
+                hours: [
+                    'Montag: 9:00 - 22:00 Uhr',
+                    'Dienstag: 9:00 - 22:00 Uhr',
+                    'Mittwoch: 9:00 - 22:00 Uhr',
+                    'Donnerstag: 9:00 - 22:00 Uhr',
+                    'Freitag: 9:00 - 22:00 Uhr',
+                    'Samstag: 9:00 - 18:00 Uhr',
+                    'Sonntag: 9:00 - 12:00 Uhr'
+                ]
+            },
+            jp: {
 heroText: ‘IELTS作文の添削サービス、ライティング品質の向上。’,
 heroButton: ‘サービスを見る’,
 aboutTitle: ‘エキスパートによる作文の添削’,
