@@ -203,7 +203,7 @@
                 <input type="password" id="register-password" name="password" required>
                 <button type="submit">Register</button>
             </form>
-            <div id="register-error" style="color: red; display: none;">Username or password is too short.</div>
+            <p id="error-message" style="color: red;"></p>
         </div>
     </section>
     <footer>
@@ -216,35 +216,44 @@
             event.preventDefault();
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
-            if (username.length < 6 || password.length < 6) {
-                document.getElementById('register-error').style.display = 'block';
-                return;
-            }
             registerUser(username, password);
         });
 
         function registerUser(username, password) {
-            fetch('https://api.cloudinary.com/v1_1/dk8aeedal/auto/upload', {
+            const errorMessage = document.getElementById('error-message');
+            if (username.length < 5 || password.length < 5) {
+                errorMessage.textContent = 'Username and password must be at least 5 characters long.';
+                return;
+            }
+
+            const user = {
+                username: username,
+                password: password,
+                points: 1
+            };
+
+            fetch(`https://api.cloudinary.com/v1_1/dk8aeedal/raw/upload`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    file: username + ":" + password,
-                    upload_preset: 'YOUR_UPLOAD_PRESET'
-                }),
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    file: `data:application/json;base64,${btoa(JSON.stringify(user))}`,
+                    upload_preset: 'your_upload_preset' // 替换为你的上传预设
+                })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.secure_url) {
+                if (data.error) {
+                    errorMessage.textContent = 'Error registering. Please try again.';
+                } else {
                     alert('Registration successful!');
                     window.location.href = 'login.html';
-                } else {
-                    document.getElementById('register-error').style.display = 'block';
                 }
             })
             .catch(error => {
-                document.getElementById('register-error').style.display = 'block';
+                console.error('Error:', error);
+                errorMessage.textContent = 'Error registering. Please try again.';
             });
         }
     </script>
