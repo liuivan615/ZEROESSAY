@@ -16,61 +16,11 @@
         }
         .container {
             width: 80%;
-            margin: 20px auto;
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .text-container {
-            padding: 20px;
-            background-color: #007BFF;
-            color: #fff;
-            border-radius: 8px;
-        }
-        .text-container h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .text-container p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-        .language-switcher {
-            position: relative;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
         }
         header {
             background-color: #fff;
@@ -130,6 +80,82 @@
             font-size: 0.9em;
             color: #007BFF;
         }
+        .hero {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .hero-content {
+            z-index: 1;
+        }
+        .hero h2 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .content {
+            background-color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .language-switcher {
+            position: relative;
+            display: inline-block;
+        }
+        .language-switcher button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .language-options {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .language-options a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .language-options a:hover {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
@@ -159,10 +185,16 @@
         </div>
         <div class="header-bottom-bar"></div>
     </header>
-    <section class="container">
-        <div class="text-container">
-            <h2 id="service-title">Coherence Assessment</h2>
-            <p id="service-text">Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.</p>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Coherence Assessment</h2>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <h2>Coherence Assessment</h2>
+            <p>Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.</p>
+            <a href="index.html#contact" class="btn">Contact Us</a>
         </div>
     </section>
     <footer>
@@ -171,7 +203,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript for language switcher -->
     <script>
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
@@ -185,29 +216,41 @@
         function changeLanguage(lang) {
             const texts = {
                 en: {
-                    serviceTitle: 'Coherence Assessment',
-                    serviceText: 'Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.'
+                    heroText: 'Coherence Assessment',
+                    contentTitle: 'Coherence Assessment',
+                    contentText: 'Ensure your essay flows smoothly and logically with our coherence assessment service. Coherence is key to making your arguments understandable and persuasive. We evaluate the logical progression of your ideas, the effectiveness of your transitions, and the overall organization of your essay. Our feedback helps you create a cohesive structure that guides your readers effortlessly from one point to the next. Write essays that not only convey your message clearly but also engage your audience throughout.',
+                    contactButton: 'Contact Us'
                 },
                 zh: {
-                    serviceTitle: '连贯性评估',
-                    serviceText: '通过我们的连贯性评估服务，确保您的作文流畅且逻辑清晰。连贯性是使您的论点易于理解和有说服力的关键。我们评估您的想法的逻辑进展，过渡的有效性以及您的作文的整体组织。我们的反馈帮助您创建一个连贯的结构，使您的读者可以毫不费力地从一个观点过渡到另一个观点。写出不仅能清晰传达信息而且能全程吸引读者的文章。'
+                    heroText: '连贯性评估',
+                    contentTitle: '连贯性评估',
+                    contentText: '通过我们的连贯性评估服务，确保您的作文流畅且逻辑清晰。连贯性是使您的论点易于理解和有说服力的关键。我们评估您的想法的逻辑进展，过渡的有效性以及您的作文的整体组织。我们的反馈帮助您创建一个连贯的结构，使您的读者可以毫不费力地从一个观点过渡到另一个观点。写出不仅能清晰传达信息而且能全程吸引读者的文章。',
+                    contactButton: '联系我们'
                 },
                 fr: {
-                    serviceTitle: 'Évaluation de la cohérence',
-                    serviceText: 'Assurez-vous que votre essai coule de manière fluide et logique avec notre service d\'évaluation de la cohérence. La cohérence est essentielle pour rendre vos arguments compréhensibles et convaincants. Nous évaluons la progression logique de vos idées, l\'efficacité de vos transitions et l\'organisation globale de votre essai. Nos commentaires vous aident à créer une structure cohérente qui guide vos lecteurs sans effort d\'un point à un autre. Écrivez des essais qui non seulement transmettent clairement votre message, mais qui engagent également votre audience tout au long.'
+                    heroText: 'Évaluation de la cohérence',
+                    contentTitle: 'Évaluation de la cohérence',
+                    contentText: 'Assurez-vous que votre essai coule de manière fluide et logique avec notre service d\'évaluation de la cohérence. La cohérence est essentielle pour rendre vos arguments compréhensibles et convaincants. Nous évaluons la progression logique de vos idées, l\'efficacité de vos transitions et l\'organisation globale de votre essai. Nos commentaires vous aident à créer une structure cohérente qui guide vos lecteurs sans effort d\'un point à un autre. Écrivez des essais qui non seulement transmettent clairement votre message, mais aussi captivent votre audience tout au long.',
+                    contactButton: 'Contactez-nous'
                 },
                 de: {
-                    serviceTitle: 'Kohärenzbewertung',
-                    serviceText: 'Stellen Sie mit unserem Kohärenzbewertungsdienst sicher, dass Ihr Aufsatz reibungslos und logisch fließt. Kohärenz ist der Schlüssel, um Ihre Argumente verständlich und überzeugend zu machen. Wir bewerten den logischen Verlauf Ihrer Ideen, die Wirksamkeit Ihrer Übergänge und die Gesamtorganisation Ihres Aufsatzes. Unser Feedback hilft Ihnen, eine kohärente Struktur zu erstellen, die Ihre Leser mühelos von einem Punkt zum nächsten führt. Schreiben Sie Aufsätze, die nicht nur Ihre Botschaft klar vermitteln, sondern auch Ihre Leser durchgehend fesseln.'
+                    heroText: 'Kohärenzbewertung',
+                    contentTitle: 'Kohärenzbewertung',
+                    contentText: 'Stellen Sie mit unserem Kohärenzbewertungsdienst sicher, dass Ihr Aufsatz reibungslos und logisch fließt. Kohärenz ist der Schlüssel, um Ihre Argumente verständlich und überzeugend zu machen. Wir bewerten den logischen Verlauf Ihrer Ideen, die Wirksamkeit Ihrer Übergänge und die Gesamtorganisation Ihres Aufsatzes. Unser Feedback hilft Ihnen, eine kohärente Struktur zu erstellen, die Ihre Leser mühelos von einem Punkt zum nächsten führt. Schreiben Sie Aufsätze, die nicht nur Ihre Botschaft klar vermitteln, sondern auch Ihre Leser durchgehend fesseln.',
+                    contactButton: 'Kontaktieren Sie uns'
                 },
                 jp: {
-                    serviceTitle: '一貫性の評価',
-                    serviceText: '私たちの一貫性評価サービスを利用して、あなたのエッセイがスムーズで論理的に流れるようにします。一貫性は、あなたの議論を理解しやすく、説得力のあるものにするための鍵です。私たちは、あなたのアイデアの論理的な進行、移行の有効性、そしてエッセイの全体的な組織を評価します。私たちのフィードバックは、読者があるポイントから次のポイントに無理なく移行できるような一貫した構造を作成するのに役立ちます。あなたのメッセージを明確に伝えるだけでなく、読者を通して引き付けるエッセイを書きましょう。'
+                    heroText: '一貫性の評価',
+                    contentTitle: '一貫性の評価',
+                    contentText: '私たちの一貫性評価サービスを利用して、あなたのエッセイがスムーズで論理的に流れるようにします。一貫性は、あなたの議論を理解しやすく、説得力のあるものにするための鍵です。私たちは、あなたのアイデアの論理的な進行、移行の有効性、そしてエッセイの全体的な組織を評価します。私たちのフィードバックは、読者があるポイントから次のポイントに無理なく移行できるような一貫した構造を作成するのに役立ちます。あなたのメッセージを明確に伝えるだけでなく、読者を通して引き付けるエッセイを書きましょう。',
+                    contactButton: 'お問い合わせ'
                 }
             };
 
-            document.getElementById('service-title').textContent = texts[lang].serviceTitle;
-            document.getElementById('service-text').textContent = texts[lang].serviceText;
+            document.querySelector('.hero h2').textContent = texts[lang].heroText;
+            document.querySelector('.content h2').textContent = texts[lang].contentTitle;
+            document.querySelector('.content p').textContent = texts[lang].contentText;
+            document.querySelector('.content .btn').textContent = texts[lang].contactButton;
         }
     </script>
 </body>
