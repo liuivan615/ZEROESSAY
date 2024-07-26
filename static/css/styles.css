@@ -306,6 +306,10 @@ header nav ul li a.active::after {
         width: 95%;
         padding: 10px;
     }
+
+    .text-container {
+        text-align: center;
+    }
 }
 
 /* Specific styles for detailed page layout on mobile */
