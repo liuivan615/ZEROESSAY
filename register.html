@@ -240,21 +240,30 @@
         });
 
         async function registerUser(username, password) {
-            const apiKey = '171272812288197';
-            const apiSecret = 'HEX6ayHSRPpjai6vC8oghdDFUEY';
-            const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dk8aeedal/auto/upload`;
-            
-            const data = new FormData();
-            data.append('file', JSON.stringify({username, password, points: 1}));
-            data.append('upload_preset', 'your_upload_preset');
-            data.append('api_key', apiKey);
-            data.append('timestamp', Math.floor(Date.now() / 1000));
+            const githubUsername = 'your_github_username';
+            const repoName = 'your_repo_name';
+            const token = 'your_github_token';
 
-            const response = await fetch(cloudinaryUrl, {
-                method: 'POST',
-                body: data
+            const content = {
+                username: username,
+                password: password,
+                points: 1
+            };
+
+            const fileContent = btoa(JSON.stringify(content));
+
+            const response = await fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/users/${username}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Create user file',
+                    content: fileContent
+                })
             });
-            
+
             if (response.ok) {
                 return await response.json();
             } else {
