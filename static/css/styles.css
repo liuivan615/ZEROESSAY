@@ -275,4 +275,57 @@ header nav ul li a.active::after {
     .text-container p {
         font-size: 1em;
     }
+
+    /* Ensure image and text are stacked vertically */
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+    }
+
+    .text-container {
+        width: 100%;
+        background-color: #007BFF;
+        color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .language-switcher {
+        position: relative;
+        z-index: 1000;
+    }
+
+    .language-options {
+        position: absolute;
+        top: 40px; /* Adjusted to make sure it's not cut off */
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 1001;
+        display: none; /* Hidden by default */
+    }
+
+    .language-options.show {
+        display: block; /* Displayed when the button is clicked */
+    }
+
+    .language-options a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #007BFF;
+        cursor: pointer;
+    }
+
+    .language-options a:hover {
+        background-color: #f4f4f4;
+    }
 }
