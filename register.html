@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Zero Essay</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/styles.css">
     <style>
         body, html {
@@ -212,57 +211,62 @@
         </div>
     </footer>
     <script>
-        document.getElementById('register-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('register-username').value;
-            const password = document.getElementById('register-password').value;
-
-            const content = btoa(`${username}: ${password}\n`);
-            const token = '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'; // Use your GitHub token
+        async function registerUser(username, password) {
+            const token = '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';
             const repo = 'liuivan615/ZEROESSAY';
             const path = 'users.txt';
-            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
             try {
-                // 获取现有文件的 SHA 值
-                const responseGet = await fetch(url, {
-                    method: 'GET',
+                const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
                     headers: {
-                        'Authorization': `token ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
 
-                if (!responseGet.ok) {
+                if (!response.ok) {
                     throw new Error('Could not get existing file');
                 }
 
-                const fileData = await responseGet.json();
-                const sha = fileData.sha;
+                const fileData = await response.json();
+                const content = atob(fileData.content);
+                const users = content ? JSON.parse(content) : [];
 
-                const newContent = btoa(atob(fileData.content) + `${username}: ${password}\n`);
+                if (users.some(user => user.username === username)) {
+                    alert('Username already exists.');
+                    return;
+                }
 
-                const responsePut = await fetch(url, {
+                users.push({ username, password, points: 1 });
+                const newContent = btoa(JSON.stringify(users));
+
+                const updateResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${token}`,
+                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: `Add user ${username}`,
+                        message: 'Add new user',
                         content: newContent,
-                        sha: sha
+                        sha: fileData.sha
                     })
                 });
 
-                if (responsePut.ok) {
-                    alert('Registration successful!');
-                } else {
-                    alert('Registration failed: ' + responsePut.statusText);
+                if (!updateResponse.ok) {
+                    throw new Error('Could not update file');
                 }
+
+                alert('Registration successful!');
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error: ', error.message);
             }
+        }
+
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            registerUser(username, password);
         });
     </script>
 </body>
