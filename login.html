@@ -55,20 +55,16 @@
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
 
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
+            const response = await fetch(`https://raw.githubusercontent.com/liuivan615/ZEROESSAY/main/users.txt`);
+            const text = await response.text();
 
-            const result = await response.json();
+            const users = text.split('\n').map(line => line.split(': '));
+            const user = users.find(([u, p]) => u === username && p === password);
 
-            if (result.success) {
+            if (user) {
                 alert('Login successful!');
             } else {
-                alert('Login failed: ' + result.message);
+                alert('Login failed: Incorrect username or password.');
             }
         });
     </script>
