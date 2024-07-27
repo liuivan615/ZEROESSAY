@@ -4,62 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Zero Essay</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>ZERO ESSAY</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
-            </ul>
-        </nav>
+    <header class="bg-light py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h3">ZERO ESSAY</h1>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="index.html#home" class="nav-link">HOME</a></li>
+                    <li class="nav-item"><a href="index.html#about" class="nav-link">ABOUT</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link">SERVICES</a></li>
+                    <li class="nav-item"><a href="index.html#contact" class="nav-link">CONTACT</a></li>
+                    <li class="nav-item"><a href="login.html" class="nav-link active">LOGIN</a></li>
+                    <li class="nav-item"><a href="register.html" class="nav-link">REGISTER</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <section>
-        <div class="container">
-            <h2>Login to Your Account</h2>
-            <form id="login-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
-            <p id="message"></p>
+    <section class="hero text-center text-white d-flex align-items-center justify-content-center">
+        <div class="hero-content">
+            <h2>Login</h2>
         </div>
     </section>
+    <section class="content py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Login to Your Account</h2>
+            <form id="login-form" class="mx-auto" style="max-width: 500px;">
+                <div class="form-group">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </section>
+    <footer class="bg-light py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const message = document.getElementById('message');
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
 
-            fetch('https://api.github.com/repos/liuivan615/ZEROESSAY/contents/storage/users.json', {
-                method: 'GET',
+            const response = await fetch('/login', {
+                method: 'POST',
                 headers: {
-                    'Authorization': 'token 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',
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            })
-            .then(response => response.json())
-            .then(json => {
-                const fileContent = atob(json.content);
-                const users = JSON.parse(fileContent);
-
-                const user = users.find(u => u.username === username && u.password === password);
-
-                if (user) {
-                    message.textContent = `Login successful! Your points: ${user.points}`;
-                } else {
-                    message.textContent = 'Invalid username or password.';
-                }
-            })
-            .catch(error => {
-                message.textContent = 'Error: ' + error.message;
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
             });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Login successful!');
+            } else {
+                alert('Login failed: ' + result.message);
+            }
         });
     </script>
 </body>
