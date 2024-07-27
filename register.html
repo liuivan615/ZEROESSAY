@@ -55,20 +55,42 @@
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
 
-            const response = await fetch('/register', {
-                method: 'POST',
+            const content = btoa(`${username}: ${password}\n`);
+            const token = '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';
+            const repo = 'liuivan615/ZEROESSAY';
+            const path = 'users.txt';
+            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+            // 获取现有文件的 SHA 值
+            const responseGet = await fetch(url, {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
+                    'Authorization': `token ${token}`
+                }
             });
 
-            const result = await response.json();
+            const fileData = await responseGet.json();
+            const sha = fileData.sha;
 
-            if (result.success) {
+            const newContent = btoa(atob(fileData.content) + `${username}: ${password}\n`);
+
+            const responsePut = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `Add user ${username}`,
+                    content: newContent,
+                    sha: sha
+                })
+            });
+
+            if (responsePut.ok) {
                 alert('Registration successful!');
             } else {
-                alert('Registration failed: ' + result.message);
+                alert('Registration failed: ' + responsePut.statusText);
             }
         });
     </script>
