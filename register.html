@@ -52,8 +52,11 @@
     <script>
         document.getElementById('register-form').addEventListener('submit', async function(event) {
             event.preventDefault();
+            console.log('Form submitted');
+
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
+            console.log(`Username: ${username}, Password: ${password}`);
 
             const content = btoa(`${username}: ${password}\n`);
             const token = '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';
@@ -61,36 +64,48 @@
             const path = 'users.txt';
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
-            // 获取现有文件的 SHA 值
-            const responseGet = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `token ${token}`
+            try {
+                // 获取现有文件的 SHA 值
+                const responseGet = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `token ${token}`
+                    }
+                });
+
+                if (!responseGet.ok) {
+                    throw new Error('Could not get existing file');
                 }
-            });
 
-            const fileData = await responseGet.json();
-            const sha = fileData.sha;
+                const fileData = await responseGet.json();
+                const sha = fileData.sha;
+                console.log(`Existing file SHA: ${sha}`);
 
-            const newContent = btoa(atob(fileData.content) + `${username}: ${password}\n`);
+                const newContent = btoa(atob(fileData.content) + `${username}: ${password}\n`);
 
-            const responsePut = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: `Add user ${username}`,
-                    content: newContent,
-                    sha: sha
-                })
-            });
+                const responsePut = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Add user ${username}`,
+                        content: newContent,
+                        sha: sha
+                    })
+                });
 
-            if (responsePut.ok) {
-                alert('Registration successful!');
-            } else {
-                alert('Registration failed: ' + responsePut.statusText);
+                if (responsePut.ok) {
+                    alert('Registration successful!');
+                    console.log('Registration successful');
+                } else {
+                    alert('Registration failed: ' + responsePut.statusText);
+                    console.error('Registration failed: ', responsePut.statusText);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error('Error: ', error.message);
             }
         });
     </script>
