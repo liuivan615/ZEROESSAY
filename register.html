@@ -6,60 +6,220 @@
     <title>Register - Zero Essay</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-top-bar {
+            background-color: #007BFF;
+            height: 4px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
+        .hero {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .hero-content {
+            z-index: 1;
+        }
+        .hero h2 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .content {
+            background-color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .content form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .content form label {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .content form input {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .content form button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .content form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f4f4f4;
+            color: #333;
+            border-top: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-light py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h1 class="h3">ZERO ESSAY</h1>
+    <header>
+        <div class="header-top-bar"></div>
+        <div class="header-container">
+            <h1>ZERO ESSAY</h1>
             <nav>
-                <ul class="nav">
-                    <li class="nav-item"><a href="index.html#home" class="nav-link">HOME</a></li>
-                    <li class="nav-item"><a href="index.html#about" class="nav-link">ABOUT</a></li>
-                    <li class="nav-item"><a href="index.html#services" class="nav-link">SERVICES</a></li>
-                    <li class="nav-item"><a href="index.html#contact" class="nav-link">CONTACT</a></li>
-                    <li class="nav-item"><a href="login.html" class="nav-link">LOGIN</a></li>
-                    <li class="nav-item"><a href="register.html" class="nav-link active">REGISTER</a></li>
+                <ul>
+                    <li><a href="index.html#home">HOME</a></li>
+                    <li><a href="index.html#about">ABOUT</a></li>
+                    <li><a href="index.html#services">SERVICES</a></li>
+                    <li><a href="index.html#contact">CONTACT</a></li>
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html" class="active">REGISTER</a></li>
                 </ul>
             </nav>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
         </div>
+        <div class="header-bottom-bar"></div>
     </header>
-    <section class="hero text-center text-white d-flex align-items-center justify-content-center">
+    <section class="hero">
         <div class="hero-content">
             <h2>Register</h2>
         </div>
     </section>
-    <section class="content py-5">
+    <section class="content">
         <div class="container">
-            <h2 class="text-center mb-4">Create an Account</h2>
-            <form id="register-form" class="mx-auto" style="max-width: 500px;">
-                <div class="form-group">
-                    <label for="register-username">Username:</label>
-                    <input type="text" id="register-username" name="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Password:</label>
-                    <input type="password" id="register-password" name="password" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <h2>Create an Account</h2>
+            <form id="register-form">
+                <label for="register-username">Username:</label>
+                <input type="text" id="register-username" name="username" required>
+                <label for="register-password">Password:</label>
+                <input type="password" id="register-password" name="password" required>
+                <button type="submit">Register</button>
             </form>
         </div>
     </section>
-    <footer class="bg-light py-3">
-        <div class="container text-center">
+    <footer>
+        <div class="footer-container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
     <script>
         document.getElementById('register-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            console.log('Form submitted');
 
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
-            console.log(`Username: ${username}, Password: ${password}`);
 
             const content = btoa(`${username}: ${password}\n`);
-            const token = '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';
+            const token = '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'; // Use your GitHub token
             const repo = 'liuivan615/ZEROESSAY';
             const path = 'users.txt';
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
@@ -79,7 +239,6 @@
 
                 const fileData = await responseGet.json();
                 const sha = fileData.sha;
-                console.log(`Existing file SHA: ${sha}`);
 
                 const newContent = btoa(atob(fileData.content) + `${username}: ${password}\n`);
 
@@ -98,14 +257,11 @@
 
                 if (responsePut.ok) {
                     alert('Registration successful!');
-                    console.log('Registration successful');
                 } else {
                     alert('Registration failed: ' + responsePut.statusText);
-                    console.error('Registration failed: ', responsePut.statusText);
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
-                console.error('Error: ', error.message);
             }
         });
     </script>
