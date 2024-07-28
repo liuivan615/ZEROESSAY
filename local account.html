@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Information</title>
+</head>
+<body>
+    <h1>Account Details</h1>
+    Logged in as: <span id="user-name"></span><br>
+    Points: <span id="user-points"></span>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查 localStorage 是否已有数据
+            if (!localStorage.getItem('username')) {
+                // 假设这里是用户第一次访问，你可以设置一些默认值
+                localStorage.setItem('username', 'Guest');
+                localStorage.setItem('userPoints', '0');
+            }
+
+            // 从 localStorage 读取用户信息并显示
+            var userName = localStorage.getItem('username');
+            var userPoints = localStorage.getItem('userPoints');
+
+            document.getElementById('user-name').textContent = userName;
+            document.getElementById('user-points').textContent = userPoints;
+        });
+    </script>
+</body>
+</html>
