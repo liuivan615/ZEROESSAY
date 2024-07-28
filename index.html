@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
     <style>
         body, html {
             margin: 0;
@@ -18,569 +15,87 @@
             color: #333;
             scroll-behavior: smooth;
         }
-        .container {
+        .container, .header-container, .service-container, .contact-form-container {
             width: 80%;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .header-container, .service-container {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        header, .service-item, .contact-form, .contact-info {
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        header {
-            background-color: #fff;
-            color: #000;
-            padding: 20px 0;
-            text-align: center;
-            position: relative;
-        }
-        .header-top-bar {
-            background-color: #007BFF;
-            height: 4px;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2em;
-            text-transform: uppercase;
-        }
-        header nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        header nav ul li {
-            margin-left: 20px;
-        }
-        header nav ul li a {
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1em;
-            position: relative;
-        }
-        header nav ul li a::after {
-            content: '';
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background-color: #007BFF;
-            transition: all 0.3s ease;
-        }
-        header nav ul li a:hover::after,
-        header nav ul li a.active::after {
-            width: 100%;
-            left: 0;
-        }
-        .contact-email {
-            font-size: 0.9em;
-            color: #007BFF;
         }
         .hero {
-            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
             height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            background: linear-gradient(135deg, #6B73FF, #000DFF);
             color: #fff;
-            position: relative;
-        }
-        .hero-content {
-            z-index: 1;
-        }
-        .hero h2 {
-            font-size: 3em;
-            margin: 0;
         }
         .btn {
             background-color: #007BFF;
             color: #fff;
             padding: 10px 20px;
             text-decoration: none;
-            margin-top: 20px;
             display: inline-block;
-            font-size: 1em;
             border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .btn:hover {
             background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-        .about {
-            background-color: #fff;
-            padding: 50px 20px;
-            text-align: center;
-        }
-        .about h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .about-text {
-            width: 80%;
-            text-align: center;
-        }
-        .about p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .services {
-            background-color: #f9f9f9;
-            padding: 50px 0;
-            text-align: center;
-        }
-        .service-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .service-item {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin: 20px;
-            width: 300px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .service-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .service-item img {
-            max-width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        .service-item h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-        .service-item p {
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-        .contact {
-            background-color: #fff;
-            padding: 50px 20px;
-            text-align: center;
-        }
-        .contact h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .contact-form-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            flex-wrap: wrap;
-        }
-        .contact-form {
-            width: 45%;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .contact-form label {
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .contact-form button {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            margin-top: 20px;
-            font-size: 1em;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .contact-form button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-        .contact-info {
-            width: 45%;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .contact-info h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-        .contact-info p {
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-        .contact-info p a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .contact-info p a:hover {
-            text-decoration: underline;
-        }
-        .contact-info .hours {
-            font-size: 1em;
-            color: #555;
-        }
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #f4f4f4;
-            color: #333;
-            border-top: 1px solid #ccc;
-        }
-        .language-switcher {
-            position: relative;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
-        }
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .service-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .service-item {
-                width: 90%;
-                margin: 10px 0;
-            }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-top-bar"></div>
-        <div class="header-container">
-            <h1>ZERO ESSAY</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home" class="active">HOME</a></li>
-                    <li><a href="#about">ABOUT</a></li>
-                    <li><a href="#services">SERVICES</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
-                    <li><a href="login.html">LOGIN</a></li>
-                    <li><a href="register.html">REGISTER</a></li>
-                </ul>
-            </nav>
-            <div>
-                <span id="user-name"></span>
-                <span id="user-points"></span>
-            </div>
-            <p class="contact-email">thedethofromantic@outlook.com</p>
-            <div class="language-switcher">
-                <button onclick="toggleLanguageOptions()">Language</button>
-                <div class="language-options" id="language-options">
-                    <a onclick="changeLanguage('en')">English</a>
-                    <a onclick="changeLanguage('zh')">中文</a>
-                    <a onclick="changeLanguage('fr')">Français</a>
-                    <a onclick="changeLanguage('de')">Deutsch</a>
-                    <a onclick="changeLanguage('jp')">日本語</a>
-                </div>
-            </div>
+        <h1>ZERO ESSAY</h1>
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+                <li><a href="login.html">LOGIN</a></li>
+                <li><a href="register.html">REGISTER</a></li>
+            </ul>
+        </nav>
+        <div>
+            <span id="user-name"></span>
+            <span id="user-points"></span>
         </div>
-        <div class="header-bottom-bar"></div>
+        <p class="contact-email">thedethofromantic@outlook.com</p>
     </header>
     <section class="hero" id="home">
-        <div class="hero-content">
-            <h2 id="hero-text">雅思作文批改服务，全⾯提高写作质量。</h2>
-            <a href="upload.html" class="btn" id="hero-button">查看服务</a>
-        </div>
+        <h2>雅思作文批改服务，全⾯提高写作质量。</h2>
+        <a href="upload.html" class="btn">查看服务</a>
     </section>
     <section class="about" id="about">
-        <div class="container">
-            <h2 id="about-title">专家作文批改</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p id="about-text">详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。</p>
-                </div>
-            </div>
-            <a href="#contact" class="btn" id="contact-button">联系我们</a>
-        </div>
+        <h2>专家作文批改</h2>
+        <p>详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。</p>
+        <a href="#contact" class="btn">联系我们</a>
     </section>
     <section class="services" id="services">
-        <div class="service-container">
-            <div class="service-item">
-                <h3 id="service1-title">详细作文评估</h3>
-                <img src="static/images/detailed_evaluation.png" alt="Detailed essay evaluation">
-                <p id="service1-text">获得深入的作文反馈。</p>
-                <a href="detailed_evaluation.html" class="btn" id="service1-button">了解更多</a>
-            </div>
-            <div class="service-item">
-                <h3 id="service2-title">语法纠正</h3>
-                <img src="static/images/grammar_correction.png" alt="Grammar correction">
-                <p id="service2-text">提高你的语法技能。</p>
-                <a href="grammar_correction.html" class="btn" id="service2-button">了解更多</a>
-            </div>
-            <div class="service-item">
-                <h3 id="service3-title">词汇增强</h3>
-                <img src="static/images/vocabulary_enhancement.png" alt="Vocabulary enhancement">
-                <p id="service3-text">扩展你的词汇量。</p>
-                <a href="vocabulary_enhancement.html" class="btn" id="service3-button">了解更多</a>
-            </div>
-            <div class="service-item">
-                <h3 id="service4-title">连贯性评估</h3>
-                <img src="static/images/coherence_assessment.png" alt="Coherence assessment">
-                <p id="service4-text">确保你的作文连贯流畅。</p>
-                <a href="coherence_assessment.html" class="btn" id="service4-button">了解更多</a>
-            </div>
-            <div class="service-item">
-                <h3 id="service5-title">任务回应分析</h3>
-                <img src="static/images/task_response_analysis.png" alt="Task response analysis">
-                <p id="service5-text">有效回应任务要求。</p>
-                <a href="task_response_analysis.html" class="btn" id="service5-button">了解更多</a>
-            </div>
+        <h2>我们的服务</h2>
+        <div class="service-item">
+            <h3>详细作文评估</h3>
+            <a href="detailed_evaluation.html" class="btn">了解更多</a>
         </div>
     </section>
     <section class="contact" id="contact">
-        <div class="container">
-            <h2 id="contact-title">联系我们</h2>
-            <div class="contact-form-container">
-                <div class="contact-form">
-                    <form action="mailto:thedethofromantic@outlook.com" method="post" enctype="text/plain">
-                        <label for="name" id="form-name-label">姓名：</label>
-                        <input type="text" id="name" name="name" required>
-                        <label for="email" id="form-email-label">电子邮件地址：</label>
-                        <input type="email" id="email" name="email" required>
-                        <label for="phone" id="form-phone-label">电话号码：</label>
-                        <input type="tel" id="phone" name="phone" required>
-                        <label for="message" id="form-message-label">留言：</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                        <button type="submit" id="form-submit-button">提交</button>
-                    </form>
-                </div>
-                <div class="contact-info">
-                    <h3 id="contact-info-title">联系信息</h3>
-                    <p id="contact-info-email">电子邮件：<a href="mailto:thedethofromantic@outlook.com">thedethofromantic@outlook.com</a></p>
-                    <div class="hours" id="contact-info-hours">
-                        <p>工作时间</p>
-                        <p>周一：上午9:00 - 晚上10:00</p>
-                        <p>周二：上午9:00 - 晚上10:00</p>
-                        <p>周三：上午9:00 - 晚上10:00</p>
-                        <p>周四：上午9:00 - 晚上10:00</p>
-                        <p>周五：上午9:00 - 晚上10:00</p>
-                        <p>周六：上午9:00 - 下午6:00</p>
-                        <p>周日：上午9:00 - 中午12:00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h2>联系我们</h2>
+        <form>
+            <label>姓名：<input type="text" required></label>
+            <label>电子邮件：<input type="email" required></label>
+            <label>电话：<input type="tel" required></label>
+            <label>留言：<textarea required></textarea></label>
+            <button type="submit" class="btn">提交</button>
+        </form>
     </section>
     <footer>
-        <div class="footer-container">
-            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
-        </div>
+        <p>&copy; 2024 Zero Essay. All rights reserved.</p>
     </footer>
-
-    <!-- JavaScript for smooth scrolling and language switcher -->
-    <script>
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    heroText: 'IELTS Essay Correction Service, Improve Writing Quality.',
-                    heroButton: 'View services',
-                    aboutTitle: 'Expert essay correction',
-                    aboutText: 'Detailed essay evaluation and correction service focusing on four key areas: task completion, coherence and cohesion, vocabulary diversity, and grammar accuracy. We provide an overall score to help candidates understand their essay\'s overall level. Specific errors are highlighted with detailed improvement suggestions to enhance writing quality. Receive a thoroughly revised essay for comparison between the original and edited versions, clearly identifying areas for improvement.',
-                    contactButton: 'Get in touch',
-                    service1Title: 'Detailed Essay Evaluation',
-                    service1Text: 'Get in-depth feedback on your essay.',
-                    service1Button: 'Learn more',
-                    service2Title: 'Grammar Correction',
-                    service2Text: 'Improve your grammar skills.',
-                    service2Button: 'Learn more',
-                    service3Title: 'Vocabulary Enhancement',
-                    service3Text: 'Expand your vocabulary.',
-                    service3Button: 'Learn more',
-                    service4Title: 'Coherence Assessment',
-                    service4Text: 'Ensure your essay flows logically.',
-                    service4Button: 'Learn more',
-                    service5Title: 'Task Response Analysis',
-                    service5Text: 'Effectively respond to task requirements.',
-                    service5Button: 'Learn more',
-                    contactTitle: 'Get in Touch',
-                    formNameLabel: 'Name:',
-                    formEmailLabel: 'Email Address:',
-                    formPhoneLabel: 'Phone Number:',
-                    formMessageLabel: 'Message:',
-                    formSubmitButton: 'Submit',
-                    contactInfoTitle: 'Contact Information',
-                    contactInfoEmail: 'Email: ',
-                    contactInfoHours: `
-                        <p>Working hours</p>
-                        <p>Monday: 9:00 AM - 10:00 PM</p>
-                        <p>Tuesday: 9:00 AM - 10:00 PM</p>
-                        <p>Wednesday: 9:00 AM - 10:00 PM</p>
-                        <p>Thursday: 9:00 AM - 10:00 PM</p>
-                        <p>Friday: 9:00 AM - 10:00 PM</p>
-                        <p>Saturday: 9:00 AM - 6:00 PM</p>
-                        <p>Sunday: 9:00 AM - 12:00 PM</p>
-                    `,
-                },
-                zh: {
-                    heroText: '雅思作文批改服务，全⾯提高写作质量。',
-                    heroButton: '查看服务',
-                    aboutTitle: '专家作文批改',
-                    aboutText: '详细的作文评估和修改服务，重点关注四个关键领域：任务完成度、连贯性与一致性、词汇多样性和语法准确性。我们提供一个总体评分，帮助考生了解他们作文的总体水平。具体错误会用详细的改进建议进行标注，以提高写作质量。收到一个彻底修改后的作文，便于原文和修改后的版本对比，明确改进的地方。',
-                    contactButton: '联系我们',
-                    service1Title: '详细作文评估',
-                    service1Text: '获得深入的作文反馈。',
-                    service1Button: '了解更多',
-                    service2Title: '语法纠正',
-                    service2Text: '提高你的语法技能。',
-                    service2Button: '了解更多',
-                    service3Title: '词汇增强',
-                    service3Text: '扩展你的词汇量。',
-                    service3Button: '了解更多',
-                    service4Title: '连贯性评估',
-                    service4Text: '确保你的作文连贯流畅。',
-                    service4Button: '了解更多',
-                    service5Title: '任务回应分析',
-                    service5Text: '有效回应任务要求。',
-                    service5Button: '了解更多',
-                    contactTitle: '联系我们',
-                    formNameLabel: '姓名：',
-                    formEmailLabel: '电子邮件地址：',
-                    formPhoneLabel: '电话号码：',
-                    formMessageLabel: '留言：',
-                    formSubmitButton: '提交',
-                    contactInfoTitle: '联系信息',
-                    contactInfoEmail: '电子邮件：',
-                    contactInfoHours: `
-                        <p>工作时间</p>
-                        <p>周一：上午9:00 - 晚上10:00</p>
-                        <p>周二：上午9:00 - 晚上10:00</p>
-                        <p>周三：上午9:00 - 晚上10:00</p>
-                        <p>周四：上午9:00 - 晚上10:00</p>
-                        <p>周五：上午9:00 - 晚上10:00</p>
-                        <p>周六：上午9:00 - 下午6:00</p>
-                        <p>周日：上午9:00 - 中午12:00</p>
-                    `,
-                }
-            };
-
-            document.getElementById('hero-text').innerText = texts[lang].heroText;
-            document.getElementById('hero-button').innerText = texts[lang].heroButton;
-            document.getElementById('about-title').innerText = texts[lang].aboutTitle;
-            document.getElementById('about-text').innerText = texts[lang].aboutText;
-            document.getElementById('contact-button').innerText = texts[lang].contactButton;
-            document.getElementById('service1-title').innerText = texts[lang].service1Title;
-            document.getElementById('service1-text').innerText = texts[lang].service1Text;
-            document.getElementById('service1-button').innerText = texts[lang].service1Button;
-            document.getElementById('service2-title').innerText = texts[lang].service2Title;
-            document.getElementById('service2-text').innerText = texts[lang].service2Text;
-            document.getElementById('service2-button').innerText = texts[lang].service2Button;
-            document.getElementById('service3-title').innerText = texts[lang].service3Title;
-            document.getElementById('service3-text').innerText = texts[lang].service3Text;
-            document.getElementById('service3-button').innerText = texts[lang].service3Button;
-            document.getElementById('service4-title').innerText = texts[lang].service4Title;
-            document.getElementById('service4-text').innerText = texts[lang].service4Text;
-            document.getElementById('service4-button').innerText = texts[lang].service4Button;
-            document.getElementById('service5-title').innerText = texts[lang].service5Title;
-            document.getElementById('service5-text').innerText = texts[lang].service5Text;
-            document.getElementById('service5-button').innerText = texts[lang].service5Button;
-            document.getElementById('contact-title').innerText = texts[lang].contactTitle;
-            document.getElementById('form-name-label').innerText = texts[lang].formNameLabel;
-            document.getElementById('form-email-label').innerText = texts[lang].formEmailLabel;
-            document.getElementById('form-phone-label').innerText = texts[lang].formPhoneLabel;
-            document.getElementById('form-message-label').innerText = texts[lang].formMessageLabel;
-            document.getElementById('form-submit-button').innerText = texts[lang].formSubmitButton;
-            document.getElementById('contact-info-title').innerText = texts[lang].contactInfoTitle;
-            document.getElementById('contact-info-email').innerHTML = texts[lang].contactInfoEmail + '<a href="mailto:thedethofromantic@outlook.com">thedethofromantic@outlook.com</a>';
-            document.getElementById('contact-info-hours').innerHTML = texts[lang].contactInfoHours;
-        }
-
-        // Fetch user information from cookies
-        function getUserInfo() {
-            const cookies = document.cookie.split(';');
-            let userName = '';
-            let userPoints = '';
-
-            cookies.forEach(cookie => {
-                const [name, value] = cookie.trim().split('=');
-                if (name === 'username') userName = value;
-                if (name === 'points') userPoints = value;
-            });
-
-            document.getElementById('user-name').innerText = userName ? `User: ${userName}` : '';
-            document.getElementById('user-points').innerText = userPoints ? `Points: ${userPoints}` : '';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            getUserInfo();
-        });
-    </script>
 </body>
 </html>
