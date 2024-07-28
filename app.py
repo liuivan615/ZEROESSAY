@@ -7,10 +7,6 @@ app = Flask(__name__)
 CORS(app)
 
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
-UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
-
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 def load_users():
     with open(USER_DATA_FILE, 'r') as f:
@@ -80,13 +76,6 @@ def upload():
     users = load_users()
     if users[username]['points'] < 1:
         return jsonify({'error': 'Insufficient points'}), 400
-
-    file = request.files.get('file')
-    if not file:
-        return jsonify({'error': 'No file uploaded'}), 400
-
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
 
     users[username]['points'] -= 1
     save_users(users)
