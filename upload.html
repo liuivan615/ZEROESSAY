@@ -77,6 +77,14 @@
     <header>
         <div class="container">
             <h1>UPLOAD ESSAY</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html">REGISTER</a></li>
+                    <li><a href="upload.html" class="active">UPLOAD ESSAY</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
     <section class="upload">
@@ -96,18 +104,5 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        document.getElementById('upload-form').addEventListener('submit', function(event) {
-            const fileInput = document.getElementById('essay');
-            const textArea = document.getElementById('text-essay');
-
-            // Check if both the file input is empty and text area is empty or just white space
-            if (fileInput.files.length === 0 && !textArea.value.trim()) {
-                event.preventDefault(); // Prevent form submission
-                alert('Please upload a file or enter text into the text area.');
-            }
-        });
-    </script>
 </body>
 </html>
