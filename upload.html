@@ -176,7 +176,7 @@
             <div class="language-switcher">
                 <button onclick="toggleLanguageOptions()">Language</button>
                 <div class="language-options" id="language-options">
-                    <a onclick="changeLanguage('en')">English</a>
+                                        <a onclick="changeLanguage('en')">English</a>
                     <a onclick="changeLanguage('zh')">中文</a>
                     <a onclick="changeLanguage('fr')">Français</a>
                     <a onclick="changeLanguage('de')">Deutsch</a>
@@ -249,7 +249,6 @@
             document.getElementById('submit-button').textContent = texts[lang].submitButton;
         }
 
-        // Display the user's points if they are logged in
         function displayUserPoints() {
             var username = getCookie('username');
             var points = getCookie('points');
@@ -262,14 +261,12 @@
             }
         }
 
-        // Get a cookie value by name
         function getCookie(name) {
             var value = `; ${document.cookie}`;
             var parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // Call the function to display user points when the page loads
         window.onload = function() {
             displayUserPoints();
         }
@@ -305,7 +302,7 @@
                     }
                 });
 
-                if (response.data.success) {
+                if (response.data.message === 'File uploaded successfully') {
                     alert('Upload successful!');
                     document.cookie = `points=${points - 1}; path=/`;
                     displayUserPoints();
