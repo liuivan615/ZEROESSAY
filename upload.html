@@ -14,96 +14,13 @@
             color: #333;
             scroll-behavior: smooth;
         }
-        header {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            border-bottom: 3px solid #0056b3;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2em;
-            text-transform: uppercase;
-        }
-        header nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        header nav ul li {
-            margin-left: 20px;
-        }
-        header nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1em;
-            position: relative;
-        }
-        header nav ul li a::after {
-            content: '';
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
             background-color: #fff;
-            transition: all 0.3s ease;
-        }
-        header nav ul li a:hover::after,
-        header nav ul li a.active::after {
-            width: 100%;
-            left: 0;
-        }
-        .contact-email {
-            font-size: 0.9em;
-            color: #fff;
-        }
-        .language-switcher {
-            position: relative;
-            display: inline-block;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .language-switcher button:hover {
-            background-color: #0056b3;
-        }
-        .language-options {
-            display: none;
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            top: 100%;
-            right: 0;
-        }
-        .language-options a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #007BFF;
-            cursor: pointer;
-        }
-        .language-options a:hover {
-            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .upload {
             padding: 50px 20px;
@@ -122,8 +39,7 @@
             font-size: 1.2em;
             margin-top: 10px;
         }
-        .upload form input,
-        .upload form textarea {
+        .upload form input, .upload form textarea {
             width: 80%;
             max-width: 600px;
             padding: 10px;
@@ -159,159 +75,38 @@
 </head>
 <body>
     <header>
-        <div class="header-container">
+        <div class="container">
             <h1>UPLOAD ESSAY</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li id="login-link"><a href="login.html">LOGIN</a></li>
-                    <li id="register-link"><a href="register.html">REGISTER</a></li>
-                    <li id="user-info" style="display:none;">
-                        <span id="user-status"></span>
-                        <span>Points: <span id="user-points"></span></span>
-                    </li>
-                </ul>
-            </nav>
-            <p class="contact-email">thedethofromantic@outlook.com</p>
-            <div class="language-switcher">
-                <button onclick="toggleLanguageOptions()">Language</button>
-                <div class="language-options" id="language-options">
-                                        <a onclick="changeLanguage('en')">English</a>
-                    <a onclick="changeLanguage('zh')">中文</a>
-                    <a onclick="changeLanguage('fr')">Français</a>
-                    <a onclick="changeLanguage('de')">Deutsch</a>
-                    <a onclick="changeLanguage('jp')">日本語</a>
-                </div>
-            </div>
         </div>
     </header>
     <section class="upload">
         <div class="container">
-            <h2 id="upload-title">Upload your IELTS essay</h2>
-            <form id="upload-form">
-                <label for="essay" id="upload-label">Upload your IELTS essay:</label>
-                <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png" required>
-                <label for="text-essay" id="paste-label">Or paste your essay here:</label>
-                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
-                <button type="submit" id="submit-button">Submit</button>
+            <h2>Upload your IELTS essay</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <label for="essay">Upload your IELTS essay (PDF, DOCX):</label>
+                <input type="file" id="essay" name="file" accept=".pdf, .docx" required>
+                <button type="submit">Submit</button>
             </form>
         </div>
     </section>
     <footer>
-        <div class="footer-container">
+        <div class="container">
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    uploadTitle: 'Upload your IELTS essay',
-                    uploadLabel: 'Upload your IELTS essay:',
-                    pasteLabel: 'Or paste your essay here:',
-                    submitButton: 'Submit'
-                },
-                zh: {
-                    uploadTitle: '上传您的雅思作文',
-                    uploadLabel: '上传您的雅思作文:',
-                    pasteLabel: '或者在这里粘贴您的作文:',
-                    submitButton: '提交'
-                },
-                fr: {
-                    uploadTitle: 'Téléchargez votre essai IELTS',
-                    uploadLabel: 'Téléchargez votre essai IELTS:',
-                    pasteLabel: 'Ou collez votre essai ici:',
-                    submitButton: 'Soumettre'
-                },
-                de: {
-                    uploadTitle: 'Laden Sie Ihr IELTS-Aufsatz hoch',
-                    uploadLabel: 'Laden Sie Ihr IELTS-Aufsatz hoch:',
-                    pasteLabel: 'Oder fügen Sie Ihren Aufsatz hier ein:',
-                    submitButton: 'Einreichen'
-                },
-                jp: {
-                    uploadTitle: 'IELTSエッセイをアップロード',
-                    uploadLabel: 'IELTSエッセイをアップロード:',
-                    pasteLabel: 'または、ここにエッセイを貼り付けます:',
-                    submitButton: '提出する'
-                }
-            };
-
-            document.getElementById('upload-title').textContent = texts[lang].uploadTitle;
-            document.getElementById('upload-label').textContent = texts[lang].uploadLabel;
-            document.getElementById('paste-label').textContent = texts[lang].pasteLabel;
-            document.getElementById('submit-button').textContent = texts[lang].submitButton;
-        }
-
-        function displayUserPoints() {
-            var username = getCookie('username');
-            var points = getCookie('points');
-            if (username && points) {
-                document.getElementById('login-link').style.display = 'none';
-                document.getElementById('register-link').style.display = 'none';
-                document.getElementById('user-info').style.display = 'inline';
-                document.getElementById('user-status').textContent = `Welcome, ${username}!`;
-                document.getElementById('user-points').textContent = points;
-            }
-        }
-
-        function getCookie(name) {
-            var value = `; ${document.cookie}`;
-            var parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        window.onload = function() {
-            displayUserPoints();
-        }
-
         document.getElementById('upload-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const formData = new FormData();
-            const fileInput = document.getElementById('essay');
-            const textEssay = document.getElementById('text-essay').value;
-            const username = getCookie('username');
-            const points = parseInt(getCookie('points'));
-
-            if (points <= 0) {
-                alert('You do not have enough points to upload an essay.');
-                return;
-            }
-
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
-
-            if (textEssay.trim() !== '') {
-                const blob = new Blob([textEssay], { type: 'text/plain' });
-                formData.append('file', blob, 'essay.txt');
-            }
-
-            formData.append('username', username);
-
-            try {
-                const response = await axios.post('/upload', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-
-                if (response.data.message === 'File uploaded successfully') {
-                    alert('Upload successful!');
-                    document.cookie = `points=${points - 1}; path=/`;
-                    displayUserPoints();
-                } else {
-                    alert('Upload failed!');
-                }
-            } catch (error) {
-                console.error('Error uploading the file', error);
-                alert('Upload failed!');
+            const formData = new FormData(document.getElementById('upload-form'));
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                alert('Upload successful!');
+            } else {
+                alert('Upload failed. Please try again.');
             }
         });
     </script>
