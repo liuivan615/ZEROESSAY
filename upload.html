@@ -82,9 +82,11 @@
     <section class="upload">
         <div class="container">
             <h2>Upload your IELTS essay</h2>
-            <form id="upload-form" enctype="multipart/form-data">
+            <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
                 <label for="essay">Upload your IELTS essay (PDF, DOCX):</label>
-                <input type="file" id="essay" name="file" accept=".pdf, .docx" required>
+                <input type="file" id="essay" name="file" accept=".pdf, .docx">
+                <label for="text-essay">Or paste your essay here:</label>
+                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
                 <button type="submit">Submit</button>
             </form>
         </div>
@@ -96,17 +98,14 @@
     </footer>
 
     <script>
-        document.getElementById('upload-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const formData = new FormData(document.getElementById('upload-form'));
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-            if (response.ok) {
-                alert('Upload successful!');
-            } else {
-                alert('Upload failed. Please try again.');
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            const fileInput = document.getElementById('essay');
+            const textArea = document.getElementById('text-essay');
+
+            // Check if both the file input is empty and text area is empty or just white space
+            if (fileInput.files.length === 0 && !textArea.value.trim()) {
+                event.preventDefault(); // Prevent form submission
+                alert('Please upload a file or enter text into the text area.');
             }
         });
     </script>
