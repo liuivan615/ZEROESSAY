@@ -389,5 +389,24 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 检查 localStorage 是否已有数据
+    if (!localStorage.getItem('username')) {
+        // 假设在用户登录后设置这些值
+        localStorage.setItem('username', 'Guest');
+        localStorage.setItem('userPoints', '0');
+    }
+
+    // 从 localStorage 读取用户信息并显示
+    var userName = localStorage.getItem('username');
+    var userPoints = localStorage.getItem('userPoints');
+
+    if (userName && userPoints) {
+        document.getElementById('user-name').textContent = 'User: ' + userName;
+        document.getElementById('user-points').textContent = 'Points: ' + userPoints;
+    }
+});
+</script>
 </body>
 </html>
