@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Zero Essay</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <!-- Assuming CSS is same as login page -->
     <style>
         body, html {
             margin: 0;
@@ -206,5 +205,27 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+
+            try {
+                const response = await axios.post('/register', { username, password });
+                if (response.data.message === 'Registration successful') {
+                    alert('Registration successful!');
+                    window.location.href = 'login.html'; // redirect to login page
+                } else {
+                    alert('Registration failed!');
+                }
+            } catch (error) {
+                console.error('Error registering', error);
+                alert('Registration failed!');
+            }
+        });
+    </script>
 </body>
 </html>
