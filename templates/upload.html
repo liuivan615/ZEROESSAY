@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Essay - Zero Essay</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .upload {
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .upload h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .upload form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .upload form label {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .upload form input, .upload form textarea {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .upload form button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .upload form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f4f4f4;
+            color: #333;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>UPLOAD ESSAY</h1>
+    </header>
+    <section class="upload">
+        <div class="container">
+            <h2 id="upload-title">Upload your IELTS essay</h2>
+            <form id="upload-form">
+                <label for="essay" id="upload-label">Upload your IELTS essay:</label>
+                <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
+                <label for="text-essay" id="paste-label">Or paste your essay here:</label>
+                <textarea id="text-essay" name="text_essay" rows="10"></textarea>
+                <button type="submit" id="submit-button">Submit</button>
+            </form>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            displayUserPoints();
+        });
+
+        function displayUserPoints() {
+            var username = getCookie('username');
+            var points = getCookie('points');
+            if (username && points) {
+                document.getElementById('login-link').style.display = 'none';
+                document.getElementById('register-link').style.display = 'none';
+                document.getElementById('user-info').style.display = 'inline';
+                document.getElementById('user-status').textContent = `Welcome, ${username}!`;
+                document.getElementById('user-points').textContent = points;
+            }
+        }
+
+        function getCookie(name) {
+            var value = `; ${document.cookie}`;
+            var parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('essay');
+            const textEssay = document.getElementById('text-essay').value;
+            const username = getCookie('username');
+            const points = parseInt(getCookie('points'));
+
+            if (points <= 0) {
+                alert('You do not have enough points to upload an essay.');
+                return;
+            }
+
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            }
+
+            if (textEssay.trim() !== '') {
+                formData.append('text_essay', textEssay);
+            }
+
+            try {
+                const response = await axios.post('/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                if (response.data.message === 'File uploaded successfully') {
+                    alert('Upload successful!');
+                    document.cookie = `points=${points - 1}; path=/`;
+                    displayUserPoints();
+                } else {
+                    alert('Upload failed!');
+                }
+            } catch (error) {
+                console.error('Error uploading the file', error);
+                alert('Upload failed!');
+            }
+        });
+    </script>
+</body>
+</html>
+
