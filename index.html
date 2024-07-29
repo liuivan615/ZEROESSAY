@@ -314,8 +314,8 @@
                 </div>
             </div>
             <a href="#contact" class="btn" id="contact-button">联系我们</a>
-        </div
-  </section>
+        </div>
+    </section>
     <section class="services" id="services">
         <div class="service-container">
             <div class="service-item">
@@ -390,23 +390,21 @@
         </div>
     </footer>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 检查 localStorage 是否已有数据
-    if (!localStorage.getItem('username')) {
-        // 假设在用户登录后设置这些值
-        localStorage.setItem('username', 'Guest');
-        localStorage.setItem('userPoints', '0');
-    }
+        document.addEventListener('DOMContentLoaded', function() {
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
 
-    // 从 localStorage 读取用户信息并显示
-    var userName = localStorage.getItem('username');
-    var userPoints = localStorage.getItem('userPoints');
+            const username = getCookie('username');
+            const points = getCookie('points');
 
-    if (userName && userPoints) {
-        document.getElementById('user-name').textContent = 'User: ' + userName;
-        document.getElementById('user-points').textContent = 'Points: ' + userPoints;
-    }
-});
-</script>
+            if (username && points) {
+                document.getElementById('user-name').textContent = `User: ${username}`;
+                document.getElementById('user-points').textContent = `Points: ${points}`;
+            }
+        });
+    </script>
 </body>
 </html>
