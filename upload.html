@@ -96,50 +96,9 @@
     </footer>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    uploadTitle: 'Upload your IELTS essay',
-                    uploadLabel: 'Upload your IELTS essay:',
-                    pasteLabel: 'Or paste your essay here:',
-                    submitButton: 'Submit'
-                },
-                zh: {
-                    uploadTitle: '上传您的雅思作文',
-                    uploadLabel: '上传您的雅思作文:',
-                    pasteLabel: '或者在这里粘贴您的作文:',
-                    submitButton: '提交'
-                },
-                fr: {
-                    uploadTitle: 'Téléchargez votre essai IELTS',
-                    uploadLabel: 'Téléchargez votre essai IELTS:',
-                    pasteLabel: 'Ou collez votre essai ici:',
-                    submitButton: 'Soumettre'
-                },
-                de: {
-                    uploadTitle: 'Laden Sie Ihr IELTS-Aufsatz hoch',
-                    uploadLabel: 'Laden Sie Ihr IELTS-Aufsatz hoch:',
-                    pasteLabel: 'Oder fügen Sie Ihren Aufsatz hier ein:',
-                    submitButton: 'Einreichen'
-                },
-                jp: {
-                    uploadTitle: 'IELTSエッセイをアップロード',
-                    uploadLabel: 'IELTSエッセイをアップロード:',
-                    pasteLabel: 'または、ここにエッセイを貼り付けます:',
-                    submitButton: '提出する'
-                }
-            };
-
-            document.getElementById('upload-title').textContent = texts[lang].uploadTitle;
-            document.getElementById('upload-label').textContent = texts[lang].uploadLabel;
-            document.getElementById('paste-label').textContent = texts[lang].pasteLabel;
-            document.getElementById('submit-button').textContent = texts[lang].submitButton;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            displayUserPoints();
+        });
 
         function displayUserPoints() {
             var username = getCookie('username');
@@ -157,10 +116,6 @@
             var value = `; ${document.cookie}`;
             var parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        window.onload = function() {
-            displayUserPoints();
         }
 
         document.getElementById('upload-form').addEventListener('submit', async function(event) {
