@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 cloudinary.config(
-    cloud_name="your_cloud_name",
+    cloud_name="anonymous_upload",
     api_key="171272812288197",
     api_secret="HEX6ayHSRPpjai6vC8oghdDFUEY"
 )
@@ -79,7 +79,7 @@ def login():
     if username not in users or not check_password_hash(users[username]['password'], password):
         return jsonify({'error': 'Invalid username or password'}), 400
 
-    response = jsonify({'message': 'Login successful'})
+    response = jsonify({'message': 'Login successful', 'username': username, 'points': users[username]['points']})
     response.set_cookie('username', username, httponly=True)
     response.set_cookie('points', str(users[username]['points']), httponly=True)
 
