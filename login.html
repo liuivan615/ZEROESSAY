@@ -210,5 +210,27 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await axios.post('/login', { username, password });
+                if (response.data.message === 'Login successful') {
+                    alert('Login successful!');
+                    window.location.href = 'index.html'; // redirect to home page or any other page
+                } else {
+                    alert('Login failed!');
+                }
+            } catch (error) {
+                console.error('Error logging in', error);
+                alert('Login failed!');
+            }
+        });
+    </script>
 </body>
 </html>
