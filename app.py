@@ -10,7 +10,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from openai import OpenAI, OpenAIError, BadRequestError
 import json
-import hashlib
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
 
 # Flask应用初始化
 app = Flask(__name__)
@@ -20,11 +22,18 @@ CORS(app)
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'ZEROESSAY', 'uploads')
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
-api_key = os.getenv("OPENAI_API_KEY")
-base_url = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 
-# 初始化OpenAI客户端
-client = OpenAI(api_key=api_key, base_url=base_url)
+# OpenAI 配置
+OPENAI_API_KEY = "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074"
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+# 支付宝配置
+ALIPAY_APP_ID = "2021004166659076"
+ALIPAY_PUBLIC_KEY = """
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAirUZxwR6/Kpbx3JrYIxleuye7azALdC7AMI4+vfKbfIOWFFE8kXWL6cxf6yhtIBwUGq3T2SX+1dBJ2p9s8aDU91fvJEoCXcKk66Oue2Bl7MYoTFlfzSkEabHtmRsx0a/T09KOKAfAf9hzdu/JB/S/ICjARoKBSDpdbIO56ktZZYuETCzStzTYqigHtUT+eie2yFxEZ/WDucqBjQeQ2XahfO+b1AK0jE+atmptH6xQroh+PHuaTo113O9JJuRX8VMYZiPczxqrxO58lEjSmAOKZfbdCZIhNd5kHKKjIPB4Zzqe6V8Tmpdtt7Rl9x6uF9m1Ke9F3GSspfKvnhTxBtZewIDAQAB
+-----END PUBLIC KEY-----
+"""
 
 # 指定Tesseract的安装路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -81,7 +90,7 @@ def process_text_with_gpt(text, prompt=None):
         messages.append({"role": "user", "content": prompt[:MAX_TOKENS]})
     
     try:
-        response = client.chat.completions.create(model="gpt-4o", messages=messages, max_tokens=4096)
+        response = client.chat.completions.create(model="gpt-4", messages=messages, max_tokens=4096)
         result = response.choices[0].message.content.strip()
         return result
     except (BadRequestError, OpenAIError) as e:
@@ -255,7 +264,7 @@ def alipay_notify():
     data = request.form.to_dict()
     sign = data.pop('sign', None)
 
-    # 验证支付宝签名（此处需要使用你的支付宝公钥验证签名）
+    # 验证支付宝签名
     if not verify_alipay_signature(data, sign):
         return 'failure', 400
     
@@ -277,10 +286,23 @@ def alipay_notify():
     return 'failure', 400
 
 def verify_alipay_signature(data, sign):
-    # 这里应该实现支付宝签名的验证逻辑
-    # 例如使用支付宝的公钥和相应的算法来验证
-    # 此处是示例，可以使用支付宝提供的SDK或手动实现
-    return True
+    # 把待验证的参数按 key 的字母顺序排序
+    sorted_items = sorted(data.items())
+    # 构造签名内容字符串
+    message = "&".join(f"{k}={v}" for k, v in sorted_items)
+    
+    # 载入支付宝公钥
+    public_key = RSA.import_key(ALIPAY_PUBLIC_KEY)
+    
+    # 创建SHA256的hash对象
+    h = SHA256.new(message.encode('utf-8'))
+    
+    # 对base64解码后的签名进行验证
+    try:
+        pkcs1_15.new(public_key).verify(h, base64.b64decode(sign))
+        return True
+    except (ValueError, TypeError):
+        return False
 
 if __name__ == "__main__":
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
