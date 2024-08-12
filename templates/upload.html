@@ -71,6 +71,32 @@
             color: #333;
             border-top: 1px solid #ccc;
         }
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            transition: all 0.5s ease;
+        }
+        .toast.show {
+            visibility: visible;
+            bottom: 50px;
+        }
+        .toast.success {
+            background-color: #4CAF50;
+        }
+        .toast.error {
+            background-color: #f44336;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +120,7 @@
             <p>&copy; 2024 Zero Essay. All rights reserved.</p>
         </div>
     </footer>
+    <div id="toast" class="toast"></div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -118,6 +145,15 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
+        function showToast(message, isSuccess) {
+            var toast = document.getElementById("toast");
+            toast.className = "toast show " + (isSuccess ? "success" : "error");
+            toast.textContent = message;
+            setTimeout(function() {
+                toast.className = toast.className.replace("show", "");
+            }, 3000);
+        }
+
         document.getElementById('upload-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const formData = new FormData();
@@ -127,7 +163,7 @@
             const points = parseInt(getCookie('points'));
 
             if (points <= 0) {
-                alert('You do not have enough points to upload an essay.');
+                showToast('You do not have enough points to upload an essay.', false);
                 return;
             }
 
@@ -146,19 +182,18 @@
                     }
                 });
 
-                if (response.data.message === 'File uploaded successfully') {
-                    alert('Upload successful!');
+                if (response.data.message === 'Upload and processing successful') {
+                    showToast('Upload successful!', true);
                     document.cookie = `points=${points - 1}; path=/`;
                     displayUserPoints();
                 } else {
-                    alert('Upload failed!');
+                    showToast('Upload failed! ' + (response.data.error || 'Unknown error.'), false);
                 }
             } catch (error) {
                 console.error('Error uploading the file', error);
-                alert('Upload failed!');
+                showToast('Upload failed! Server error or network issue.', false);
             }
         });
     </script>
 </body>
 </html>
-
