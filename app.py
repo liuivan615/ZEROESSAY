@@ -27,9 +27,10 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'ZEROESSAY', 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
 
-# OpenAI 配置
-OPENAI_API_KEY = "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074"
-client = OpenAI(api_key=OPENAI_API_KEY)
+# OpenAI 配置，通过环境变量设置
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
+client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
 # 支付宝配置
 ALIPAY_APP_ID = "2021004166659076"
@@ -275,7 +276,7 @@ def register():
         return jsonify({'error': 'User already exists'}), 400
     if len(password) < 5:
         return jsonify({'error': 'Password must be at least 5 characters long'}), 400
-    users[username] = {"password": generate_password_hash(password), "points": 1}
+    users[username] = {"password": generate_password_hash(password, method='pbkdf2:sha256'), "points": 1}
     save_users(users)
     response = jsonify({'message': 'Registration successful'})
     response.set_cookie('username', username, httponly=True)
