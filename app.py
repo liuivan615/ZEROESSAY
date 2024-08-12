@@ -314,7 +314,8 @@ def upload():
             os.makedirs(app.config['UPLOAD_FOLDER'])
         
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        unique_filename = f"{username}_{int(time.time())}_{filename}"  # 生成唯一文件名
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(filepath)
     
     if not filepath and not text_essay:
