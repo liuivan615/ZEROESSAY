@@ -10,6 +10,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from openai import OpenAI, OpenAIError, BadRequestError
 import json
+from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
+from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
+from alipay.aop.api.domain.AlipayTradePrecreateModel import AlipayTradePrecreateModel
+from alipay.aop.api.request.AlipayTradePrecreateRequest import AlipayTradePrecreateRequest
 from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
@@ -29,11 +33,48 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 # 支付宝配置
 ALIPAY_APP_ID = "2021004166659076"
+ALIPAY_PRIVATE_KEY = """
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEArUZxwR6/Kpbx3JrYIxleuye7azALdC7AMI4+vfKbfIOWFFE8
+kXWL6cxf6yhtIBwUGq3T2SX+1dBJ2p9s8aDU91fvJEoCXcKk66Oue2Bl7MYoTFlf
+zSkEabHtmRsx0a/T09KOKAfAf9hzdu/JB/S/ICjARoKBSDpdbIO56ktZZYuETCzS
+tzTYqigHtUT+eie2yFxEZ/WDucqBjQeQ2XahfO+b1AK0jE+atmptH6xQroh+PHua
+To113O9JJuRX8VMYZiPczxqrxO58lEjSmAOKZfbdCZIhNd5kHKKjIPB4Zzqe6V8T
+mpdtt7Rl9x6uF9m1Ke9F3GSspfKvnhTxBtZewIDAQABAoIBAQCtfHr9u4J8MJ8V
+dmFgN8t5VX0rzBhZaVVEqjCj1p5NmJ1/J9BYIN5ovZmq2ibOeYwD9gbKNh2sZhnZ
+7ynmb5prDS5By1hoX/1uLZY70nYzFd0rDhs5HQNViKhk4hP2xEZgC0blEdOSPEYo
+pAlGk2/Dy2yZc9XsRpoTYFyPwbDx36Gu/bR9X5zTc9p+M7QmVjAajdb13Xj1zZBz
+knQJ5JJ9Z76r62fbU/8A+htqC6PoAMZp2YN8C4a9ECGZfbQIM7u4EG+OtViHP70h
+tTk8Bh5nPmOhMoMbsL65A5Ov13R6FL04VYYnwvFk9i1ErIcGs+v3TLf+qRODBt7V
+TuAaErhZAoGBANqNVkDQ8bFMyv0RneXuvf+KblOSdZeq+kXG4ugfSG2thTrJoU8m
+5jNdFRmTVmZj9M4to0MmVOAs09fOxaD1iqL8ycGyPBxFQbVjFQId/hRKw7OXuNyS
+AwfYSP5H3dAKc7ozZMCsTYuikOf96uVeLrZ98Pb1+n5h7OSQfnd0ZK7tAoGBAK2e
+m6P/NQEkUTL7MHDklXvYSo3XHctZQAv4zxbsT6cEMyx0NiUm7so6dKPhFrCaOdiF
+5M4ekR9UMo6vSMuFC5JH5dJmkK8BvvYF4UThgQFzNhjQDWyaezjXogInu2omWQ5b
+CzrKPx3Nqvll+Vb5+jZRNSD0ZG/8o1KpF3pXpsI/AoGAZ4bNTVv8vATlkGQ6mKr+
+u01EmmTpmD8zF9KYI2FO0VqVX32jaYPFVBFuIXHbqJhFEbftAOcdKw4G0CRlIKpj
+K5LSZ3Ep0gViTzMNdTPEbbdBX1eU2p8gNDndW6XpCwLSkwJPa4x5rrD9PLOVm5wU
+kl+0QFzn11TqCPXf4F8jskECgYBUcMzPTvOOGz6LTFGxkFw7bfsfARFbAP27mcOT
+Ai8LhNHYjIhWfGevCUHG7nEp4mCFblXwhFb9CpxLkCpm38Kp89ouPAFgHWe3Axbt
+d3M6oEuF32ayPFux7iSVccPGkT7QWkCZOMWPrINXri6zCPRIc1mVp1tLZEVwhFF5
+dTKdcQKBgQDYnayVEGlhyc/VatylMBjOgEbphb3A5dvP8OEuY1MbHbDRRBVCF4XH
+p0Z2bgrB/BJd2v0b29dMCBSqHK7psWDMNx75ZBLMxFytJS3RUL3h5c9RDGR4uFdL
+GVmK8Z4Bx29/xGZ2kt39DzNHUJv2YfFeQnWR5mebUKvlOAfEBXOP0Q==
+-----END RSA PRIVATE KEY-----
+"""
 ALIPAY_PUBLIC_KEY = """
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAirUZxwR6/Kpbx3JrYIxleuye7azALdC7AMI4+vfKbfIOWFFE8kXWL6cxf6yhtIBwUGq3T2SX+1dBJ2p9s8aDU91fvJEoCXcKk66Oue2Bl7MYoTFlfzSkEabHtmRsx0a/T09KOKAfAf9hzdu/JB/S/ICjARoKBSDpdbIO56ktZZYuETCzStzTYqigHtUT+eie2yFxEZ/WDucqBjQeQ2XahfO+b1AK0jE+atmptH6xQroh+PHuaTo113O9JJuRX8VMYZiPczxqrxO58lEjSmAOKZfbdCZIhNd5kHKKjIPB4Zzqe6V8Tmpdtt7Rl9x6uF9m1Ke9F3GSspfKvnhTxBtZewIDAQAB
 -----END PUBLIC KEY-----
 """
+
+# 初始化支付宝客户端配置
+alipay_client_config = AlipayClientConfig()
+alipay_client_config.server_url = "https://openapi.alipay.com/gateway.do"
+alipay_client_config.app_id = ALIPAY_APP_ID
+alipay_client_config.app_private_key = ALIPAY_PRIVATE_KEY
+alipay_client_config.alipay_public_key = ALIPAY_PUBLIC_KEY
+alipay_client = DefaultAlipayClient(alipay_client_config)
 
 # 指定Tesseract的安装路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -182,6 +223,36 @@ def calculate_points(amount):
             break
     return points
 
+def generate_alipay_qr_code(amount, out_trade_no):
+    model = AlipayTradePrecreateModel()
+    model.out_trade_no = out_trade_no
+    model.total_amount = str(amount)
+    model.subject = "充值服务"  # 描述信息
+    request = AlipayTradePrecreateRequest(biz_model=model)
+    response = alipay_client.execute(request)
+    
+    if response.is_success():
+        return response.qr_code  # 返回支付二维码的URL
+    else:
+        return None
+
+@app.route('/generate_qr_code', methods=['POST'])
+def generate_qr_code():
+    data = request.json
+    amount = data.get('amount')
+    username = data.get('username')
+
+    if amount not in [5, 9, 19]:
+        return jsonify({'error': 'Invalid amount'}), 400
+
+    out_trade_no = f"{username}_{int(time.time())}"  # 生成唯一订单号
+
+    qr_code_url = generate_alipay_qr_code(amount, out_trade_no)
+    if qr_code_url:
+        return jsonify({'qr_code_url': qr_code_url}), 200
+    else:
+        return jsonify({'error': 'Failed to generate QR code'}), 500
+
 @app.route('/')
 def index():
     return send_from_directory(app.root_path, 'index.html')
@@ -304,7 +375,8 @@ def verify_alipay_signature(data, sign):
     except (ValueError, TypeError):
         return False
 
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
 if __name__ == "__main__":
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, port=5000)
