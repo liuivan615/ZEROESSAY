@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recharge - Zero Essay</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background-color: #fff;
+            color: #000;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-top-bar {
+            background-color: #007BFF;
+            height: 4px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin-left: 20px;
+        }
+        header nav ul li a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+        }
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #007BFF;
+            transition: all 0.3s ease;
+        }
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .contact-email {
+            font-size: 0.9em;
+            color: #007BFF;
+        }
+        .recharge-container {
+            text-align: center;
+            margin: 50px 0;
+        }
+        .recharge-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .recharge-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .recharge-option {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 20px;
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .recharge-option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .recharge-option h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .recharge-option button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .recharge-option button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .qr-code {
+            margin-top: 30px;
+            display: none;
+        }
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f4f4f4;
+            color: #333;
+            border-top: 1px solid #ccc;
+        }
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .recharge-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            .recharge-option {
+                width: 90%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top-bar"></div>
+        <div class="header-container">
+            <h1>ZERO ESSAY</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="recharge.html" class="active">RECHARGE</a></li>
+                    <li><a href="upload.html">UPLOAD</a></li>
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html">REGISTER</a></li>
+                </ul>
+            </nav>
+            <div>
+                <span id="user-name"></span>
+                <span id="user-points"></span>
+            </div>
+            <p class="contact-email">thedethofromantic@outlook.com</p>
+        </div>
+        <div class="header-bottom-bar"></div>
+    </header>
+    <section class="recharge-container">
+        <h2 class="recharge-title">充值积分</h2>
+        <div class="recharge-options">
+            <div class="recharge-option">
+                <h3>5 元</h3>
+                <button onclick="generateQRCode(5)">充值</button>
+            </div>
+            <div class="recharge-option">
+                <h3>9 元</h3>
+                <button onclick="generateQRCode(9)">充值</button>
+            </div>
+            <div class="recharge-option">
+                <h3>19 元</h3>
+                <button onclick="generateQRCode(19)">充值</button>
+            </div>
+        </div>
+        <div class="qr-code" id="qr-code">
+            <h3>请扫描以下二维码完成支付：</h3>
+            <img id="qr-code-img" src="" alt="支付二维码">
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Zero Essay. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        function generateQRCode(amount) {
+            const username = getCookie('username');
+            if (!username) {
+                alert("请先登录！");
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch('/generate_qr_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount: amount, username: username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.qr_code_url) {
+                    document.getElementById('qr-code-img').src = data.qr_code_url;
+                    document.getElementById('qr-code').style.display = 'block';
+                } else {
+                    alert('生成二维码失败，请稍后再试。');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = getCookie('username');
+            const points = getCookie('points');
+
+            if (username && points) {
+                document.getElementById('user-name').textContent = `User: ${username}`;
+                document.getElementById('user-points').textContent = `Points: ${points}`;
+            }
+        });
+    </script>
+</body>
+</html>
