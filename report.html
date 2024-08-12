@@ -55,9 +55,26 @@
         .score {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 5px 0;
         }
         .score span {
+            font-weight: bold;
+        }
+        .progress-bar-container {
+            width: 70%;
+            background-color: #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #007BFF;
+            border-radius: 8px 0 0 8px;
+            text-align: right;
+            padding-right: 10px;
+            line-height: 20px;
+            color: #fff;
             font-weight: bold;
         }
         .overall-score {
@@ -95,6 +112,30 @@
         .language-options a:hover {
             background-color: #ddd;
         }
+        .original {
+            color: red;
+        }
+        .improved {
+            color: blue;
+        }
+        .explanation {
+            color: white;
+            background-color: #333;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .final-essay {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-left: 4px solid #007BFF;
+        }
+        .final-essay-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
@@ -114,33 +155,141 @@
         </div>
     </header>
     <div class="container">
+        <!-- 题目和正文 -->
         <div class="evaluation-section">
             <h2 id="title-essay-question">题目</h2>
-            <p id="essay-question"></p>
+            <p id="essay-question"><strong>英文：</strong><span id="essay-question-en"></span><br><strong>中文：</strong><span id="essay-question-zh"></span></p>
         </div>
         <div class="evaluation-section">
             <h2 id="title-automatic-reading-result">自动读图结果</h2>
             <p id="automatic-reading-result"></p>
         </div>
+        
+        <!-- 评分 -->
         <div class="evaluation-section">
             <h2 id="title-scores">分数</h2>
-            <div class="score"><span id="label-task-achievement">任务完成度 Task Achievement</span><span id="task-achievement"></span></div>
-            <div class="score"><span id="label-coherence-cohesion">连贯性和衔接 Coherence and Cohesion</span><span id="coherence-cohesion"></span></div>
-            <div class="score"><span id="label-lexical-resource">词汇资源 Lexical Resource</span><span id="lexical-resource"></span></div>
-            <div class="score"><span id="label-grammatical-range">语法范围和准确性 Grammatical Range & Accuracy</span><span id="grammatical-range"></span></div>
-            <div class="score overall-score"><span id="label-overall-score">总分 Overall Score</span><span id="overall-score"></span></div>
+            <div class="score">
+                <span id="label-task-achievement">任务完成度 Task Achievement</span>
+                <div class="progress-bar-container">
+                    <div id="task-achievement-bar" class="progress-bar" style="width: 0%">0 / 9</div>
+                </div>
+            </div>
+            <div class="score">
+                <span id="label-coherence-cohesion">连贯性和衔接 Coherence and Cohesion</span>
+                <div class="progress-bar-container">
+                    <div id="coherence-cohesion-bar" class="progress-bar" style="width: 0%">0 / 9</div>
+                </div>
+            </div>
+            <div class="score">
+                <span id="label-lexical-resource">词汇资源 Lexical Resource</span>
+                <div class="progress-bar-container">
+                    <div id="lexical-resource-bar" class="progress-bar" style="width: 0%">0 / 9</div>
+                </div>
+            </div>
+            <div class="score">
+                <span id="label-grammatical-range">语法范围和准确性 Grammatical Range & Accuracy</span>
+                <div class="progress-bar-container">
+                    <div id="grammatical-range-bar" class="progress-bar" style="width: 0%">0 / 9</div>
+                </div>
+            </div>
+            <div class="score overall-score">
+                <span id="label-overall-score">总分 Overall Score</span>
+                <div class="progress-bar-container">
+                    <div id="overall-score-bar" class="progress-bar" style="width: 0%">0 / 9</div>
+                </div>
+            </div>
         </div>
+        
+        <!-- 改进建议 -->
         <div class="evaluation-section">
             <h2 id="title-detailed-feedback">作文批改</h2>
-            <p id="detailed-feedback"></p>
+            <div id="detailed-feedback"></div>
         </div>
-        <div class="evaluation-section">
-            <h2 id="title-overall-evaluation">总体评价</h2>
-            <p id="overall-evaluation"></p>
+        
+        <!-- 改进后的雅思作文 -->
+        <div class="final-essay">
+            <h2 class="final-essay-title" id="title-overall-evaluation">改进后的雅思作文</h2>
+            <p id="final-essay"></p>
         </div>
     </div>
 
     <script>
+        // 模拟API数据
+        const apiData = {
+            titleEn: "The graphs show the travel patterns of overseas residents to the UK and UK residents to other countries.",
+            titleZh: "图表显示海外居民到英国旅行与英国居民到其他国家旅行的模式。",
+            body: "The graphs reveal an information about overseas residents travel to UK and UK residents travel to other countries, and where they visited more...",
+            scores: {
+                taskAchievement: 4.5,
+                coherenceCohesion: 5.0,
+                lexicalResource: 5.5,
+                grammaticalRange: 5.0,
+                overall: 5.0
+            },
+            feedback: [
+                {
+                    original: "The graphs reveal an information about overseas residents travel to UK...",
+                    improved: "🔵The graphs provide detailed information about travel patterns of overseas residents visiting the UK...",
+                    explanation: "🔴原因: 除去了“an information”中的不定冠词错误，并增加了内容的精确度..."
+                },
+                // 更多的反馈数据...
+            ],
+            finalEssay: "The graphs provide information on the travel patterns of overseas residents visiting the UK and UK residents traveling to other countries..."
+        };
+
+        // 填充数据到页面
+        document.getElementById('essay-question-en').textContent = apiData.titleEn;
+        document.getElement继续接上：
+
+```html
+        getElementById('essay-question-zh').textContent = apiData.titleZh;
+        document.getElementById('automatic-reading-result').textContent = apiData.body;
+
+        // 填充评分进度条
+        const taskAchievement = apiData.scores.taskAchievement;
+        const coherenceCohesion = apiData.scores.coherenceCohesion;
+        const lexicalResource = apiData.scores.lexicalResource;
+        const grammaticalRange = apiData.scores.grammaticalRange;
+        const overall = apiData.scores.overall;
+
+        document.getElementById('task-achievement-bar').style.width = `${(taskAchievement / 9) * 100}%`;
+        document.getElementById('task-achievement-bar').textContent = `${taskAchievement} / 9`;
+
+        document.getElementById('coherence-cohesion-bar').style.width = `${(coherenceCohesion / 9) * 100}%`;
+        document.getElementById('coherence-cohesion-bar').textContent = `${coherenceCohesion} / 9`;
+
+        document.getElementById('lexical-resource-bar').style.width = `${(lexicalResource / 9) * 100}%`;
+        document.getElementById('lexical-resource-bar').textContent = `${lexicalResource} / 9`;
+
+        document.getElementById('grammatical-range-bar').style.width = `${(grammaticalRange / 9) * 100}%`;
+        document.getElementById('grammatical-range-bar').textContent = `${grammaticalRange} / 9`;
+
+        document.getElementById('overall-score-bar').style.width = `${(overall / 9) * 100}%`;
+        document.getElementById('overall-score-bar').textContent = `${overall} / 9`;
+
+        // 填充改进建议
+        const feedbackContainer = document.getElementById('detailed-feedback');
+        apiData.feedback.forEach(item => {
+            const originalText = document.createElement('p');
+            originalText.classList.add('original');
+            originalText.textContent = `Original: ${item.original}`;
+
+            const improvedText = document.createElement('p');
+            improvedText.classList.add('improved');
+            improvedText.textContent = `Improved: ${item.improved}`;
+
+            const explanationText = document.createElement('p');
+            explanationText.classList.add('explanation');
+            explanationText.textContent = item.explanation;
+
+            feedbackContainer.appendChild(originalText);
+            feedbackContainer.appendChild(improvedText);
+            feedbackContainer.appendChild(explanationText);
+        });
+
+        // 填充改进后的雅思作文
+        document.getElementById('final-essay').textContent = apiData.finalEssay;
+
         function toggleLanguageOptions() {
             var options = document.getElementById('language-options');
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
