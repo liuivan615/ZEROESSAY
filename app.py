@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from openai import OpenAI, OpenAIError, BadRequestError
 import pika
 import json
+import hashlib
 
 # Flask应用初始化
 app = Flask(__name__)
@@ -165,6 +166,21 @@ def send_to_rabbitmq(message):
     channel.basic_publish(exchange='', routing_key='file_upload_queue', body=message)
     connection.close()
 
+# 定义积分规则
+POINTS_RULES = [
+    (19, 5),
+    (9, 2),
+    (5, 1)
+]
+
+def calculate_points(amount):
+    points = 0
+    for threshold, reward in POINTS_RULES:
+        if amount >= threshold:
+            points += reward
+            break
+    return points
+
 @app.route('/')
 def index():
     return send_from_directory(app.root_path, 'index.html')
@@ -215,6 +231,7 @@ def upload():
     users = load_users()
     if users[username]['points'] < 1:
         return jsonify({'error': 'Insufficient points'}), 400
+
     file = request.files.get('file')
     text_essay = request.form.get('text_essay')
     filepath = None
@@ -240,6 +257,38 @@ def upload():
     response = jsonify({'message': 'Upload and processing successful', 'result': result})
     response.set_cookie('points', str(users[username]['points']), httponly=True)
     return response, 200
+
+@app.route('/alipay/notify', methods=['POST'])
+def alipay_notify():
+    data = request.form.to_dict()
+    sign = data.pop('sign', None)
+
+    # 验证支付宝签名（此处需要使用你的支付宝公钥验证签名）
+    if not verify_alipay_signature(data, sign):
+        return 'failure', 400
+    
+    if data.get('trade_status') == 'TRADE_SUCCESS':
+        user_id = data.get('out_trade_no')  # 假设你的订单号是用户ID
+        amount = float(data.get('total_amount', 0))
+        
+        # 计算积分
+        points = calculate_points(amount)
+        
+        # 更新用户积分
+        users = load_users()
+        if user_id in users:
+            users[user_id]['points'] += points
+            save_users(users)
+            return 'success', 200
+        else:
+            return 'failure', 400
+    return 'failure', 400
+
+def verify_alipay_signature(data, sign):
+    # 这里应该实现支付宝签名的验证逻辑
+    # 例如使用支付宝的公钥和相应的算法来验证
+    # 此处是示例，可以使用支付宝提供的SDK或手动实现
+    return True
 
 if __name__ == "__main__":
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
