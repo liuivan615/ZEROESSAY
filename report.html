@@ -56,16 +56,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 0;
+            padding: 10px 0;
         }
         .score span {
             font-weight: bold;
+            flex: 1;
+            margin-right: 20px;
         }
         .progress-bar-container {
             width: 70%;
             background-color: #ddd;
             border-radius: 8px;
             overflow: hidden;
+            flex: 3;
         }
         .progress-bar {
             height: 20px;
@@ -81,36 +84,16 @@
             font-size: 1.2em;
             font-weight: bold;
         }
-        .language-switcher {
-            position: relative;
-            display: inline-block;
-        }
-        .language-switcher button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
+        .final-essay {
+            margin-top: 20px;
             padding: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 10px;
+            background-color: #f4f4f4;
+            border-left: 4px solid #007BFF;
         }
-        .language-options {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-        .language-options a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .language-options a:hover {
-            background-color: #ddd;
+        .final-essay-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007BFF;
         }
         .original {
             color: red;
@@ -125,33 +108,12 @@
             border-radius: 5px;
             margin-top: 5px;
         }
-        .final-essay {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-left: 4px solid #007BFF;
-        }
-        .final-essay-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #007BFF;
-        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <h1>DETAILED EVALUATION REPORT</h1>
-            <div class="language-switcher">
-                <button onclick="toggleLanguageOptions()">Language</button>
-                <div class="language-options" id="language-options">
-                    <a onclick="changeLanguage('en')">English</a>
-                    <a onclick="changeLanguage('zh')">中文</a>
-                    <a onclick="changeLanguage('fr')">Français</a>
-                    <a onclick="changeLanguage('de')">Deutsch</a>
-                    <a onclick="changeLanguage('jp')">日本語</a>
-                </div>
-            </div>
         </div>
     </header>
     <div class="container">
@@ -159,10 +121,6 @@
         <div class="evaluation-section">
             <h2 id="title-essay-question">题目</h2>
             <p id="essay-question"><strong>英文：</strong><span id="essay-question-en"></span><br><strong>中文：</strong><span id="essay-question-zh"></span></p>
-        </div>
-        <div class="evaluation-section">
-            <h2 id="title-automatic-reading-result">自动读图结果</h2>
-            <p id="automatic-reading-result"></p>
         </div>
         
         <!-- 评分 -->
@@ -202,7 +160,7 @@
         
         <!-- 改进建议 -->
         <div class="evaluation-section">
-            <h2 id="title-detailed-feedback">作文批改</h2>
+            <h2 id="title-detailed-feedback">逐句改进后的作文和解释</h2>
             <div id="detailed-feedback"></div>
         </div>
         
@@ -218,7 +176,6 @@
         const apiData = {
             titleEn: "The graphs show the travel patterns of overseas residents to the UK and UK residents to other countries.",
             titleZh: "图表显示海外居民到英国旅行与英国居民到其他国家旅行的模式。",
-            body: "The graphs reveal an information about overseas residents travel to UK and UK residents travel to other countries, and where they visited more...",
             scores: {
                 taskAchievement: 4.5,
                 coherenceCohesion: 5.0,
@@ -232,6 +189,11 @@
                     improved: "🔵The graphs provide detailed information about travel patterns of overseas residents visiting the UK...",
                     explanation: "🔴原因: 除去了“an information”中的不定冠词错误，并增加了内容的精确度..."
                 },
+                {
+                    original: "According to the chart of visits to and from UK, UK residents had visited abroad more...",
+                    improved: "🔵According to the chart, UK residents traveled abroad more frequently than overseas residents visited the UK...",
+                    explanation: "🔴原因: 使用了更准确和流畅的表达方式..."
+                },
                 // 更多的反馈数据...
             ],
             finalEssay: "The graphs provide information on the travel patterns of overseas residents visiting the UK and UK residents traveling to other countries..."
@@ -239,11 +201,7 @@
 
         // 填充数据到页面
         document.getElementById('essay-question-en').textContent = apiData.titleEn;
-        document.getElement继续接上：
-
-```html
-        getElementById('essay-question-zh').textContent = apiData.titleZh;
-        document.getElementById('automatic-reading-result').textContent = apiData.body;
+        document.getElementById('essay-question-zh').textContent = apiData.titleZh;
 
         // 填充评分进度条
         const taskAchievement = apiData.scores.taskAchievement;
@@ -267,7 +225,7 @@
         document.getElementById('overall-score-bar').style.width = `${(overall / 9) * 100}%`;
         document.getElementById('overall-score-bar').textContent = `${overall} / 9`;
 
-        // 填充改进建议
+        // 填充逐句改进部分
         const feedbackContainer = document.getElementById('detailed-feedback');
         apiData.feedback.forEach(item => {
             const originalText = document.createElement('p');
@@ -290,86 +248,6 @@
         // 填充改进后的雅思作文
         document.getElementById('final-essay').textContent = apiData.finalEssay;
 
-        function toggleLanguageOptions() {
-            var options = document.getElementById('language-options');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function changeLanguage(lang) {
-            const texts = {
-                en: {
-                    titleEssayQuestion: 'Essay Question',
-                    titleAutomaticReadingResult: 'Automatic Reading Result',
-                    titleScores: 'Scores',
-                    labelTaskAchievement: 'Task Achievement',
-                    labelCoherenceCohesion: 'Coherence and Cohesion',
-                    labelLexicalResource: 'Lexical Resource',
-                    labelGrammaticalRange: 'Grammatical Range & Accuracy',
-                    labelOverallScore: 'Overall Score',
-                    titleDetailedFeedback: 'Detailed Feedback',
-                    titleOverallEvaluation: 'Overall Evaluation'
-                },
-                zh: {
-                    titleEssayQuestion: '题目',
-                    titleAutomaticReadingResult: '自动读图结果',
-                    titleScores: '分数',
-                    labelTaskAchievement: '任务完成度',
-                    labelCoherenceCohesion: '连贯性和衔接',
-                    labelLexicalResource: '词汇资源',
-                    labelGrammaticalRange: '语法范围和准确性',
-                    labelOverallScore: '总分',
-                    titleDetailedFeedback: '作文批改',
-                    titleOverallEvaluation: '总体评价'
-                },
-                fr: {
-                    titleEssayQuestion: 'Question de dissertation',
-                    titleAutomaticReadingResult: 'Résultat de lecture automatique',
-                    titleScores: 'Scores',
-                    labelTaskAchievement: 'Achèvement des tâches',
-                    labelCoherenceCohesion: 'Cohérence et Cohésion',
-                    labelLexicalResource: 'Ressource lexicale',
-                    labelGrammaticalRange: 'Étendue et précision grammaticale',
-                    labelOverallScore: 'Score global',
-                    titleDetailedFeedback: 'Commentaires détaillés',
-                    titleOverallEvaluation: 'Évaluation globale'
-                },
-                de: {
-                    titleEssayQuestion: 'Aufsatzfrage',
-                    titleAutomaticReadingResult: 'Automatisches Leseergebnis',
-                    titleScores: 'Punkte',
-                    labelTaskAchievement: 'Aufgabenerfüllung',
-                    labelCoherenceCohesion: 'Kohärenz und Kohäsion',
-                    labelLexicalResource: 'Wortschatz',
-                    labelGrammaticalRange: 'Grammatikalischer Umfang und Genauigkeit',
-                    labelOverallScore: 'Gesamtpunktzahl',
-                    titleDetailedFeedback: 'Detailliertes Feedback',
-                    titleOverallEvaluation: 'Gesamtbewertung'
-                },
-                jp: {
-                    titleEssayQuestion: 'エッセイの質問',
-                    titleAutomaticReadingResult: '自動読み取り結果',
-                    titleScores: 'スコア',
-                    labelTaskAchievement: 'タスクの達成',
-                    labelCoherenceCohesion: '一貫性と結束性',
-                    labelLexicalResource: '語彙のリソース',
-                    labelGrammaticalRange: '文法範囲と正確性',
-                    labelOverallScore: '総合スコア',
-                    titleDetailedFeedback: '詳細なフィードバック',
-                    titleOverallEvaluation: '全体評価'
-                }
-            };
-
-            document.getElementById('title-essay-question').textContent = texts[lang].titleEssayQuestion;
-            document.getElementById('title-automatic-reading-result').textContent = texts[lang].titleAutomaticReadingResult;
-            document.getElementById('title-scores').textContent = texts[lang].titleScores;
-            document.getElementById('label-task-achievement').textContent = texts[lang].labelTaskAchievement;
-            document.getElementById('label-coherence-cohesion').textContent = texts[lang].labelCoherenceCohesion;
-            document.getElementById('label-lexical-resource').textContent = texts[lang].labelLexicalResource;
-            document.getElementById('label-grammatical-range').textContent = texts[lang].labelGrammaticalRange;
-            document.getElementById('label-overall-score').textContent = texts[lang].labelOverallScore;
-            document.getElementById('title-detailed-feedback').textContent = texts[lang].titleDetailedFeedback;
-            document.getElementById('title-overall-evaluation').textContent = texts[lang].titleOverallEvaluation;
-        }
     </script>
 </body>
 </html>
