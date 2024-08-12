@@ -9,7 +9,6 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from openai import OpenAI, OpenAIError, BadRequestError
-import pika
 import json
 import hashlib
 
@@ -158,13 +157,6 @@ def save_users(users):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def send_to_rabbitmq(message):
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    channel = connection.channel()
-    channel.queue_declare(queue='file_upload_queue')
-    channel.basic_publish(exchange='', routing_key='file_upload_queue', body=message)
-    connection.close()
 
 # 定义积分规则
 POINTS_RULES = [
