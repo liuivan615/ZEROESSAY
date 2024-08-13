@@ -140,7 +140,7 @@ def process_text_with_gpt(text, prompt=None):
         return handle_api_error(e)
 
 def analyze_generate_essay(ocr_text, base64_text, user_input_text):
-    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用户输入文本: {user_input_text}"
+    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用 户输入文本: {user_input_text}"
     prompt = f"""
     根据以下提供的图片和文本信息，从OCR识别内容中提取出雅思作文的题目和正文。题目需要中英文表达，作文不添加额外信息，只选取与题目和作文相关的部分。
 
@@ -185,7 +185,7 @@ def improve_each_sentence(essay_text):
 
 def generate_final_essay(original_essay, improvements):
     prompt = f"""
-    请根据以下原始作文和改进建议，生成改进后的完整雅思作文。请确保保留原文的合理部分，并应用改进后的内容。
+    请根据以下原始作文和改进建议，生成改进后的完整雅思作文。请确保保留原文的合理部分， 并应用改进后的内容。
 
     原始作文：
     {original_essay[:1000]}
@@ -231,12 +231,21 @@ def generate_alipay_qr_code(amount, out_trade_no):
     model.total_amount = str(amount)
     model.subject = "充值服务"  # 描述信息
     request = AlipayTradePrecreateRequest(biz_model=model)
-    response = alipay_client.execute(request)
-
-    if response.is_success():
-        return response.qr_code  # 返回支付二维码的URL
-    else:
+    
+    try:
+        response = alipay_client.execute(request)
+        if response.is_success():
+            return response.qr_code  # 返回支付二维码的URL
+        else:
+            print(f"Alipay response error: {response}")
+            return None
+    except Exception as e:
+        print(f"Error during QR code generation: {e}")
         return None
+
+@app.route('/simple')
+def simple():
+    return render_template('simple.html')
 
 @app.route('/generate_qr_code', methods=['POST'])
 def generate_qr_code():
@@ -281,7 +290,7 @@ def register():
     save_users(users)
     response = jsonify({'message': 'Registration successful'})
     response.set_cookie('username', username, httponly=False)  # 修改为httponly=False，以便前端可以访问
-    response.set_cookie('points', '1', httponly=False)  # 修改为httponly=False，以便前端可以访问
+    response.set_cookie('points', '1', httponly=False)  # 修改为httponly=False，以便前 端可以访问
     return response, 200
 
 @app.route('/login', methods=['POST'])
@@ -299,6 +308,10 @@ def login():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    if request.method == 'GET':
+        return render_template('upload.html')
+
+    # 处理上传逻辑
     username = request.cookies.get('username')
     if not username:
         return jsonify({'error': 'User not logged in'}), 400
