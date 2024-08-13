@@ -106,7 +106,7 @@
     <section class="upload">
         <div class="container">
             <h2 id="upload-title">Upload your IELTS essay</h2>
-            <form id="upload-form">
+            <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
                 <label for="essay" id="upload-label">Upload your IELTS essay:</label>
                 <input type="file" id="essay" name="file" accept=".doc, .docx, .pdf, .txt, .jpg, .png">
                 <label for="text-essay" id="paste-label">Or paste your essay here:</label>
