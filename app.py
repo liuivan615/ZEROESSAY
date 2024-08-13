@@ -4,7 +4,7 @@ import base64
 import collections
 import pytesseract
 from PIL import Image, ImageEnhance, ImageFilter
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -20,6 +20,7 @@ from Crypto.Hash import SHA256
 
 # Flask应用初始化
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)  # 为Flask会话设置SECRET_KEY
 CORS(app)
 
 # 配置上传目录
@@ -122,15 +123,15 @@ def get_image_base64(image_path):
         return None
 
 def process_text_with_gpt(text, prompt=None):
-    MAX_TOKENS = 1000  
+    MAX_TOKENS = 1000
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": text[:MAX_TOKENS]}
     ]
-    
+
     if prompt:
         messages.append({"role": "user", "content": prompt[:MAX_TOKENS]})
-    
+
     try:
         response = client.chat.completions.create(model="gpt-4", messages=messages, max_tokens=4096)
         result = response.choices[0].message.content.strip()
@@ -148,7 +149,7 @@ def analyze_generate_essay(ocr_text, base64_text, user_input_text):
 
     生成的题目和作文应严格基于OCR识别结果，不得添加额外内容。如果无法识别出题目，请注明"未能识别出题目"。作文部分一定要生成。
     """
-    
+
     analysis_result = process_text_with_gpt(combined_text, prompt)
     return analysis_result
 
@@ -159,13 +160,13 @@ def evaluate_and_improve_essay(essay_text):
     2. 连贯与衔接（Coherence and Cohesion）
     3. 词汇资源（Lexical Resource）
     4. 语法多样性与准确性（Grammatical Range and Accuracy）
-    
+
     请为每个维度打分并给出评分理由，并直接给出总分。
 
     作文内容：
     {essay_text[:1000]}
     """
-    
+
     evaluation_result = process_text_with_gpt(essay_text, prompt)
     return evaluation_result
 
@@ -178,7 +179,7 @@ def improve_each_sentence(essay_text):
     作文内容：
     {essay_text[:1000]}
     """
-    
+
     improved_essay = process_text_with_gpt(essay_text, prompt)
     return improved_essay
 
@@ -192,7 +193,7 @@ def generate_final_essay(original_essay, improvements):
     改进建议：
     {improvements[:1000]}
     """
-    
+
     final_essay = process_text_with_gpt(original_essay, prompt)
     return final_essay
 
@@ -231,7 +232,7 @@ def generate_alipay_qr_code(amount, out_trade_no):
     model.subject = "充值服务"  # 描述信息
     request = AlipayTradePrecreateRequest(biz_model=model)
     response = alipay_client.execute(request)
-    
+
     if response.is_success():
         return response.qr_code  # 返回支付二维码的URL
     else:
@@ -279,8 +280,8 @@ def register():
     users[username] = {"password": generate_password_hash(password, method='pbkdf2:sha256'), "points": 1}
     save_users(users)
     response = jsonify({'message': 'Registration successful'})
-    response.set_cookie('username', username, httponly=True)
-    response.set_cookie('points', '1', httponly=True)
+    response.set_cookie('username', username, httponly=False)  # 修改为httponly=False，以便前端可以访问
+    response.set_cookie('points', '1', httponly=False)  # 修改为httponly=False，以便前端可以访问
     return response, 200
 
 @app.route('/login', methods=['POST'])
@@ -292,11 +293,11 @@ def login():
     if username not in users or not check_password_hash(users[username]['password'], password):
         return jsonify({'error': 'Invalid username or password'}), 400
     response = jsonify({'message': 'Login successful', 'username': username, 'points': users[username]['points']})
-    response.set_cookie('username', username, httponly=True)
-    response.set_cookie('points', str(users[username]['points']), httponly=True)
+    response.set_cookie('username', username, httponly=False)  # 修改为httponly=False，以便前端可以访问
+    response.set_cookie('points', str(users[username]['points']), httponly=False)  # 修改为httponly=False，以便前端可以访问
     return response, 200
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
     username = request.cookies.get('username')
     if not username:
@@ -308,28 +309,28 @@ def upload():
     file = request.files.get('file')
     text_essay = request.form.get('text_essay')
     filepath = None
-    
+
     if file and allowed_file(file.filename):
         # 保存文件
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
             os.makedirs(app.config['UPLOAD_FOLDER'])
-        
+
         filename = secure_filename(file.filename)
         unique_filename = f"{username}_{int(time.time())}_{filename}"  # 生成唯一文件名
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(filepath)
-    
+
     if not filepath and not text_essay:
         return jsonify({'error': 'No valid file or text provided'}), 400
 
     # 将文件路径和文本一起发送给API处理
     result = process_uploaded_content(filepath, text_essay)
-    
+
     users[username]['points'] -= 1
     save_users(users)
-    
+
     response = jsonify({'message': 'Upload and processing successful', 'result': result})
-    response.set_cookie('points', str(users[username]['points']), httponly=True)
+    response.set_cookie('points', str(users[username]['points']), httponly=False)  # 修改为httponly=False，以便前端可以访问
     return response, 200
 
 @app.route('/alipay/notify', methods=['POST'])
@@ -340,14 +341,14 @@ def alipay_notify():
     # 验证支付宝签名
     if not verify_alipay_signature(data, sign):
         return 'failure', 400
-    
+
     if data.get('trade_status') == 'TRADE_SUCCESS':
         user_id = data.get('out_trade_no')  # 假设你的订单号是用户ID
         amount = float(data.get('total_amount', 0))
-        
+
         # 计算积分
         points = calculate_points(amount)
-        
+
         # 更新用户积分
         users = load_users()
         if user_id in users:
@@ -363,13 +364,13 @@ def verify_alipay_signature(data, sign):
     sorted_items = sorted(data.items())
     # 构造签名内容字符串
     message = "&".join(f"{k}={v}" for k, v in sorted_items)
-    
+
     # 载入支付宝公钥
     public_key = RSA.import_key(ALIPAY_PUBLIC_KEY)
-    
+
     # 创建SHA256的hash对象
     h = SHA256.new(message.encode('utf-8'))
-    
+
     # 对base64解码后的签名进行验证
     try:
         pkcs1_15.new(public_key).verify(h, base64.b64decode(sign))
@@ -381,4 +382,4 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
