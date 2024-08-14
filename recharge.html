@@ -122,7 +122,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .recharge-option button:hover {
+        .recharge-option button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .recharge-option button:hover:enabled {
             background-color: #0056b3;
             transform: translateY(-2px);
         }
@@ -133,6 +137,10 @@
         .qr-code img {
             width: 200px;
             height: 200px;
+        }
+        .loading-spinner {
+            margin-top: 30px;
+            display: none;
         }
         footer {
             text-align: center;
@@ -191,6 +199,17 @@
                 <h3>19 元</h3>
                 <button onclick="generateQRCode(19)">充值</button>
             </div>
+            <div class="recharge-option">
+                <h3>29 元</h3>
+                <button onclick="generateQRCode(29)">充值</button>
+            </div>
+            <div class="recharge-option">
+                <h3>59 元</h3>
+                <button onclick="generateQRCode(59)">充值</button>
+            </div>
+        </div>
+        <div class="loading-spinner" id="loading-spinner">
+            <img src="static/images/spinner.gif" alt="加载中...">
         </div>
         <div class="qr-code" id="qr-code">
             <h3>请扫描以下二维码完成支付：</h3>
@@ -203,6 +222,8 @@
         </div>
     </footer>
     <script>
+        let qrCodeRefreshInterval;
+
         function generateQRCode(amount) {
             const username = getCookie('username');
             if (!username) {
@@ -210,6 +231,9 @@
                 window.location.href = "login.html";
                 return;
             }
+
+            disableButtons();
+            showLoadingSpinner();
 
             fetch('/generate_qr_code', {
                 method: 'POST',
@@ -223,13 +247,47 @@
                 if (data.qr_code_url) {
                     document.getElementById('qr-code-img').src = data.qr_code_url;
                     document.getElementById('qr-code').style.display = 'block';
+                    startQRCodeRefresh(amount, username);
                 } else {
                     alert('生成二维码失败，请稍后再试。');
                 }
+                hideLoadingSpinner();
+                enableButtons();
             })
             .catch(error => {
                 console.error('Error:', error);
+                hideLoadingSpinner();
+                enableButtons();
             });
+        }
+
+        function startQRCodeRefresh(amount, username) {
+            if (qrCodeRefreshInterval) {
+                clearInterval(qrCodeRefreshInterval);
+            }
+            qrCodeRefreshInterval = setInterval(() => {
+                generateQRCode(amount);
+            }, 300000); // 每5分钟刷新一次二维码
+        }
+
+        function disableButtons() {
+            document.querySelectorAll('.recharge-option button').forEach(button => {
+                button.disabled = true;
+            });
+        }
+
+        function enableButtons() {
+            document.querySelectorAll('.recharge-option button').forEach(button => {
+                button.disabled = false;
+            });
+        }
+
+        function showLoadingSpinner() {
+            document.getElementById('loading-spinner').style.display = 'block';
+        }
+
+        function hideLoadingSpinner() {
+            document.getElementById('loading-spinner').style.display = 'none';
         }
 
         function getCookie(name) {
