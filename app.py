@@ -2,7 +2,8 @@ import os
 import time
 import base64
 import collections
-import pytesseract
+import hashlib
+import requests
 from PIL import Image, ImageEnhance, ImageFilter
 from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
@@ -10,13 +11,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from openai import OpenAI, OpenAIError, BadRequestError
 import json
-from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
-from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
-from alipay.aop.api.domain.AlipayTradePrecreateModel import AlipayTradePrecreateModel
-from alipay.aop.api.request.AlipayTradePrecreateRequest import AlipayTradePrecreateRequest
-from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
-from Crypto.Hash import SHA256
 
 # Flask应用初始化
 app = Flask(__name__)
@@ -33,50 +27,10 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B7459
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
-# 支付宝配置
-ALIPAY_APP_ID = "2021004166659076"
-ALIPAY_PRIVATE_KEY = """
------BEGIN RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEArUZxwR6/Kpbx3JrYIxleuye7azALdC7AMI4+vfKbfIOWFFE8
-kXWL6cxf6yhtIBwUGq3T2SX+1dBJ2p9s8aDU91fvJEoCXcKk66Oue2Bl7MYoTFlf
-zSkEabHtmRsx0a/T09KOKAfAf9hzdu/JB/S/ICjARoKBSDpdbIO56ktZZYuETCzS
-tzTYqigHtUT+eie2yFxEZ/WDucqBjQeQ2XahfO+b1AK0jE+atmptH6xQroh+PHua
-To113O9JJuRX8VMYZiPczxqrxO58lEjSmAOKZfbdCZIhNd5kHKKjIPB4Zzqe6V8T
-mpdtt7Rl9x6uF9m1Ke9F3GSspfKvnhTxBtZewIDAQABAoIBAQCtfHr9u4J8MJ8V
-dmFgN8t5VX0rzBhZaVVEqjCj1p5NmJ1/J9BYIN5ovZmq2ibOeYwD9gbKNh2sZhnZ
-7ynmb5prDS5By1hoX/1uLZY70nYzFd0rDhs5HQNViKhk4hP2xEZgC0blEdOSPEYo
-pAlGk2/Dy2yZc9XsRpoTYFyPwbDx36Gu/bR9X5zTc9p+M7QmVjAajdb13Xj1zZBz
-knQJ5JJ9Z76r62fbU/8A+htqC6PoAMZp2YN8C4a9ECGZfbQIM7u4EG+OtViHP70h
-tTk8Bh5nPmOhMoMbsL65A5Ov13R6FL04VYYnwvFk9i1ErIcGs+v3TLf+qRODBt7V
-TuAaErhZAoGBANqNVkDQ8bFMyv0RneXuvf+KblOSdZeq+kXG4ugfSG2thTrJoU8m
-5jNdFRmTVmZj9M4to0MmVOAs09fOxaD1iqL8ycGyPBxFQbVjFQId/hRKw7OXuNyS
-AwfYSP5H3dAKc7ozZMCsTYuikOf96uVeLrZ98Pb1+n5h7OSQfnd0ZK7tAoGBAK2e
-m6P/NQEkUTL7MHDklXvYSo3XHctZQAv4zxbsT6cEMyx0NiUm7so6dKPhFrCaOdiF
-5M4ekR9UMo6vSMuFC5JH5dJmkK8BvvYF4UThgQFzNhjQDWyaezjXogInu2omWQ5b
-CzrKPx3Nqvll+Vb5+jZRNSD0ZG/8o1KpF3pXpsI/AoGAZ4bNTVv8vATlkGQ6mKr+
-u01EmmTpmD8zF9KYI2FO0VqVX32jaYPFVBFuIXHbqJhFEbftAOcdKw4G0CRlIKpj
-K5LSZ3Ep0gViTzMNdTPEbbdBX1eU2p8gNDndW6XpCwLSkwJPa4x5rrD9PLOVm5wU
-kl+0QFzn11TqCPXf4F8jskECgYBUcMzPTvOOGz6LTFGxkFw7bfsfARFbAP27mcOT
-Ai8LhNHYjIhWfGevCUHG7nEp4mCFblXwhFb9CpxLkCpm38Kp89ouPAFgHWe3Axbt
-d3M6oEuF32ayPFux7iSVccPGkT7QWkCZOMWPrINXri6zCPRIc1mVp1tLZEVwhFF5
-dTKdcQKBgQDYnayVEGlhyc/VatylMBjOgEbphb3A5dvP8OEuY1MbHbDRRBVCF4XH
-p0Z2bgrB/BJd2v0b29dMCBSqHK7psWDMNx75ZBLMxFytJS3RUL3h5c9RDGR4uFdL
-GVmK8Z4Bx29/xGZ2kt39DzNHUJv2YfFeQnWR5mebUKvlOAfEBXOP0Q==
------END RSA PRIVATE KEY-----
-"""
-ALIPAY_PUBLIC_KEY = """
------BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAirUZxwR6/Kpbx3JrYIxleuye7azALdC7AMI4+vfKbfIOWFFE8kXWL6cxf6yhtIBwUGq3T2SX+1dBJ2p9s8aDU91fvJEoCXcKk66Oue2Bl7MYoTFlfzSkEabHtmRsx0a/T09KOKAfAf9hzdu/JB/S/ICjARoKBSDpdbIO56ktZZYuETCzStzTYqigHtUT+eie2yFxEZ/WDucqBjQeQ2XahfO+b1AK0jE+atmptH6xQroh+PHuaTo113O9JJuRX8VMYZiPczxqrxO58lEjSmAOKZfbdCZIhNd5kHKKjIPB4Zzqe6V8Tmpdtt7Rl9x6uF9m1Ke9F3GSspfKvnhTxBtZewIDAQAB
------END PUBLIC KEY-----
-"""
-
-# 初始化支付宝客户端配置
-alipay_client_config = AlipayClientConfig()
-alipay_client_config.server_url = "https://openapi.alipay.com/gateway.do"
-alipay_client_config.app_id = ALIPAY_APP_ID
-alipay_client_config.app_private_key = ALIPAY_PRIVATE_KEY
-alipay_client_config.alipay_public_key = ALIPAY_PUBLIC_KEY
-alipay_client = DefaultAlipayClient(alipay_client_config)
+# 易支付配置
+YIPAY_MERCHANT_ID = "7200"
+YIPAY_SECRET_KEY = "w7r7f7f72I7oO6koB572E6fev672BK9v"
+YIPAY_API_URL = "https://yi-pay.com/mapi.php"
 
 # 指定Tesseract的安装路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -212,7 +166,9 @@ def allowed_file(filename):
 
 # 定义积分规则
 POINTS_RULES = [
-    (19, 5),
+    (59, 25),
+    (29, 10),
+    (19, 4),
     (9, 2),
     (5, 1)
 ]
@@ -225,22 +181,36 @@ def calculate_points(amount):
             break
     return points
 
-def generate_alipay_qr_code(amount, out_trade_no):
-    model = AlipayTradePrecreateModel()
-    model.out_trade_no = out_trade_no
-    model.total_amount = str(amount)
-    model.subject = "充值服务"  # 描述信息
-    request = AlipayTradePrecreateRequest(biz_model=model)
-    
+def generate_yipay_order(amount, out_trade_no, notify_url, return_url, payment_type='alipay'):
+    params = {
+        "pid": YIPAY_MERCHANT_ID,
+        "type": payment_type,
+        "out_trade_no": out_trade_no,
+        "notify_url": notify_url,
+        "return_url": return_url,
+        "name": "充值服务",
+        "money": str(amount),
+        "sign_type": "MD5"
+    }
+
+    # 构造签名
+    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if params[key]]) + YIPAY_SECRET_KEY
+    params["sign"] = hashlib.md5(sign_str.encode('utf-8')).hexdigest()
+
     try:
-        response = alipay_client.execute(request)
-        if response.is_success():
-            return response.qr_code  # 返回支付二维码的URL
+        response = requests.post(YIPAY_API_URL, data=params)
+        if response.status_code == 200:
+            result = response.json()
+            if result['code'] == 1:
+                return result.get('payurl') or result.get('qrcode') or result.get('urlscheme')
+            else:
+                print(f"Yipay response error: {result['msg']}")
+                return None
         else:
-            print(f"Alipay response error: {response}")
+            print(f"Yipay response error: {response.status_code}")
             return None
     except Exception as e:
-        print(f"Error during QR code generation: {e}")
+        print(f"Error during Yipay order generation: {e}")
         return None
 
 @app.route('/simple')
@@ -253,12 +223,14 @@ def generate_qr_code():
     amount = data.get('amount')
     username = data.get('username')
 
-    if amount not in [5, 9, 19]:
+    if amount not in [5, 9, 19, 29, 59]:
         return jsonify({'error': 'Invalid amount'}), 400
 
     out_trade_no = f"{username}_{int(time.time())}"  # 生成唯一订单号
+    notify_url = "http://www.yourdomain.com/yipay_notify"  # 替换为你的notify_url
+    return_url = "http://www.yourdomain.com/return_url"  # 替换为你的return_url
 
-    qr_code_url = generate_alipay_qr_code(amount, out_trade_no)
+    qr_code_url = generate_yipay_order(amount, out_trade_no, notify_url, return_url)
     if qr_code_url:
         return jsonify({'qr_code_url': qr_code_url}), 200
     else:
@@ -289,8 +261,8 @@ def register():
     users[username] = {"password": generate_password_hash(password, method='pbkdf2:sha256'), "points": 1}
     save_users(users)
     response = jsonify({'message': 'Registration successful'})
-    response.set_cookie('username', username, httponly=False)  # 修改为httponly=False，以便前端可以访问
-    response.set_cookie('points', '1', httponly=False)  # 修改为httponly=False，以便前 端可以访问
+    response.set_cookie('username', username, httponly=False)
+    response.set_cookie('points', '1', httponly=False)
     return response, 200
 
 @app.route('/login', methods=['POST'])
@@ -302,8 +274,8 @@ def login():
     if username not in users or not check_password_hash(users[username]['password'], password):
         return jsonify({'error': 'Invalid username or password'}), 400
     response = jsonify({'message': 'Login successful', 'username': username, 'points': users[username]['points']})
-    response.set_cookie('username', username, httponly=False)  # 修改为httponly=False，以便前端可以访问
-    response.set_cookie('points', str(users[username]['points']), httponly=False)  # 修改为httponly=False，以便前端可以访问
+    response.set_cookie('username', username, httponly=False)
+    response.set_cookie('points', str(users[username]['points']), httponly=False)
     return response, 200
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -329,7 +301,7 @@ def upload():
             os.makedirs(app.config['UPLOAD_FOLDER'])
 
         filename = secure_filename(file.filename)
-        unique_filename = f"{username}_{int(time.time())}_{filename}"  # 生成唯一文件名
+        unique_filename = f"{username}_{int(time.time())}_{filename}"
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(filepath)
 
@@ -343,53 +315,41 @@ def upload():
     save_users(users)
 
     response = jsonify({'message': 'Upload and processing successful', 'result': result})
-    response.set_cookie('points', str(users[username]['points']), httponly=False)  # 修改为httponly=False，以便前端可以访问
+    response.set_cookie('points', str(users[username]['points']), httponly=False)
     return response, 200
 
-@app.route('/alipay/notify', methods=['POST'])
-def alipay_notify():
+@app.route('/yipay_notify', methods=['POST'])
+def yipay_notify():
     data = request.form.to_dict()
     sign = data.pop('sign', None)
 
-    # 验证支付宝签名
-    if not verify_alipay_signature(data, sign):
+    # 验证易支付签名
+    if not verify_yipay_signature(data, sign):
         return 'failure', 400
 
     if data.get('trade_status') == 'TRADE_SUCCESS':
-        user_id = data.get('out_trade_no')  # 假设你的订单号是用户ID
-        amount = float(data.get('total_amount', 0))
+        out_trade_no = data.get('out_trade_no')
+        amount = float(data.get('money', 0))
 
         # 计算积分
         points = calculate_points(amount)
 
         # 更新用户积分
         users = load_users()
-        if user_id in users:
-            users[user_id]['points'] += points
+        username = out_trade_no.split('_')[0]
+        if username in users:
+            users[username]['points'] += points
             save_users(users)
             return 'success', 200
         else:
             return 'failure', 400
     return 'failure', 400
 
-def verify_alipay_signature(data, sign):
-    # 把待验证的参数按 key 的字母顺序排序
+def verify_yipay_signature(data, sign):
     sorted_items = sorted(data.items())
-    # 构造签名内容字符串
-    message = "&".join(f"{k}={v}" for k, v in sorted_items)
-
-    # 载入支付宝公钥
-    public_key = RSA.import_key(ALIPAY_PUBLIC_KEY)
-
-    # 创建SHA256的hash对象
-    h = SHA256.new(message.encode('utf-8'))
-
-    # 对base64解码后的签名进行验证
-    try:
-        pkcs1_15.new(public_key).verify(h, base64.b64decode(sign))
-        return True
-    except (ValueError, TypeError):
-        return False
+    message = "&".join(f"{k}={v}" for k, v in sorted_items if v and k != 'sign') + YIPAY_SECRET_KEY
+    calculated_sign = hashlib.md5(message.encode('utf-8')).hexdigest()
+    return calculated_sign == sign
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
