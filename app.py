@@ -24,14 +24,16 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
 
 # OpenAI 配置，通过环境变量设置
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
 # 易支付配置，通过环境变量设置
-YIPAY_MERCHANT_ID = os.getenv("YIPAY_MERCHANT_ID", "7200")
-YIPAY_SECRET_KEY = os.getenv("YIPAY_SECRET_KEY", "w7r7f7f72I7oO6koB572E6fev672BK9v")
-YIPAY_API_URL = os.getenv("YIPAY_API_URL", "https://yi-pay.com/mapi.php")
+YIPAY_MERCHANT_ID = "3326"  # 商户ID
+YIPAY_SECRET_KEY = "b361b63f6c4950e726ad6f6ca3e2b07d"  # 商户密钥
+YIPAY_API_URL = "https://pay.yzhifupay.com/"  # 易支付API接口地址
+NOTIFY_URL = "http://47.99.81.13:5000/yipay_notify"  # 异步通知地址
+RETURN_URL = "http://47.99.81.13:5000/return_url"  # 同步返回地址
 
 # 指定Tesseract的安装路径，适配Linux环境
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -95,7 +97,7 @@ def process_text_with_gpt(text, prompt=None):
         return handle_api_error(e)
 
 def analyze_generate_essay(ocr_text, base64_text, user_input_text):
-    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用户输入文本: {user_input_text}"
+    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用 户输入文本: {user_input_text}"
     prompt = f"""
     根据以下提供的图片和文本信息，从OCR识别内容中提取出雅思作文的题目和正文。题目需要中英文表达，作文不添加额外信息，只选取与题目和作文相关的部分。
 
@@ -182,7 +184,7 @@ def calculate_points(amount):
             break
     return points
 
-def generate_yipay_order(amount, out_trade_no, notify_url, return_url, payment_type='alipay'):
+def generate_yipay_order(amount, out_trade_no, notify_url, return_url, clientip, payment_type='alipay'):
     params = {
         "pid": YIPAY_MERCHANT_ID,
         "type": payment_type,
@@ -191,15 +193,25 @@ def generate_yipay_order(amount, out_trade_no, notify_url, return_url, payment_t
         "return_url": return_url,
         "name": "充值服务",
         "money": str(amount),
+        "clientip": clientip,  # 新增的IP地址参数
         "sign_type": "MD5"
     }
 
-    # 构造签名
-    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if params[key]]) + YIPAY_SECRET_KEY
+    # 按照参数名的ASCII码排序，并且排除掉sign和sign_type
+    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if key != 'sign' and key != 'sign_type' and params[key]]) + YIPAY_SECRET_KEY
+    print(f"签名前的字符串: {sign_str}")  # 打印签名前的字符串
+
+    # 生成签名
     params["sign"] = hashlib.md5(sign_str.encode('utf-8')).hexdigest()
+    print(f"生成的MD5签名: {params['sign']}")  # 打印生成的签名
 
     try:
+        # 发送POST请求
         response = requests.post(YIPAY_API_URL, data=params)
+        print("Response status code:", response.status_code)
+        print("Response content:", response.text)
+
+        # 如果响应成功且 code 为 1，则返回支付链接
         if response.status_code == 200:
             result = response.json()
             if result['code'] == 1:
@@ -228,10 +240,16 @@ def generate_qr_code():
         return jsonify({'error': 'Invalid amount'}), 400
 
     out_trade_no = f"{username}_{int(time.time())}"  # 生成唯一订单号
-    notify_url = "http://www.yourdomain.com/yipay_notify"  # 替换为你的notify_url
-    return_url = "http://www.yourdomain.com/return_url"  # 替换为你的return_url
 
-    qr_code_url = generate_yipay_order(amount, out_trade_no, notify_url, return_url)
+    # 使用IP地址作为通知地址和返回地址
+    notify_url = "http://47.99.81.13:5000/yipay_notify"  # 异步通知地址
+    return_url = "http://47.99.81.13:5000/return_url"  # 同步返回地址
+
+    # 获取用户的IP地址
+    clientip = request.remote_addr
+
+    # 调用 generate_yipay_order 时传递 clientip
+    qr_code_url = generate_yipay_order(amount, out_trade_no, notify_url, return_url, clientip)
     if qr_code_url:
         return jsonify({'qr_code_url': qr_code_url}), 200
     else:
