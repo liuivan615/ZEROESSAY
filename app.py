@@ -4,6 +4,7 @@ import base64
 import collections
 import hashlib
 import requests
+import pytesseract
 from PIL import Image, ImageEnhance, ImageFilter
 from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
@@ -23,17 +24,17 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
 
 # OpenAI 配置，通过环境变量设置
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
-# 易支付配置
-YIPAY_MERCHANT_ID = "7200"
-YIPAY_SECRET_KEY = "w7r7f7f72I7oO6koB572E6fev672BK9v"
-YIPAY_API_URL = "https://yi-pay.com/mapi.php"
+# 易支付配置，通过环境变量设置
+YIPAY_MERCHANT_ID = os.getenv("YIPAY_MERCHANT_ID", "7200")
+YIPAY_SECRET_KEY = os.getenv("YIPAY_SECRET_KEY", "w7r7f7f72I7oO6koB572E6fev672BK9v")
+YIPAY_API_URL = os.getenv("YIPAY_API_URL", "https://yi-pay.com/mapi.php")
 
-# 指定Tesseract的安装路径
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# 指定Tesseract的安装路径，适配Linux环境
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 # 上下文内存，用于保持对话上下文
 context_memory = collections.deque(maxlen=15)
@@ -94,7 +95,7 @@ def process_text_with_gpt(text, prompt=None):
         return handle_api_error(e)
 
 def analyze_generate_essay(ocr_text, base64_text, user_input_text):
-    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用 户输入文本: {user_input_text}"
+    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用户输入文本: {user_input_text}"
     prompt = f"""
     根据以下提供的图片和文本信息，从OCR识别内容中提取出雅思作文的题目和正文。题目需要中英文表达，作文不添加额外信息，只选取与题目和作文相关的部分。
 
@@ -308,8 +309,8 @@ def upload():
     if not filepath and not text_essay:
         return jsonify({'error': 'No valid file or text provided'}), 400
 
-    # 将文件路径和文本一起发送给API处理
-    result = process_uploaded_content(filepath, text_essay)
+    # 处理上传内容
+    result = process_uploaded_content(filepath, text_essay)  # 你需要定义这个函数的具体内容
 
     users[username]['points'] -= 1
     save_users(users)
