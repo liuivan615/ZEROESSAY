@@ -15,8 +15,8 @@ import json
 
 # Flask应用初始化
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)  # 为Flask会话设置SECRET_KEY
-CORS(app)
+app.config['SECRET_KEY'] = os.urandom(24)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 配置上传目录
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'ZEROESSAY', 'uploads')
@@ -28,10 +28,10 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B7459
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
-# 易支付配置，通过环境变量设置
-YIPAY_MERCHANT_ID = "3326"  # 商户ID
-YIPAY_SECRET_KEY = "b361b63f6c4950e726ad6f6ca3e2b07d"  # 商户密钥
-YIPAY_API_URL = "https://pay.yzhifupay.com/"  # 易支付API接口地址
+# 支付接口配置
+PAY_MERCHANT_ID = "3326"  # 商户ID
+PAY_SECRET_KEY = "b361b63f6c4950e726ad6f6ca3e2b07d"  # 商户密钥
+PAY_API_URL = "https://pay.yzhifupay.com/"  # 支付API地址
 NOTIFY_URL = "http://47.99.81.13:5000/yipay_notify"  # 异步通知地址
 RETURN_URL = "http://47.99.81.13:5000/return_url"  # 同步返回地址
 
@@ -54,6 +54,22 @@ def handle_api_error(e):
 def clean_path(path):
     return path.strip().strip('"').replace('\\\\', '\\').replace('\\\\"', '\\')
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# 读取用户数据的函数
+def load_users():
+    if not os.path.exists(USER_DATA_FILE):
+        return {}
+    with open(USER_DATA_FILE, 'r') as f:
+        return json.load(f)
+
+# 保存用户数据的函数
+def save_users(users):
+    with open(USER_DATA_FILE, 'w') as f:
+        json.dump(users, f)
+
+# 图片处理与API调用相关函数
 def preprocess_image(image_path):
     image = Image.open(image_path)
     image = image.convert('L')
@@ -92,8 +108,13 @@ def process_text_with_gpt(text, prompt=None):
     try:
         response = client.chat.completions.create(model="gpt-4", messages=messages, max_tokens=4096)
         result = response.choices[0].message.content.strip()
+
+        # 打印API的完整响应
+        print("OpenAI API 响应内容：", result)
+
         return result
     except (BadRequestError, OpenAIError) as e:
+        print("OpenAI API 错误：", e)
         return handle_api_error(e)
 
 def analyze_generate_essay(ocr_text, base64_text, user_input_text):
@@ -103,102 +124,117 @@ def analyze_generate_essay(ocr_text, base64_text, user_input_text):
 
     提供的内容：
     {combined_text[:1500]}
-
-    生成的题目和作文应严格基于OCR识别结果，不得添加额外内容。如果无法识别出题目，请注明"未能识别出题目"。作文部分一定要生成。
     """
 
     analysis_result = process_text_with_gpt(combined_text, prompt)
     return analysis_result
 
-def evaluate_and_improve_essay(essay_text):
-    prompt = f"""
-    下面是一篇雅思作文，请从以下四个方面进行评分：
-    1. 任务回应（Task Achievement/Task Response）
-    2. 连贯与衔接（Coherence and Cohesion）
-    3. 词汇资源（Lexical Resource）
-    4. 语法多样性与准确性（Grammatical Range and Accuracy）
+def process_uploaded_content(image_path, user_input_text):
+    ocr_text = extract_text_with_ocr(image_path) if image_path else ""
+    base64_text = get_image_base64(image_path) if image_path else ""
 
-    请为每个维度打分并给出评分理由，并直接给出总分。
+    analysis_result = analyze_generate_essay(ocr_text, base64_text, user_input_text)
 
-    作文内容：
-    {essay_text[:1000]}
-    """
+    # 打印分析结果，调试API是否返回有效数据
+    print("API 返回的分析结果：", analysis_result)
 
-    evaluation_result = process_text_with_gpt(essay_text, prompt)
-    return evaluation_result
+    return analysis_result
 
-def improve_each_sentence(essay_text):
-    prompt = f"""
-    以下是雅思作文的原文内容，请根据GPT分析出的缺陷逐句改进这些句子，并解释每个改进的原因。改进后的句子应以英文给出，并以蓝色标记，解释原因则用中文给出，并以红色标记。
+# 上传文件处理的API端点
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html')
 
-    改进后的小作文应不超过150个英文单词，大作文应不超过250个英文单词。
+    # 检查是否有文件上传或文本上传
+    file = request.files.get('file')  # 获取文件（如果有）
+    text_essay = request.form.get('text_essay')  # 获取文本（如果有）
 
-    作文内容：
-    {essay_text[:1000]}
-    """
+    # 如果既没有文件也没有文本，则返回错误
+    if not file and not text_essay:
+        print("No file or text part in the request")
+        return jsonify({'error': 'No file or text part in the request'}), 400
 
-    improved_essay = process_text_with_gpt(essay_text, prompt)
-    return improved_essay
+    # 初始化文件路径为 None
+    filepath = None
 
-def generate_final_essay(original_essay, improvements):
-    prompt = f"""
-    请根据以下原始作文和改进建议，生成改进后的完整雅思作文。请确保保留原文的合理部分， 并应用改进后的内容。
+    # 如果上传了文件，则处理文件
+    if file and file.filename != '':
+        if allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print(f"Saving file to {filepath}")
+            file.save(filepath)
+        else:
+            print("Invalid file")
+            return jsonify({'error': 'Invalid file'}), 400
 
-    原始作文：
-    {original_essay[:1000]}
+    # 处理上传内容：无论是文件、文本或两者
+    result = process_uploaded_content(filepath, text_essay)
 
-    改进建议：
-    {improvements[:1000]}
-    """
+    # 更新用户积分 (假设已经有相关用户登录并获取了用户名)
+    users = load_users()
+    username = request.cookies.get('username')
+    if username and username in users:
+        users[username]['points'] -= 1
+        save_users(users)
+        response = jsonify({'redirect': f'/report?result={result}'})
+        response.set_cookie('points', str(users[username]['points']), httponly=False)
+    else:
+        response = jsonify({'redirect': f'/report?result={result}'})
 
-    final_essay = process_text_with_gpt(original_essay, prompt)
-    return final_essay
+    print("Upload and processing successful")
 
-def load_users():
-    if not os.path.exists(USER_DATA_FILE):
-        return {}
-    with open(USER_DATA_FILE, 'r') as f:
-        return json.load(f)
+    # 返回成功并跳转到报告页面
+    return response, 200
 
-def save_users(users):
-    with open(USER_DATA_FILE, 'w') as f:
-        json.dump(users, f)
+# 报告页面的路由，用于显示处理结果
+@app.route('/report')
+def report():
+    # 从GET参数中获取处理结果
+    result = request.args.get('result', None)
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    # 如果有结果，将其转化为字典
+    if result:
+        try:
+            result = json.loads(result)
+        except json.JSONDecodeError:
+            result = None
 
-# 定义积分规则
-POINTS_RULES = [
-    (59, 25),
-    (29, 10),
-    (19, 4),
-    (9, 2),
-    (5, 1)
-]
+    # 如果没有结果，提示重新上传
+    if not result:
+        result = {
+            "titleEn": "No result",
+            "titleZh": "没有可显示的结果，请重新上传文件或文本进行处理。",
+            "scores": {
+                "taskAchievement": 0,
+                "coherenceCohesion": 0,
+                "lexicalResource": 0,
+                "grammaticalRange": 0,
+                "overall": 0,
+            },
+            "feedback": [],
+            "finalEssay": "No essay available."
+        }
 
-def calculate_points(amount):
-    points = 0
-    for threshold, reward in POINTS_RULES:
-        if amount >= threshold:
-            points += reward
-            break
-    return points
+    # 渲染 report.html 并传递结果到前端
+    return render_template('report.html', result=result)
 
-def generate_yipay_order(amount, out_trade_no, notify_url, return_url, clientip, payment_type='alipay'):
+# 支付接口生成订单
+def generate_pay_order(amount, out_trade_no, notify_url, return_url, payment_type='alipay'):
     params = {
-        "pid": YIPAY_MERCHANT_ID,
+        "pid": PAY_MERCHANT_ID,
         "type": payment_type,
         "out_trade_no": out_trade_no,
         "notify_url": notify_url,
         "return_url": return_url,
         "name": "充值服务",
         "money": str(amount),
-        "clientip": clientip,  # 新增的IP地址参数
         "sign_type": "MD5"
     }
 
     # 按照参数名的ASCII码排序，并且排除掉sign和sign_type
-    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if key != 'sign' and key != 'sign_type' and params[key]]) + YIPAY_SECRET_KEY
+    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if key != 'sign' and key != 'sign_type' and params[key]]) + PAY_SECRET_KEY
     print(f"签名前的字符串: {sign_str}")  # 打印签名前的字符串
 
     # 生成签名
@@ -207,28 +243,19 @@ def generate_yipay_order(amount, out_trade_no, notify_url, return_url, clientip,
 
     try:
         # 发送POST请求
-        response = requests.post(YIPAY_API_URL, data=params)
+        response = requests.post(PAY_API_URL, data=params)
         print("Response status code:", response.status_code)
         print("Response content:", response.text)
 
-        # 如果响应成功且 code 为 1，则返回支付链接
-        if response.status_code == 200:
-            result = response.json()
-            if result['code'] == 1:
-                return result.get('payurl') or result.get('qrcode') or result.get('urlscheme')
-            else:
-                print(f"Yipay response error: {result['msg']}")
-                return None
+        # 如果响应成功且返回HTML页面
+        if response.status_code == 200 and '<html>' in response.text:
+            return response.url  # 返回支付页面URL
         else:
-            print(f"Yipay response error: {response.status_code}")
+            print(f"支付请求错误: {response.status_code}")
             return None
     except Exception as e:
-        print(f"Error during Yipay order generation: {e}")
+        print(f"Error during Pay order generation: {e}")
         return None
-
-@app.route('/simple')
-def simple():
-    return render_template('simple.html')
 
 @app.route('/generate_qr_code', methods=['POST'])
 def generate_qr_code():
@@ -242,14 +269,10 @@ def generate_qr_code():
     out_trade_no = f"{username}_{int(time.time())}"  # 生成唯一订单号
 
     # 使用IP地址作为通知地址和返回地址
-    notify_url = "http://47.99.81.13:5000/yipay_notify"  # 异步通知地址
-    return_url = "http://47.99.81.13:5000/return_url"  # 同步返回地址
+    notify_url = NOTIFY_URL
+    return_url = RETURN_URL
 
-    # 获取用户的IP地址
-    clientip = request.remote_addr
-
-    # 调用 generate_yipay_order 时传递 clientip
-    qr_code_url = generate_yipay_order(amount, out_trade_no, notify_url, return_url, clientip)
+    qr_code_url = generate_pay_order(amount, out_trade_no, notify_url, return_url)
     if qr_code_url:
         return jsonify({'qr_code_url': qr_code_url}), 200
     else:
@@ -297,52 +320,12 @@ def login():
     response.set_cookie('points', str(users[username]['points']), httponly=False)
     return response, 200
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'GET':
-        return render_template('upload.html')
-
-    # 处理上传逻辑
-    username = request.cookies.get('username')
-    if not username:
-        return jsonify({'error': 'User not logged in'}), 400
-    users = load_users()
-    if users[username]['points'] < 1:
-        return jsonify({'error': 'Insufficient points'}), 400
-
-    file = request.files.get('file')
-    text_essay = request.form.get('text_essay')
-    filepath = None
-
-    if file and allowed_file(file.filename):
-        # 保存文件
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'])
-
-        filename = secure_filename(file.filename)
-        unique_filename = f"{username}_{int(time.time())}_{filename}"
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-        file.save(filepath)
-
-    if not filepath and not text_essay:
-        return jsonify({'error': 'No valid file or text provided'}), 400
-
-    # 处理上传内容
-    result = process_uploaded_content(filepath, text_essay)  # 你需要定义这个函数的具体内容
-
-    users[username]['points'] -= 1
-    save_users(users)
-
-    response = jsonify({'message': 'Upload and processing successful', 'result': result})
-    response.set_cookie('points', str(users[username]['points']), httponly=False)
-    return response, 200
-
 @app.route('/yipay_notify', methods=['POST'])
 def yipay_notify():
     data = request.form.to_dict()
     sign = data.pop('sign', None)
 
-    # 验证易支付签名
+    # 验证支付签名
     if not verify_yipay_signature(data, sign):
         return 'failure', 400
 
@@ -366,7 +349,7 @@ def yipay_notify():
 
 def verify_yipay_signature(data, sign):
     sorted_items = sorted(data.items())
-    message = "&".join(f"{k}={v}" for k, v in sorted_items if v and k != 'sign') + YIPAY_SECRET_KEY
+    message = "&".join(f"{k}={v}" for k, v in sorted_items if v and k != 'sign') + PAY_SECRET_KEY
     calculated_sign = hashlib.md5(message.encode('utf-8')).hexdigest()
     return calculated_sign == sign
 
