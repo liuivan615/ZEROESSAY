@@ -72,11 +72,15 @@ def save_users(users):
 # 图片处理与API调用相关函数
 def preprocess_image(image_path):
     image = Image.open(image_path)
+    # 转为灰度图像
     image = image.convert('L')
+    # 增强对比度
     enhancer = ImageEnhance.Contrast(image)
     image = enhancer.enhance(2)
+    # 进行二值化处理
     image = image.point(lambda x: 0 if x < 140 else 255, '1')
-    image = image.filter(ImageFilter.MedianFilter())
+    # 去除噪声
+    image = image.filter(ImageFilter.MedianFilter(size=3))
     return image
 
 def extract_text_with_ocr(image_path):
@@ -106,7 +110,7 @@ def process_text_with_gpt(text, prompt=None):
         messages.append({"role": "user", "content": prompt[:MAX_TOKENS]})
 
     try:
-        response = client.chat.completions.create(model="gpt-4", messages=messages, max_tokens=4096)
+        response = client.chat.completions.create(model="gpt-4o", messages=messages, max_tokens=4096)
         result = response.choices[0].message.content.strip()
 
         # 打印API的完整响应
@@ -117,11 +121,12 @@ def process_text_with_gpt(text, prompt=None):
         print("OpenAI API 错误：", e)
         return handle_api_error(e)
 
+# 雅思作文生成、评分、改进相关功能
 def analyze_generate_essay(ocr_text, base64_text, user_input_text):
-    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用 户输入文本: {user_input_text}"
+    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用户输入文本: {user_input_text}"
     prompt = f"""
     根据以下提供的图片和文本信息，从OCR识别内容中提取出雅思作文的题目和正文。题目需要中英文表达，作文不添加额外信息，只选取与题目和作文相关的部分。
-
+    
     提供的内容：
     {combined_text[:1500]}
     """
@@ -129,16 +134,72 @@ def analyze_generate_essay(ocr_text, base64_text, user_input_text):
     analysis_result = process_text_with_gpt(combined_text, prompt)
     return analysis_result
 
+def evaluate_and_improve_essay(essay_text):
+    prompt = f"""
+    下面是一篇雅思作文，请从以下四个方面进行评分：
+    1. 任务回应（Task Achievement/Task Response）
+    2. 连贯与衔接（Coherence and Cohesion）
+    3. 词汇资源（Lexical Resource）
+    4. 语法多样性与准确性（Grammatical Range and Accuracy）
+    
+    请为每个维度打分并给出评分理由，并直接给出总分。
+
+    作文内容：
+    {essay_text[:1000]}
+    """
+    
+    evaluation_result = process_text_with_gpt(essay_text, prompt)
+    return evaluation_result
+
+def improve_each_sentence(essay_text):
+    prompt = f"""
+    以下是雅思作文的原文内容，请根据GPT分析出的缺陷逐句改进这些句子，并解释每个改进的原因。改进后的句子应以英文给出，并以蓝色标记，解释原因则用中文给出，并以红色标记。
+    
+    改进后的小作文应不超过150个英文单词，大作文应不超过250个英文单词。
+
+    作文内容：
+    {essay_text[:1000]}
+    """
+    
+    improved_essay = process_text_with_gpt(essay_text, prompt)
+    return improved_essay
+
+def generate_final_essay(original_essay, improvements):
+    prompt = f"""
+    请根据以下原始作文和改进建议，生成改进后的完整雅思作文。请确保保留原文的合理部分，并应用改进后的内容。
+
+    原始作文：
+    {original_essay[:1000]}
+
+    改进建议：
+    {improvements[:1000]}
+    """
+    
+    final_essay = process_text_with_gpt(original_essay, prompt)
+    return final_essay
+
+# 处理上传的内容并生成作文
 def process_uploaded_content(image_path, user_input_text):
     ocr_text = extract_text_with_ocr(image_path) if image_path else ""
     base64_text = get_image_base64(image_path) if image_path else ""
 
+    # 1. 分析生成题目和作文
     analysis_result = analyze_generate_essay(ocr_text, base64_text, user_input_text)
+    print("生成的题目和作文:", analysis_result)
 
-    # 打印分析结果，调试API是否返回有效数据
-    print("API 返回的分析结果：", analysis_result)
+    # 2. 评分与改进
+    evaluation_result = evaluate_and_improve_essay(analysis_result)
+    print("评分和改进建议:", evaluation_result)
 
-    return analysis_result
+    # 3. 对作文逐句改进并解释理由
+    improved_sentences = improve_each_sentence(analysis_result)
+    print("逐句改进后的作文和解释:", improved_sentences)
+
+    # 4. 生成最终改进后的作文
+    final_essay = generate_final_essay(analysis_result, improved_sentences)
+    print("改进后的雅思作文:", final_essay)
+
+    return final_essay
 
 # 上传文件处理的API端点
 @app.route('/upload', methods=['GET', 'POST'])
@@ -158,10 +219,10 @@ def upload():
     # 初始化文件路径为 None
     filepath = None
 
-    # 如果上传了文件，则处理文件
+    # 如果上传了文件，则处理文件，附加时间戳生成唯一文件名
     if file and file.filename != '':
         if allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            filename = f"{int(time.time())}_{secure_filename(file.filename)}"  # 添加时间戳确保唯一性
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             print(f"Saving file to {filepath}")
             file.save(filepath)
@@ -189,19 +250,13 @@ def upload():
     return response, 200
 
 # 报告页面的路由，用于显示处理结果
-@app.route('/report')
+@app.route('/report', methods=['GET', 'POST'])
 def report():
-    # 从GET参数中获取处理结果
-    result = request.args.get('result', None)
+    # 使用 session 获取结果
+    from flask import session
+    result = session.get('result')
 
-    # 如果有结果，将其转化为字典
-    if result:
-        try:
-            result = json.loads(result)
-        except json.JSONDecodeError:
-            result = None
-
-    # 如果没有结果，提示重新上传
+    # 如果没有结果，显示默认消息
     if not result:
         result = {
             "titleEn": "No result",
@@ -217,7 +272,6 @@ def report():
             "finalEssay": "No essay available."
         }
 
-    # 渲染 report.html 并传递结果到前端
     return render_template('report.html', result=result)
 
 # 支付接口生成订单
