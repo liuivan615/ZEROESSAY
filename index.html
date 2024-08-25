@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGPT</title>
     <style>
-        /* 全局样式 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -92,6 +91,25 @@
             color: #ddd;
         }
 
+        /* 登录和注册按钮 */
+        .login-register {
+            display: flex;
+            gap: 15px;
+        }
+
+        .login-register button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .login-register button:hover {
+            background-color: #0056b3;
+        }
+
         /* 聊天显示区域 */
         .chat-display {
             flex: 1;
@@ -163,27 +181,14 @@
             background-color: #0056b3;
         }
 
-        /* 登录与注册按钮 */
-        .auth-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .auth-btn {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
+        /* 文件名显示 */
+        .filename {
+            font-size: 12px;
             margin-right: 10px;
+            color: #bbb;
         }
 
-        .auth-btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* 弹窗样式 */
+        /* 登录弹窗 */
         .modal {
             display: none;
             position: fixed;
@@ -191,50 +196,51 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background-color: #333;
+            background-color: #444;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal h3 {
-            margin-top: 0;
-        }
-
-        .modal input[type="text"], .modal input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: #444;
+            width: 300px;
             color: #fff;
         }
 
-        .modal .modal-btn {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            width: 100%;
+        .modal-header {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
-        .modal .modal-btn:hover {
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
             background-color: #0056b3;
         }
 
-        /* 错误信息样式 */
-        .error {
+        /* 错误提示信息 */
+        .error-message {
             color: red;
             font-size: 14px;
-            margin-bottom: 10px;
             text-align: center;
         }
     </style>
 </head>
 <body>
 
+<!-- 左侧栏（聊天记录） -->
 <div class="sidebar">
     <h2>聊天记录</h2>
     <ul class="chat-history" id="chat-history">
@@ -242,115 +248,145 @@
     </ul>
 </div>
 
+<!-- 主聊天区域 -->
 <div class="chat-area">
     <div class="top-bar">
-        <div class="user-info">
+        <!-- 用户信息区域 -->
+        <div class="user-info" id="user-info">
             <div class="avatar" id="user-avatar">未登录</div>
             <div id="username">未登录</div>
         </div>
-        <div class="token-info">
+
+        <!-- 剩余Token信息 -->
+        <div class="token-info" id="token-info">
             剩余token: <span id="token-amount">0</span>
+        </div>
+
+        <!-- 登录和注册按钮 -->
+        <div class="login-register" id="login-register">
+            <button id="login-btn">登录</button>
+            <button id="register-btn">注册</button>
         </div>
     </div>
 
+    <!-- 聊天显示区域 -->
     <div class="chat-display" id="chat-display">
         <!-- 动态加载聊天内容 -->
     </div>
 
-    <div class="input-area">
+    <!-- 输入区域 -->
+    <div class="input-area" id="input-area" style="display: none;">
         <label class="upload-btn" for="file-upload">上传文件</label>
         <input type="file" id="file-upload">
         <span class="filename" id="filename"></span>
         <input type="text" id="message-input" class="input-box" placeholder="输入内容...">
-        <button class="send-btn" id="send-btn" disabled>发送</button>
-    </div>
-
-    <div class="auth-buttons">
-        <button class="auth-btn" id="login-btn">登录</button>
-        <button class="auth-btn" id="register-btn">注册</button>
+        <button class="send-btn" id="send-btn">发送</button>
     </div>
 </div>
 
 <!-- 登录弹窗 -->
 <div class="modal" id="login-modal">
-    <h3>登录</h3>
+    <div class="modal-header">登录</div>
     <input type="text" id="login-username" placeholder="用户名">
     <input type="password" id="login-password" placeholder="密码">
-    <button class="modal-btn" id="login-submit-btn">提交</button>
-    <div class="error" id="login-error"></div>
+    <button id="login-submit">登录</button>
+    <div class="error-message" id="login-error"></div>
 </div>
 
 <!-- 注册弹窗 -->
 <div class="modal" id="register-modal">
-    <h3>注册</h3>
+    <div class="modal-header">注册</div>
     <input type="text" id="register-username" placeholder="用户名">
     <input type="password" id="register-password" placeholder="密码">
-    <button class="modal-btn" id="register-submit-btn">提交</button>
-    <div class="error" id="register-error"></div>
+    <button id="register-submit">注册</button>
+    <div class="error-message" id="register-error"></div>
 </div>
 
 <script>
-    // 用户数据存储
-    let users = {};  // 模拟storage的用户数据
-    let loggedInUser = null;  // 当前登录用户
-    let tokenAmount = 0;  // 初始token
+    let users = {}; // 模拟存储的用户数据
+    let currentUser = null;
+    let tokenAmount = 4096;
 
     // 初始化页面
     function initializePage() {
-        if (loggedInUser) {
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('register-btn').style.display = 'none';
-            document.getElementById('send-btn').disabled = false;
-            document.getElementById('user-avatar').innerText = loggedInUser.substring(0, 2).toUpperCase();
-            document.getElementById('username').innerText = loggedInUser;
-            document.getElementById('token-amount').innerText = tokenAmount;
-        }
+        document.getElementById('login-register').style.display = 'flex';
+        document.getElementById('input-area').style.display = 'none';
     }
 
-    // 登录逻辑
-    document.getElementById('login-btn').addEventListener('click', function () {
+    // 打开登录弹窗
+    document.getElementById('login-btn').addEventListener('click', function() {
         document.getElementById('login-modal').style.display = 'block';
     });
 
-    document.getElementById('login-submit-btn').addEventListener('click', function () {
-        const username = document.getElementById('login-username').value.trim();
-        const password = document.getElementById('login-password').value.trim();
+    // 打开注册弹窗
+    document.getElementById('register-btn').addEventListener('click', function() {
+        document.getElementById('register-modal').style.display = 'block';
+    });
 
-        if (users[username] && users[username].password === password) {
-            loggedInUser = username;
-            tokenAmount = users[username].token;
+    // 关闭弹窗
+    window.addEventListener('click', function(event) {
+        if (event.target === document.getElementById('login-modal')) {
             document.getElementById('login-modal').style.display = 'none';
-            initializePage();
+        } else if (event.target === document.getElementById('register-modal')) {
+            document.getElementById('register-modal').style.display = 'none';
+        }
+    });
+
+    // 登录功能
+    document.getElementById('login-submit').addEventListener('click', function() {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        
+        // 验证用户
+        if (users[username] && users[username].password === password) {
+            currentUser = users[username];
+            tokenAmount = currentUser.token;
+            updateUIAfterLogin(username);
+            document.getElementById('login-modal').style.display = 'none';
         } else {
             document.getElementById('login-error').innerText = '用户名或密码错误';
         }
     });
 
-    // 注册逻辑
-    document.getElementById('register-btn').addEventListener('click', function () {
-        document.getElementById('register-modal').style.display = 'block';
-    });
-
-    document.getElementById('register-submit-btn').addEventListener('click', function () {
-        const username = document.getElementById('register-username').value.trim();
-        const password = document.getElementById('register-password').value.trim();
+    // 注册功能
+    document.getElementById('register-submit').addEventListener('click', function() {
+        const username = document.getElementById('register-username').value;
+        const password = document.getElementById('register-password').value;
 
         if (username.length < 5 || password.length < 5) {
-            document.getElementById('register-error').innerText = '用户名和密码必须超过五个字符';
+            document.getElementById('register-error').innerText = '用户名和密码必须至少5个字符';
             return;
         }
 
         if (users[username]) {
             document.getElementById('register-error').innerText = '用户名已存在';
-            return;
+        } else {
+            users[username] = { password: password, token: 4096 };
+            document.getElementById('register-modal').style.display = 'none';
+            alert('注册成功，请登录！');
         }
-
-        // 注册成功
-        users[username] = { password: password, token: 4096 };  // 默认分配4096 token
-        document.getElementById('register-modal').style.display = 'none';
     });
 
-    // 初始化页面
+    // 登录成功后的UI更新
+    function updateUIAfterLogin(username) {
+        document.getElementById('username').innerText = username;
+        document.getElementById('user-avatar').innerText = username.substring(0, 2).toUpperCase();
+        document.getElementById('login-register').style.display = 'none';
+        document.getElementById('input-area').style.display = 'flex';
+        document.getElementById('token-amount').innerText = tokenAmount;
+    }
+
+    // 模拟发送消息
+    document.getElementById('send-btn').addEventListener('click', function() {
+        const messageInput = document.getElementById("message-input").value.trim();
+        if (messageInput !== "" && tokenAmount > 0) {
+            tokenAmount -= Math.ceil(messageInput.length / 4);  // 假设每4个字符消耗1个token
+            document.getElementById('token-amount').innerText = tokenAmount;
+            document.getElementById("message-input").value = '';
+            // 模拟发送给API和接收AI回复
+        }
+    });
+
     initializePage();
 </script>
 
