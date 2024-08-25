@@ -3,14 +3,13 @@ import time
 import base64
 import collections
 import hashlib
-import requests
 import pytesseract
 from PIL import Image, ImageEnhance, ImageFilter
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from openai import OpenAI, OpenAIError, BadRequestError
+from werkzeug.security import generate_password_hash, check_password_hash
+from openai import OpenAI, OpenAIError
 import json
 
 # Flask应用初始化
@@ -23,315 +22,152 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'ZEROESSAY', 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 USER_DATA_FILE = os.path.join(app.root_path, 'storage', 'users.json')
 
-# OpenAI 配置，通过环境变量设置
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-GZL9qLZUC1WwzLQJ5cE2A0E874B74591BdCcAf83CdE20074")
+# OpenAI 配置
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-BFxu0ZFG4LS3M0xd414aAeB1C6234678BbBcAb8000C59696")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.xiaoai.plus/v1")
 client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 
-# 支付接口配置
-PAY_MERCHANT_ID = "3326"  # 商户ID
-PAY_SECRET_KEY = "b361b63f6c4950e726ad6f6ca3e2b07d"  # 商户密钥
-PAY_API_URL = "https://pay.yzhifupay.com/"  # 支付API地址
-NOTIFY_URL = "http://47.99.81.13:5000/yipay_notify"  # 异步通知地址
-RETURN_URL = "http://47.99.81.13:5000/return_url"  # 同步返回地址
-
-# 指定Tesseract的安装路径，适配Linux环境
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
-
-# 上下文内存，用于保持对话上下文
-context_memory = collections.deque(maxlen=15)
-
-def update_context(new_message):
-    context_memory.append(new_message)
-
-def get_context():
-    return " ".join(context_memory)
-
-def handle_api_error(e):
-    error_detail = str(e)
-    return f"遇到了一些问题，请稍后再试。详细信息: {error_detail}"
-
-def clean_path(path):
-    return path.strip().strip('"').replace('\\\\', '\\').replace('\\\\"', '\\')
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# 读取用户数据的函数
-def load_users():
-    if not os.path.exists(USER_DATA_FILE):
-        return {}
-    with open(USER_DATA_FILE, 'r') as f:
-        return json.load(f)
-
-# 保存用户数据的函数
-def save_users(users):
-    with open(USER_DATA_FILE, 'w') as f:
-        json.dump(users, f)
-
 # 图片处理与API调用相关函数
 def preprocess_image(image_path):
-    image = Image.open(image_path)
-    # 转为灰度图像
-    image = image.convert('L')
-    # 增强对比度
-    enhancer = ImageEnhance.Contrast(image)
-    image = enhancer.enhance(2)
-    # 进行二值化处理
-    image = image.point(lambda x: 0 if x < 140 else 255, '1')
-    # 去除噪声
+    image = Image.open(image_path).convert('L')
+    enhancer = ImageEnhance.Contrast(image).enhance(2)
+    image = enhancer.point(lambda x: 0 if x < 140 else 255, '1')
     image = image.filter(ImageFilter.MedianFilter(size=3))
     return image
 
 def extract_text_with_ocr(image_path):
     try:
         preprocessed_image = preprocess_image(image_path)
-        text = pytesseract.image_to_string(preprocessed_image)
-        return text.strip()
+        return pytesseract.image_to_string(preprocessed_image).strip()
     except Exception as e:
         return f"Error performing OCR on the image: {str(e)}"
 
-def get_image_base64(image_path):
+def process_text_with_gpt(prompt):
     try:
-        with open(image_path, "rb") as img_file:
-            encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
-        return encoded_string
-    except Exception as e:
-        return None
-
-def process_text_with_gpt(text, prompt=None):
-    MAX_TOKENS = 1000
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": text[:MAX_TOKENS]}
-    ]
-
-    if prompt:
-        messages.append({"role": "user", "content": prompt[:MAX_TOKENS]})
-
-    try:
+        messages = [{"role": "user", "content": prompt}]
         response = client.chat.completions.create(model="gpt-4o", messages=messages, max_tokens=4096)
-        result = response.choices[0].message.content.strip()
+        return response.choices[0].message.content.strip()
+    except OpenAIError as e:
+        return f"Error during GPT processing: {str(e)}"
 
-        # 打印API的完整响应
-        print("OpenAI API 响应内容：", result)
+def generate_gpt_prompt(ocr_text, base64_text, user_input_text):
+    return f"""
+    第一步：识别并提取用户作文中的题目和正文，题目需要中英文表达。
 
-        return result
-    except (BadRequestError, OpenAIError) as e:
-        print("OpenAI API 错误：", e)
-        return handle_api_error(e)
-
-# 雅思作文生成、评分、改进相关功能
-def analyze_generate_essay(ocr_text, base64_text, user_input_text):
-    combined_text = f"OCR 识别结果: {ocr_text}\n\nBase64 识别结果: {base64_text}\n\n用户输入文本: {user_input_text}"
-    prompt = f"""
-    根据以下提供的图片和文本信息，从OCR识别内容中提取出雅思作文的题目和正文。题目需要中英文表达，作文不添加额外信息，只选取与题目和作文相关的部分。
-    
-    提供的内容：
-    {combined_text[:1500]}
-    """
-
-    analysis_result = process_text_with_gpt(combined_text, prompt)
-    return analysis_result
-
-def evaluate_and_improve_essay(essay_text):
-    prompt = f"""
-    下面是一篇雅思作文，请从以下四个方面进行评分：
+    第二步：根据雅思的四个评分维度对作文进行评分，每个维度的总分为9分，评分请使用中文：
     1. 任务回应（Task Achievement/Task Response）
     2. 连贯与衔接（Coherence and Cohesion）
     3. 词汇资源（Lexical Resource）
     4. 语法多样性与准确性（Grammatical Range and Accuracy）
-    
-    请为每个维度打分并给出评分理由，并直接给出总分。
+    最后，计算四个维度的平均分并给出总分（四舍五入到0.5）。
 
-    作文内容：
-    {essay_text[:1000]}
+    第三步：逐句分析作文内容，判断是否需要修改。若需修改，请给出修改后的句子（用英文表 达），并解释修改的原因（中文说明）。
+
+    第四步：根据逐句修改生成最终的完整作文。
+
+    OCR识别结果: {ocr_text}
+    Base64识别结果: {base64_text}
+    用户输入文本: {user_input_text}
     """
-    
-    evaluation_result = process_text_with_gpt(essay_text, prompt)
-    return evaluation_result
-
-def improve_each_sentence(essay_text):
-    prompt = f"""
-    以下是雅思作文的原文内容，请根据GPT分析出的缺陷逐句改进这些句子，并解释每个改进的原因。改进后的句子应以英文给出，并以蓝色标记，解释原因则用中文给出，并以红色标记。
-    
-    改进后的小作文应不超过150个英文单词，大作文应不超过250个英文单词。
-
-    作文内容：
-    {essay_text[:1000]}
-    """
-    
-    improved_essay = process_text_with_gpt(essay_text, prompt)
-    return improved_essay
-
-def generate_final_essay(original_essay, improvements):
-    prompt = f"""
-    请根据以下原始作文和改进建议，生成改进后的完整雅思作文。请确保保留原文的合理部分，并应用改进后的内容。
-
-    原始作文：
-    {original_essay[:1000]}
-
-    改进建议：
-    {improvements[:1000]}
-    """
-    
-    final_essay = process_text_with_gpt(original_essay, prompt)
-    return final_essay
-
-# 处理上传的内容并生成作文
-def process_uploaded_content(image_path, user_input_text):
-    ocr_text = extract_text_with_ocr(image_path) if image_path else ""
-    base64_text = get_image_base64(image_path) if image_path else ""
-
-    # 1. 分析生成题目和作文
-    analysis_result = analyze_generate_essay(ocr_text, base64_text, user_input_text)
-    print("生成的题目和作文:", analysis_result)
-
-    # 2. 评分与改进
-    evaluation_result = evaluate_and_improve_essay(analysis_result)
-    print("评分和改进建议:", evaluation_result)
-
-    # 3. 对作文逐句改进并解释理由
-    improved_sentences = improve_each_sentence(analysis_result)
-    print("逐句改进后的作文和解释:", improved_sentences)
-
-    # 4. 生成最终改进后的作文
-    final_essay = generate_final_essay(analysis_result, improved_sentences)
-    print("改进后的雅思作文:", final_essay)
-
-    return final_essay
 
 # 上传文件处理的API端点
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    if request.method == 'GET':
-        return render_template('upload.html')
+    if request.method == 'POST':
+        file = request.files.get('file')
+        text_essay = request.form.get('text_essay')
 
-    # 检查是否有文件上传或文本上传
-    file = request.files.get('file')  # 获取文件（如果有）
-    text_essay = request.form.get('text_essay')  # 获取文本（如果有）
+        if not file and not text_essay:
+            return jsonify({'error': 'No file or text part in the request'}), 400
 
-    # 如果既没有文件也没有文本，则返回错误
-    if not file and not text_essay:
-        print("No file or text part in the request")
-        return jsonify({'error': 'No file or text part in the request'}), 400
-
-    # 初始化文件路径为 None
-    filepath = None
-
-    # 如果上传了文件，则处理文件，附加时间戳生成唯一文件名
-    if file and file.filename != '':
-        if allowed_file(file.filename):
-            filename = f"{int(time.time())}_{secure_filename(file.filename)}"  # 添加时间戳确保唯一性
+        filepath = None
+        if file and allowed_file(file.filename):
+            filename = secure_filename(f"{int(time.time())}_{file.filename}")
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            print(f"Saving file to {filepath}")
             file.save(filepath)
+
+        # 提取OCR和Base64内容
+        ocr_text = extract_text_with_ocr(filepath) if filepath else ""
+        base64_text = get_image_base64(filepath) if filepath else ""
+
+        # 生成GPT提示词
+        prompt = generate_gpt_prompt(ocr_text, base64_text, text_essay)
+
+        # 调用GPT获取结果
+        result = process_text_with_gpt(prompt)
+
+        # 获取用户信息并扣除积分
+        username = request.cookies.get('username')
+        users = load_users()
+
+        if username in users and users[username]['points'] > 0:
+            users[username]['points'] -= 1  # 扣除积分
+            save_users(users)  # 更新用户数据
+            response = jsonify({'result': result, 'points': users[username]['points']})
+            response.set_cookie('points', str(users[username]['points']), httponly=False)
+            return response, 200
         else:
-            print("Invalid file")
-            return jsonify({'error': 'Invalid file'}), 400
+            return jsonify({'error': 'Not enough points or user not logged in'}), 403
 
-    # 处理上传内容：无论是文件、文本或两者
-    result = process_uploaded_content(filepath, text_essay)
+    return render_template('upload.html')
 
-    # 更新用户积分 (假设已经有相关用户登录并获取了用户名)
-    users = load_users()
-    username = request.cookies.get('username')
-    if username and username in users:
-        users[username]['points'] -= 1
-        save_users(users)
-        response = jsonify({'redirect': f'/report?result={result}'})
-        response.set_cookie('points', str(users[username]['points']), httponly=False)
-    else:
-        response = jsonify({'redirect': f'/report?result={result}'})
+# 验证上传的文件格式是否符合要求
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    print("Upload and processing successful")
-
-    # 返回成功并跳转到报告页面
-    return response, 200
-
-# 报告页面的路由，用于显示处理结果
-@app.route('/report', methods=['GET', 'POST'])
-def report():
-    # 使用 session 获取结果
-    from flask import session
-    result = session.get('result')
-
-    # 如果没有结果，显示默认消息
-    if not result:
-        result = {
-            "titleEn": "No result",
-            "titleZh": "没有可显示的结果，请重新上传文件或文本进行处理。",
-            "scores": {
-                "taskAchievement": 0,
-                "coherenceCohesion": 0,
-                "lexicalResource": 0,
-                "grammaticalRange": 0,
-                "overall": 0,
-            },
-            "feedback": [],
-            "finalEssay": "No essay available."
-        }
-
-    return render_template('report.html', result=result)
-
-# 支付接口生成订单
-def generate_pay_order(amount, out_trade_no, notify_url, return_url, payment_type='alipay'):
-    params = {
-        "pid": PAY_MERCHANT_ID,
-        "type": payment_type,
-        "out_trade_no": out_trade_no,
-        "notify_url": notify_url,
-        "return_url": return_url,
-        "name": "充值服务",
-        "money": str(amount),
-        "sign_type": "MD5"
-    }
-
-    # 按照参数名的ASCII码排序，并且排除掉sign和sign_type
-    sign_str = '&'.join([f"{key}={params[key]}" for key in sorted(params) if key != 'sign' and key != 'sign_type' and params[key]]) + PAY_SECRET_KEY
-    print(f"签名前的字符串: {sign_str}")  # 打印签名前的字符串
-
-    # 生成签名
-    params["sign"] = hashlib.md5(sign_str.encode('utf-8')).hexdigest()
-    print(f"生成的MD5签名: {params['sign']}")  # 打印生成的签名
-
+def get_image_base64(image_path):
     try:
-        # 发送POST请求
-        response = requests.post(PAY_API_URL, data=params)
-        print("Response status code:", response.status_code)
-        print("Response content:", response.text)
-
-        # 如果响应成功且返回HTML页面
-        if response.status_code == 200 and '<html>' in response.text:
-            return response.url  # 返回支付页面URL
-        else:
-            print(f"支付请求错误: {response.status_code}")
-            return None
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode('utf-8')
     except Exception as e:
-        print(f"Error during Pay order generation: {e}")
         return None
 
-@app.route('/generate_qr_code', methods=['POST'])
-def generate_qr_code():
-    data = request.json
-    amount = data.get('amount')
+# 用户注册和登录
+def load_users():
+    if not os.path.exists(USER_DATA_FILE):
+        return {}
+    with open(USER_DATA_FILE, 'r') as f:
+        return json.load(f)
+
+def save_users(users):
+    with open(USER_DATA_FILE, 'w') as f:
+        json.dump(users, f)
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
     username = data.get('username')
+    password = data.get('password')
+    users = load_users()
 
-    if amount not in [5, 9, 19, 29, 59]:
-        return jsonify({'error': 'Invalid amount'}), 400
+    if username in users:
+        return jsonify({'error': 'User already exists'}), 400
+    if len(password) < 5:
+        return jsonify({'error': 'Password must be at least 5 characters long'}), 400
 
-    out_trade_no = f"{username}_{int(time.time())}"  # 生成唯一订单号
+    users[username] = {"password": generate_password_hash(password, method='pbkdf2:sha256'), "points": 10}  # 初始积分10
+    save_users(users)
+    response = jsonify({'message': 'Registration successful'})
+    response.set_cookie('username', username, httponly=False)
+    response.set_cookie('points', '10', httponly=False)
+    return response, 200
 
-    # 使用IP地址作为通知地址和返回地址
-    notify_url = NOTIFY_URL
-    return_url = RETURN_URL
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    users = load_users()
 
-    qr_code_url = generate_pay_order(amount, out_trade_no, notify_url, return_url)
-    if qr_code_url:
-        return jsonify({'qr_code_url': qr_code_url}), 200
-    else:
-        return jsonify({'error': 'Failed to generate QR code'}), 500
+    if username not in users or not check_password_hash(users[username]['password'], password):
+        return jsonify({'error': 'Invalid username or password'}), 400
 
+    response = jsonify({'message': 'Login successful', 'username': username, 'points': users[username]['points']})
+    response.set_cookie('username', username, httponly=False)
+    response.set_cookie('points', str(users[username]['points']), httponly=False)
+    return response, 200
+
+# 主页和文件服务
 @app.route('/')
 def index():
     return send_from_directory(app.root_path, 'index.html')
@@ -344,71 +180,7 @@ def serve_file(path):
 def serve_static(path):
     return send_from_directory(os.path.join(app.root_path, 'static'), path)
 
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-    users = load_users()
-    if username in users:
-        return jsonify({'error': 'User already exists'}), 400
-    if len(password) < 5:
-        return jsonify({'error': 'Password must be at least 5 characters long'}), 400
-    users[username] = {"password": generate_password_hash(password, method='pbkdf2:sha256'), "points": 1}
-    save_users(users)
-    response = jsonify({'message': 'Registration successful'})
-    response.set_cookie('username', username, httponly=False)
-    response.set_cookie('points', '1', httponly=False)
-    return response, 200
-
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-    users = load_users()
-    if username not in users or not check_password_hash(users[username]['password'], password):
-        return jsonify({'error': 'Invalid username or password'}), 400
-    response = jsonify({'message': 'Login successful', 'username': username, 'points': users[username]['points']})
-    response.set_cookie('username', username, httponly=False)
-    response.set_cookie('points', str(users[username]['points']), httponly=False)
-    return response, 200
-
-@app.route('/yipay_notify', methods=['POST'])
-def yipay_notify():
-    data = request.form.to_dict()
-    sign = data.pop('sign', None)
-
-    # 验证支付签名
-    if not verify_yipay_signature(data, sign):
-        return 'failure', 400
-
-    if data.get('trade_status') == 'TRADE_SUCCESS':
-        out_trade_no = data.get('out_trade_no')
-        amount = float(data.get('money', 0))
-
-        # 计算积分
-        points = calculate_points(amount)
-
-        # 更新用户积分
-        users = load_users()
-        username = out_trade_no.split('_')[0]
-        if username in users:
-            users[username]['points'] += points
-            save_users(users)
-            return 'success', 200
-        else:
-            return 'failure', 400
-    return 'failure', 400
-
-def verify_yipay_signature(data, sign):
-    sorted_items = sorted(data.items())
-    message = "&".join(f"{k}={v}" for k, v in sorted_items if v and k != 'sign') + PAY_SECRET_KEY
-    calculated_sign = hashlib.md5(message.encode('utf-8')).hexdigest()
-    return calculated_sign == sign
-
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
-
 if __name__ == "__main__":
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True, host='0.0.0.0', port=5000)
